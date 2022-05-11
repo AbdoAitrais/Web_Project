@@ -2525,12 +2525,12 @@
 										"$ref": "AAAAAAGAj7pJjYTifXM="
 									},
 									"font": "Arial;13;0",
-									"left": 366,
-									"top": 531,
+									"left": 319,
+									"top": 519,
 									"width": 164.759765625,
 									"height": 13,
-									"alpha": 1.5707963267948966,
-									"distance": 15,
+									"alpha": -3.6468829318105196,
+									"distance": 53.71219600798314,
 									"hostEdge": {
 										"$ref": "AAAAAAGAj7pJjYTj6qE="
 									},
@@ -2894,7 +2894,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 144,
+											"left": 256,
 											"top": -288,
 											"height": 13
 										},
@@ -2905,7 +2905,7 @@
 												"$ref": "AAAAAAGAj8EEmYU9px8="
 											},
 											"font": "Arial;13;1",
-											"left": 933,
+											"left": 989,
 											"top": 479,
 											"width": 53.47900390625,
 											"height": 13,
@@ -2919,7 +2919,7 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 144,
+											"left": 256,
 											"top": -288,
 											"width": 38.27001953125,
 											"height": 13,
@@ -2933,14 +2933,14 @@
 											},
 											"visible": false,
 											"font": "Arial;13;0",
-											"left": 144,
+											"left": 256,
 											"top": -288,
 											"height": 13,
 											"horizontalAlignment": 1
 										}
 									],
 									"font": "Arial;13;0",
-									"left": 928,
+									"left": 984,
 									"top": 472,
 									"width": 63.47900390625,
 									"height": 25,
@@ -2968,7 +2968,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 72,
+									"left": 128,
 									"top": -144,
 									"width": 10,
 									"height": 10
@@ -2984,7 +2984,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 72,
+									"left": 128,
 									"top": -144,
 									"width": 10,
 									"height": 10
@@ -2999,14 +2999,14 @@
 										"$ref": "AAAAAAGAj8EEmIU7W1g="
 									},
 									"font": "Arial;13;0",
-									"left": 928,
+									"left": 984,
 									"top": 497,
 									"width": 63.47900390625
 								}
 							],
 							"font": "Arial;13;0",
 							"containerChangeable": true,
-							"left": 928,
+							"left": 984,
 							"top": 472,
 							"width": 63.47900390625,
 							"height": 40,
@@ -3309,9 +3309,9 @@
 										"$ref": "AAAAAAGAj8Gh/4WZ4fE="
 									},
 									"font": "Arial;13;0",
-									"left": 689,
+									"left": 685,
 									"top": 475,
-									"width": 191.8134765625,
+									"width": 199.037109375,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -3319,7 +3319,7 @@
 										"$ref": "AAAAAAGAj8Gh/4Wa0l4="
 									},
 									"edgePosition": 1,
-									"text": " [When l'etudiant signe le contrat]"
+									"text": " [When l'etudiant accept le contrat]"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -3371,7 +3371,7 @@
 							"tail": {
 								"$ref": "AAAAAAGAj8Fp4oVmVXY="
 							},
-							"points": "784:544;784:496;928:496",
+							"points": "784:544;784:496;984:496",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGAj8GiAIWbZ24="
@@ -3498,8 +3498,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1075,
-									"top": 696,
+									"left": 1015,
+									"top": 777,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -3519,8 +3519,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 1079,
-									"top": 711,
+									"left": 1015,
+									"top": 792,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -3540,8 +3540,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 1068,
-									"top": 667,
+									"left": 1016,
+									"top": 747,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -3558,8 +3558,7 @@
 							"tail": {
 								"$ref": "AAAAAAGAj8EEmYU8W54="
 							},
-							"lineStyle": 3,
-							"points": "971:512;1072:688;762:768",
+							"points": "1016:511;1016:768;761:768",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGAj8K2noXkbV8="
@@ -4184,7 +4183,7 @@
 										"$ref": "AAAAAAGAj84d2ocH7nE="
 									},
 									"font": "Arial;13;0",
-									"left": 367,
+									"left": 375,
 									"top": 855,
 									"width": 210.919921875,
 									"height": 13,
@@ -4207,7 +4206,7 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 522,
+									"left": 530,
 									"top": 921,
 									"height": 13,
 									"alpha": 1.5707963267948966,
@@ -4228,7 +4227,7 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 567,
+									"left": 575,
 									"top": 922,
 									"height": 13,
 									"alpha": -1.5707963267948966,
@@ -4246,7 +4245,7 @@
 							"tail": {
 								"$ref": "AAAAAAGAj83o04bkbhs="
 							},
-							"points": "600:928;552:928;552:575",
+							"points": "600:928;560:928;560:575",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAGAj84d24cJh5E="
@@ -4883,7 +4882,7 @@
 							"target": {
 								"$ref": "AAAAAAGAj8EEmIU7W1g="
 							},
-							"guard": "When l'etudiant signe le contrat"
+							"guard": "When l'etudiant accept le contrat"
 						},
 						{
 							"_type": "UMLTransition",
