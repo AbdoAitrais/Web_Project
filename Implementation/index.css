@@ -1,0 +1,16 @@
+header{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.title{
+    font-family: 'Roboto', sans-serif;
+    src: url('fonts/Roboto/Roboto-Black.ttf.eot');
+    display: flex;
+    font-weight: bolder;
+    font-size: large;
+    border-bottom: 5px solid black;
+    width: 7%;
+    align-items: center;
+    justify-content: center;
+}
