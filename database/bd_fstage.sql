@@ -1,274 +1,283 @@
--- phpMyAdmin SQL Dump
--- version 5.0.2
--- https://www.phpmyadmin.net/
---
--- Hôte : 127.0.0.1:3306
--- Généré le : mer. 11 mai 2022 à 09:36
--- Version du serveur :  5.7.31
--- Version de PHP : 7.3.21
-
-SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-START TRANSACTION;
-SET time_zone = "+00:00";
+/*==============================================================*/
+/* DBMS name:      MySQL 5.0                                    */
+/* Created on:     5/14/2022 8:37:12 PM                         */
+/*==============================================================*/
 
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8mb4 */;
+drop table if exists ADMIN;
 
---
--- Base de données : `bd_fstage`
---
+drop table if exists ATTENTE;
 
--- --------------------------------------------------------
+drop table if exists DEPARTEMENT;
 
---
--- Structure de la table `admin`
---
+drop table if exists ENSEIGNANT;
 
-DROP TABLE IF EXISTS `admin`;
-CREATE TABLE IF NOT EXISTS `admin` (
-  `ID_ADMIN` int(11) NOT NULL,
-  `LOGIN_ADMIN` varchar(25) DEFAULT NULL,
-  `PASS_ADMIN` varchar(25) DEFAULT NULL,
-  PRIMARY KEY (`ID_ADMIN`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+drop table if exists ENTREPRISE;
 
--- --------------------------------------------------------
+drop table if exists ETUDIANT;
 
---
--- Structure de la table `attente`
---
+drop table if exists FORMATION;
 
-DROP TABLE IF EXISTS `attente`;
-CREATE TABLE IF NOT EXISTS `attente` (
-  `ID_ETU` int(11) NOT NULL,
-  `ID_OFFRE` int(11) NOT NULL,
-  `PRIORITE` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID_ETU`,`ID_OFFRE`),
-  KEY `FK_ATTENTE2` (`ID_OFFRE`),
-  KEY `FK_ATTENTE` (`ID_ETU`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+drop table if exists JURI;
 
--- --------------------------------------------------------
+drop table if exists MOTCLE;
 
---
--- Structure de la table `departement`
---
+drop table if exists OFFRE;
 
-DROP TABLE IF EXISTS `departement`;
-CREATE TABLE IF NOT EXISTS `departement` (
-  `ID_DEPART` int(11) NOT NULL AUTO_INCREMENT,
-  `NOM_DEPART` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`ID_DEPART`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+drop table if exists POSTULER;
 
--- --------------------------------------------------------
+drop table if exists RAPPORT;
 
---
--- Structure de la table `enseignant`
---
+drop table if exists REFERENCER;
 
-DROP TABLE IF EXISTS `enseignant`;
-CREATE TABLE IF NOT EXISTS `enseignant` (
-  `ID_ENS` int(11) NOT NULL,
-  `ID_DEPART` int(11) NOT NULL,
-  `NOM_ENS` varchar(25) DEFAULT NULL,
-  `PRENOM_ENS` varchar(25) DEFAULT NULL,
-  `CIN_ENS` varchar(15) DEFAULT NULL,
-  `DATENAISS_ENS` date DEFAULT NULL,
-  `NUMTEL_ENS` int(11) DEFAULT NULL,
-  PRIMARY KEY (`ID_ENS`),
-  KEY `FK_FAIRE_PARTIE_DE` (`ID_DEPART`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+drop table if exists STAGE;
 
--- --------------------------------------------------------
+/*==============================================================*/
+/* Table: ADMIN                                                 */
+/*==============================================================*/
+create table ADMIN
+(
+   ID_ADMIN             int not null,
+   LOGIN_ADMIN          varchar(25),
+   PASS_ADMIN           varchar(25),
+   primary key (ID_ADMIN)
+);
 
---
--- Structure de la table `entreprise`
---
+/*==============================================================*/
+/* Table: ATTENTE                                               */
+/*==============================================================*/
+create table ATTENTE
+(
+   ID_ETU               int not null,
+   ID_OFFRE             int not null,
+   PRIORITE             int,
+   primary key (ID_ETU, ID_OFFRE)
+);
 
-DROP TABLE IF EXISTS `entreprise`;
-CREATE TABLE IF NOT EXISTS `entreprise` (
-  `ID_ENTREP` int(11) NOT NULL AUTO_INCREMENT,
-  `NOM_ENTREP` varchar(25) DEFAULT NULL,
-  `EMAIL_ENTREP` varchar(50) DEFAULT NULL,
-  `VILLE` varchar(30) DEFAULT NULL,
-  PRIMARY KEY (`ID_ENTREP`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*==============================================================*/
+/* Table: DEPARTEMENT                                           */
+/*==============================================================*/
+create table DEPARTEMENT
+(
+   ID_DEPART            int not null auto_increment,
+   NOM_DEPART           varchar(30),
+   primary key (ID_DEPART)
+);
 
--- --------------------------------------------------------
+/*==============================================================*/
+/* Table: ENSEIGNANT                                            */
+/*==============================================================*/
+create table ENSEIGNANT
+(
+   ID_ENS               int not null,
+   ID_FORM              int,
+   ID_DEPART            int not null,
+   NOM_ENS              varchar(25),
+   PRENOM_ENS           varchar(25),
+   CIN_ENS              varchar(15),
+   DATENAISS_ENS        date,
+   NUMTEL_ENS           int,
+   primary key (ID_ENS)
+);
 
---
--- Structure de la table `etudiant`
---
+/*==============================================================*/
+/* Table: ENTREPRISE                                            */
+/*==============================================================*/
+create table ENTREPRISE
+(
+   ID_ENTREP            int not null auto_increment,
+   NOM_ENTREP           varchar(25),
+   EMAIL_ENTREP         varchar(50),
+   VILLE                varchar(30),
+   primary key (ID_ENTREP)
+);
 
-DROP TABLE IF EXISTS `etudiant`;
-CREATE TABLE IF NOT EXISTS `etudiant` (
-  `ID_ETU` int(11) NOT NULL AUTO_INCREMENT,
-  `ID_FORM` int(11) NOT NULL,
-  `NOM_ETU` varchar(25) DEFAULT NULL,
-  `PRENOM_ETU` varchar(25) DEFAULT NULL,
-  `CIN_ETU` varchar(15) DEFAULT NULL,
-  `CNE` varchar(15) DEFAULT NULL,
-  `NIVEAU` int(11) DEFAULT NULL,
-  `PROMOTION` int(11) DEFAULT NULL,
-  `DATENAISS_ETU` date DEFAULT NULL,
-  `ADRESSE_ETU` varchar(50) DEFAULT NULL,
-  `EMAIL_ETU` varchar(50) DEFAULT NULL,
-  `NUMTEL_ETU` int(11) DEFAULT NULL,
-  `LOGIN_ETU` varchar(25) DEFAULT NULL,
-  `PASS_ETU` varchar(25) DEFAULT NULL,
-  PRIMARY KEY (`ID_ETU`),
-  KEY `FK_APPARTENIR` (`ID_FORM`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*==============================================================*/
+/* Table: ETUDIANT                                              */
+/*==============================================================*/
+create table ETUDIANT
+(
+   ID_ETU               int not null auto_increment,
+   ID_FORM              int not null,
+   NOM_ETU              varchar(25),
+   PRENOM_ETU           varchar(25),
+   CIN_ETU              varchar(15),
+   CNE                  varchar(15),
+   NIVEAU               int,
+   PROMOTION            int,
+   DATENAISS_ETU        date,
+   ADRESSE_ETU          varchar(50),
+   EMAIL_ETU            varchar(50),
+   NUMTEL_ETU           int,
+   LOGIN_ETU            varchar(25),
+   PASS_ETU             varchar(25),
+   CV                   varchar(100),
+   primary key (ID_ETU)
+);
 
--- --------------------------------------------------------
+/*==============================================================*/
+/* Table: FORMATION                                             */
+/*==============================================================*/
+create table FORMATION
+(
+   ID_FORM              int not null auto_increment,
+   ID_ENS               int not null,
+   FILIERE              varchar(30),
+   TYPE                 int,
+   LOGIN_RESP           varchar(25),
+   PASS_RESP            varchar(25),
+   primary key (ID_FORM)
+);
 
---
--- Structure de la table `formation`
---
+/*==============================================================*/
+/* Table: JURI                                                  */
+/*==============================================================*/
+create table JURI
+(
+   ID_ENS               int not null,
+   ID_STAGE             int not null,
+   NOTE                 float,
+   primary key (ID_ENS, ID_STAGE)
+);
 
-DROP TABLE IF EXISTS `formation`;
-CREATE TABLE IF NOT EXISTS `formation` (
-  `ID_FORM` int(11) NOT NULL AUTO_INCREMENT,
-  `ID_ENS` int(11) NOT NULL,
-  `FILIERE` varchar(30) DEFAULT NULL,
-  `TYPE_FORM` int(11) DEFAULT NULL,
-  `LOGIN_RESP` varchar(25) DEFAULT NULL,
-  `PASS_RESP` varchar(25) DEFAULT NULL,
-  PRIMARY KEY (`ID_FORM`),
-  KEY `FK_GERER2` (`ID_ENS`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*==============================================================*/
+/* Table: MOTCLE                                                */
+/*==============================================================*/
+create table MOTCLE
+(
+   ID_MOTCLE            int not null auto_increment,
+   MOT                  varchar(20),
+   primary key (ID_MOTCLE)
+);
 
--- --------------------------------------------------------
+/*==============================================================*/
+/* Table: OFFRE                                                 */
+/*==============================================================*/
+create table OFFRE
+(
+   ID_OFFRE             int not null auto_increment,
+   ID_FORM              int not null,
+   ID_ENTREP            int not null,
+   STATUOFFRE           varchar(25),
+   NBRCANDIDAT          int,
+   POSTE                varchar(30),
+   DUREE                int,
+   DATEDEBUT            date,
+   DATEFIN              date,
+   DESCRIPTION          varchar(300),
+   NIVEAU               int,
+   primary key (ID_OFFRE)
+);
 
---
--- Structure de la table `juri`
---
+/*==============================================================*/
+/* Table: POSTULER                                              */
+/*==============================================================*/
+create table POSTULER
+(
+   ID_ETU               int not null,
+   ID_OFFRE             int not null,
+   STATU                varchar(30),
+   DATEREPONS           date,
+   DATEPOST             date,
+   primary key (ID_ETU, ID_OFFRE)
+);
 
-DROP TABLE IF EXISTS `juri`;
-CREATE TABLE IF NOT EXISTS `juri` (
-  `ID_ENS` int(11) NOT NULL,
-  `ID_STAGE` int(11) NOT NULL,
-  `NOTE` float DEFAULT NULL,
-  PRIMARY KEY (`ID_ENS`,`ID_STAGE`),
-  KEY `FK_JURI2` (`ID_STAGE`),
-  KEY `FK_JURI1` (`ID_ENS`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+/*==============================================================*/
+/* Table: RAPPORT                                               */
+/*==============================================================*/
+create table RAPPORT
+(
+   ID_RAPP              int not null auto_increment,
+   ID_STAGE             int not null,
+   FICHIER              varchar(100),
+   primary key (ID_RAPP)
+);
 
--- --------------------------------------------------------
+/*==============================================================*/
+/* Table: REFERENCER                                            */
+/*==============================================================*/
+create table REFERENCER
+(
+   ID_RAPP              int not null,
+   ID_MOTCLE            int not null,
+   primary key (ID_RAPP, ID_MOTCLE)
+);
 
---
--- Structure de la table `motcle`
---
+/*==============================================================*/
+/* Table: STAGE                                                 */
+/*==============================================================*/
+create table STAGE
+(
+   ID_STAGE             int not null auto_increment,
+   ID_ENTREP            int not null,
+   ID_RAPP              int,
+   ID_ENS               int not null,
+   ID_ETU               int not null,
+   POSTE                varchar(30),
+   DUREE                int,
+   DESCRIPTION          varchar(300),
+   DATEREPONS           date,
+   DATEPOST             date,
+   NOTENCAD_ENTREP      float,
+   NOTENCAD             float,
+   CONTRAT              varchar(100),
+   primary key (ID_STAGE)
+);
 
-DROP TABLE IF EXISTS `motcle`;
-CREATE TABLE IF NOT EXISTS `motcle` (
-  `id_motcle` int(11) NOT NULL AUTO_INCREMENT,
-  `mot` varchar(20) NOT NULL,
-  PRIMARY KEY (`id_motcle`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+alter table ATTENTE add constraint FK_ATTENTE foreign key (ID_ETU)
+      references ETUDIANT (ID_ETU) on delete restrict on update restrict;
 
--- --------------------------------------------------------
+alter table ATTENTE add constraint FK_ATTENTE2 foreign key (ID_OFFRE)
+      references OFFRE (ID_OFFRE) on delete restrict on update restrict;
 
---
--- Structure de la table `offre`
---
+alter table ENSEIGNANT add constraint FK_FAIRE_PARTIE_DE foreign key (ID_DEPART)
+      references DEPARTEMENT (ID_DEPART) on delete restrict on update restrict;
 
-DROP TABLE IF EXISTS `offre`;
-CREATE TABLE IF NOT EXISTS `offre` (
-  `ID_OFFRE` int(11) NOT NULL AUTO_INCREMENT,
-  `ID_FORM` int(11) NOT NULL,
-  `ID_ENTREP` int(11) NOT NULL,
-  `STATUOFFRE` varchar(25) DEFAULT NULL,
-  `NBRCANDIDAT` int(11) DEFAULT NULL,
-  `POSTE` varchar(30) DEFAULT NULL,
-  `DUREE` int(11) DEFAULT NULL,
-  `DATEDEBUT` date DEFAULT NULL,
-  `DATEFIN` date DEFAULT NULL,
-  `DESCRIP` varchar(300) DEFAULT NULL,
-  PRIMARY KEY (`ID_OFFRE`),
-  KEY `FK_CONCERNER` (`ID_FORM`),
-  KEY `FK_PRESENTER` (`ID_ENTREP`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+alter table ENSEIGNANT add constraint FK_GERER foreign key (ID_FORM)
+      references FORMATION (ID_FORM) on delete restrict on update restrict;
 
--- --------------------------------------------------------
+alter table ETUDIANT add constraint FK_APPARTENIR foreign key (ID_FORM)
+      references FORMATION (ID_FORM) on delete restrict on update restrict;
 
---
--- Structure de la table `postuler`
---
+alter table FORMATION add constraint FK_GERER2 foreign key (ID_ENS)
+      references ENSEIGNANT (ID_ENS) on delete restrict on update restrict;
 
-DROP TABLE IF EXISTS `postuler`;
-CREATE TABLE IF NOT EXISTS `postuler` (
-  `ID_ETU` int(11) NOT NULL,
-  `ID_OFFRE` int(11) NOT NULL,
-  `STATU` varchar(30) DEFAULT NULL,
-  `DATEREPONS` date DEFAULT NULL,
-  `DATEPOST` date DEFAULT NULL,
-  PRIMARY KEY (`ID_ETU`,`ID_OFFRE`),
-  UNIQUE KEY `FK_POSTULER` (`ID_ETU`),
-  KEY `FK_POSTULER2` (`ID_OFFRE`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+alter table JURI add constraint FK_JURI foreign key (ID_ENS)
+      references ENSEIGNANT (ID_ENS) on delete restrict on update restrict;
 
--- --------------------------------------------------------
+alter table JURI add constraint FK_JURI2 foreign key (ID_STAGE)
+      references STAGE (ID_STAGE) on delete restrict on update restrict;
 
---
--- Structure de la table `rapport`
---
+alter table OFFRE add constraint FK_CONCERNER foreign key (ID_FORM)
+      references FORMATION (ID_FORM) on delete restrict on update restrict;
 
-DROP TABLE IF EXISTS `rapport`;
-CREATE TABLE IF NOT EXISTS `rapport` (
-  `ID_RAPP` int(11) NOT NULL AUTO_INCREMENT,
-  `FICHIER` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`ID_RAPP`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+alter table OFFRE add constraint FK_PRESENTER foreign key (ID_ENTREP)
+      references ENTREPRISE (ID_ENTREP) on delete restrict on update restrict;
 
--- --------------------------------------------------------
+alter table POSTULER add constraint FK_POSTULER foreign key (ID_ETU)
+      references ETUDIANT (ID_ETU) on delete restrict on update restrict;
 
---
--- Structure de la table `referencer`
---
+alter table POSTULER add constraint FK_POSTULER2 foreign key (ID_OFFRE)
+      references OFFRE (ID_OFFRE) on delete restrict on update restrict;
 
-DROP TABLE IF EXISTS `referencer`;
-CREATE TABLE IF NOT EXISTS `referencer` (
-  `id_motcle` int(11) NOT NULL,
-  `id_rapp` int(11) NOT NULL,
-  PRIMARY KEY (`id_motcle`,`id_rapp`),
-  KEY `FK_REFERENCE1` (`id_motcle`),
-  KEY `FK_REFERENCE2` (`id_rapp`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+alter table RAPPORT add constraint FK_CORRESPONDRE foreign key (ID_STAGE)
+      references STAGE (ID_STAGE) on delete restrict on update restrict;
 
--- --------------------------------------------------------
+alter table REFERENCER add constraint FK_REFERENCER foreign key (ID_RAPP)
+      references RAPPORT (ID_RAPP) on delete restrict on update restrict;
 
---
--- Structure de la table `stage`
---
+alter table REFERENCER add constraint FK_REFERENCER2 foreign key (ID_MOTCLE)
+      references MOTCLE (ID_MOTCLE) on delete restrict on update restrict;
 
-DROP TABLE IF EXISTS `stage`;
-CREATE TABLE IF NOT EXISTS `stage` (
-  `ID_STAGE` int(11) NOT NULL AUTO_INCREMENT,
-  `ID_ENTREP` int(11) NOT NULL,
-  `ID_RAPP` int(11) DEFAULT NULL,
-  `ID_ENS` int(11) NOT NULL,
-  `ID_ETU` int(11) NOT NULL,
-  `POSTE` varchar(30) DEFAULT NULL,
-  `DUREE` int(11) DEFAULT NULL,
-  `DESCRIP` varchar(300) DEFAULT NULL,
-  `DATEREPONS` date DEFAULT NULL,
-  `DATEPOST` date DEFAULT NULL,
-  `NOTENCAD_ENTREP` float DEFAULT NULL,
-  `NOTENCAD` float DEFAULT NULL,
-  `CONTRAT` varchar(50) DEFAULT NULL,
-  PRIMARY KEY (`ID_STAGE`),
-  KEY `FK_CORRESPONDRE2` (`ID_RAPP`),
-  KEY `FK_ENCADRER` (`ID_ENS`),
-  KEY `FK_PRESENTER_PAR` (`ID_ENTREP`),
-  KEY `FK_STAGIER` (`ID_ETU`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
-COMMIT;
+alter table STAGE add constraint FK_CORRESPONDRE2 foreign key (ID_RAPP)
+      references RAPPORT (ID_RAPP) on delete restrict on update restrict;
 
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+alter table STAGE add constraint FK_ENCADRER foreign key (ID_ENS)
+      references ENSEIGNANT (ID_ENS) on delete restrict on update restrict;
+
+alter table STAGE add constraint FK_PRESENTER_PAR foreign key (ID_ENTREP)
+      references ENTREPRISE (ID_ENTREP) on delete restrict on update restrict;
+
+alter table STAGE add constraint FK_STAGIER foreign key (ID_ETU)
+      references ETUDIANT (ID_ETU) on delete restrict on update restrict;
+
