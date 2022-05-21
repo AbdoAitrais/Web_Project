@@ -75,10 +75,7 @@ article{
     border-color: #4B8CC8 !important;
   }
 
-  .img-fluid{
-      width: 100%;
-      height:auto;
-  }
+
 
 @media all and (max-width: 800px)
 {
