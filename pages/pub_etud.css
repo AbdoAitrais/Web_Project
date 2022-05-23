@@ -245,7 +245,7 @@ body,nav {
   text-decoration-line: underline;
   margin-right: 40px;
 }
-
+/** Search bar CSS **/
   .search{
     width: 80%;
     background-color: #e9ecef;
@@ -261,3 +261,7 @@ body,nav {
     border: 1px solid #e9ecef;
     
   }
+/********************/
+
+
+  
