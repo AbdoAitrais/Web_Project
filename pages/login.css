@@ -106,3 +106,10 @@ color: #4B8CC8;
 button:hover {
   opacity: 0.8;
 }
+
+/** Select **/
+
+.select{
+  width: 50%;
+  margin-bottom: 10%;
+}
