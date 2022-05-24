@@ -1,7 +1,8 @@
 
 <?php  
-
-		include('connexion.php');
+	ob_start();
+	session_start();	
+	include('connexion.php');
 	
 
 ?>
@@ -24,7 +25,7 @@
 		else if ($type_user === "Responsable")
 		{
 			$Smt = $bdd->prepare('SELECT * FROM formation WHERE LOGIN_RESP=? and PASS_RESP=?');
-			$MAINPAGE = '../responsable.html';
+			$MAINPAGE = '../ListeEtudiants.php';
 		}
 		else if ($type_user === "Admin")
 		{

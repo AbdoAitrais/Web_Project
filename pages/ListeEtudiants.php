@@ -1,6 +1,21 @@
 <?php
-?>
+  ob_start();
+  session_start();
+  if( empty($_SESSION['pseudo']) )
+  {
+    $_SESSION['page'] = $_SERVER['REQUEST_URI'];
+    header('location: login.html');
+  }
+  else
+  {
+    include('back_end/connexion.php');
+    $req = 'SELECT * FROM etudiant';
+    $Smt = $bdd->query($req);
+    $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+  }
+  
 
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,16 +41,16 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="#">Find offers</a><span class="active_link_line"></span>
+                <a class="nav-link navlink" href="#">Find offers</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Soumissions</a>
+                <a class="nav-link navlink active_link_color" href="#">Etudiants</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Mes stages</a>
+                <a class="nav-link navlink" href="#">Enseignants</a>
               </li>
             </ul>
             <ul class="navbar-nav ms-auto margin ">
@@ -46,7 +61,7 @@
                 <a class="nav-link navlink blue" href="#">Contact Us</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink blue " href="#">Log out</a>
+                <a class="nav-link navlink blue " href="back_end/logout.php">Log out</a>
               </li>
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
@@ -77,7 +92,7 @@
 
 
         <div class="row">
-            <div class="col-md-12 elm pub_col">
+            <div class="col-md-10 elm pub_col">
 
           
                 <table class="table">
@@ -91,18 +106,23 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <tr>
-                        <th scope="row">1</th>
-                        <td>Mark</td>
-                        <td>Otto</td>
-                        <td>@mdo</td>
-                        <td style="text-align: end;">
+
+                   
+                    <?php foreach ($rows as $row): ?>
+                        <tr>
+                          <th scope="row" ><?php echo $row['NIVEAU'] ; ?></th>
+                          <td><?php echo $row['NOM_ETU']; ?></td>
+                          <td><?php echo $row['PRENOM_ETU']; ?></td>
+                          <td><?php echo $row['CNE']; ?></td>
+                          <td style="text-align: end;">
                             <button type="button" class="btn btn-outline-primary">En cours</button>
                             <button type="button" class="btn btn-outline-primary">Soumissions</button>
                             <button type="button" class="btn btn-outline-primary">Modifier</button>
                             <button type="button" class="btn btn-outline-primary">Supprimer</button>
-                        </td>
-                      </tr>
+                          </td>
+                        </tr>
+                    <?php endforeach; ?>
+
                     </tbody>
                   </table>
                 

@@ -1,6 +1,5 @@
 <?php
-        ob_start();
-		session_start();
+        
 
 		$server = "localhost";//specifier le port si vous utiliser plusieurs serveurs
 		$dataB = "bd_fstage";
