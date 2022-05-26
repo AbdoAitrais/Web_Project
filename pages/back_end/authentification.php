@@ -37,17 +37,17 @@
 		if ($type_user == "Etudiant")
 		{
 			$result = get_user_id_type_mainPage('etudiant','ID_ETU','LOGIN_ETU','PASS_ETU',
-										'../Find_Offre_Etu.php','Etudiant',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
+										'Find_Offre_Etu.php','Etudiant',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
 		}
 		else if ($type_user == "Responsable")
 		{
 			$result = get_user_id_type_mainPage('formation','ID_FORM','LOGIN_RESP','PASS_RESP',
-										'../ListeEtudiants.php','Responsable',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
+										'ListeEtudiants.php','Responsable',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
 		}
 		else if ($type_user == "Admin")
 		{
 			$result = get_user_id_type_mainPage('admin','ID_ADMIN','LOGIN_ADMIN','PASS_ADMIN',
-										'../admin.php','Admin',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
+										'admin.php','Admin',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
 		}
 		
 		var_dump($result);
@@ -68,7 +68,7 @@
 		 	}
 
 		 	if(!isset($_SESSION['page']))
-		 		header('location:'.$_SESSION['main_page']);
+		 		header('location:../'.$_SESSION['main_page']);
 		 	else
 		 		header('location:'.$_SESSION['page']);
 				

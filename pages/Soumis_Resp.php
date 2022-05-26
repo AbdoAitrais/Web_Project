@@ -1,14 +1,14 @@
 <?php 
-session_start();
-if(empty($_SESSION['user_id']) || empty($_SESSION['user_type']))
-{
-  header('location:login.php');
-  $_SESSION['page'] = $_SERVER['REQUEST_URI'];
-}
-    
+  session_start();
+  if(empty($_SESSION['user_id']) || empty($_SESSION['user_type']))
+  {
+    header('location:login.php');
+    $_SESSION['page'] = $_SERVER['REQUEST_URI'];
+  }
+      
 
-if($_SESSION['user_type'] == "Responsable")
-{
+  if($_SESSION['user_type'] == "Responsable")
+  {
 
   
 ?>

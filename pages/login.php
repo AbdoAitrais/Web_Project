@@ -1,7 +1,11 @@
 <?php
   ob_start();
   session_start();
-  include('back_end/connexion.php');
+  require('back_end/connexion.php');
+  if( !empty($_SESSION['main_page']) )
+  {
+    header('location:'.$_SESSION['main_page']);
+  }
 ?>
 <!DOCTYPE html>
 <html lang="en">
