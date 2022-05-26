@@ -1,7 +1,14 @@
 <?php 
-session_start();
-if(!isset($_SESSION['Etu']))
-    header('location:Authentification.php');
+  ob_start();
+  session_start();
+  if(empty($_SESSION['user_id']) || empty($_SESSION['user_type']))
+  {
+    header('location:login.php');
+    $_SESSION['page'] = $_SERVER['REQUEST_URI'];
+  }
+  
+  if( $_SESSION['user_type'] == "Etudiant")
+  {
 ?>
 
 <!DOCTYPE html>
@@ -122,11 +129,11 @@ if(!isset($_SESSION['Etu']))
           
           <div class="col-md-6 col-sm-12 elm pub_col">
          
-            <?php include "Connexion.php";
+            <?php require('back_end/connexion.php');
                 ///*** Postulation Verification
                     
                     /// ***
-                    $Etu=$_SESSION['Etu'];
+                    $Etu=$_SESSION['user_id'];
                     /// ***Test S'il ya un offre en etat acceptee
                     
                     ///Niveau de l'etudiant
@@ -144,8 +151,8 @@ if(!isset($_SESSION['Etu']))
                     /// ***                      
                     function Create_Offres($result2 ,$Etat_Offre){
                         
-                        include "Connexion.php";
-                        $Etu = $_SESSION['Etu'];  
+                        require('back_end/connexion.php');
+                        $Etu = $_SESSION['user_id'];  
                         
                         
                         /*
@@ -289,5 +296,11 @@ if(!isset($_SESSION['Etu']))
 </body>
 </html>
 
-
+<?php
+  }
+  else
+  {
+    echo "<h1> ERROR 301:</h1> <p>Unauthorized Access !</p>";
+  }
+?>
 

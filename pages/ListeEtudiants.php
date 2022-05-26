@@ -1,18 +1,21 @@
 <?php
   ob_start();
   session_start();
-  if( empty($_SESSION['user_id']) )
+  if( empty($_SESSION['user_id']) || empty($_SESSION['user_type']) )
   {
     $_SESSION['page'] = $_SERVER['REQUEST_URI'];
     header('location: login.php');
   }
-  else
-  {
-    include('back_end/connexion.php');
-    $req = 'SELECT * FROM etudiant';
-    $Smt = $bdd->query($req);
-    $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
-  }
+  
+    if($_SESSION['user_type'] == "Responsable")
+    {
+      require('back_end/connexion.php');
+      $id_form = $_SESSION['user_id'];
+    
+      $req = "SELECT * FROM etudiant WHERE ID_FORM='$id_form'";
+      $Smt = $bdd->query($req);
+      $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+    
   
 
 ?>
@@ -47,7 +50,7 @@
                 <a class="nav-link navlink" href="#">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="#">Etudiants</a><span class="active_link_line"></span>
+                <a class="nav-link navlink active_link_color" href="ListeEtudiants.php">Etudiants</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Enseignants</a>
@@ -108,7 +111,9 @@
                     <tbody>
 
                    
-                    <?php foreach ($rows as $row): ?>
+                    <?php foreach ($rows as $row): 
+                    
+                      ?>
                         <tr>
                           <th scope="row" ><?php echo $row['NIVEAU'] ; ?></th>
                           <td><?php echo $row['NOM_ETU']; ?></td>
@@ -116,7 +121,7 @@
                           <td><?php echo $row['CNE']; ?></td>
                           <td style="text-align: end;">
                             <button type="button" class="btn btn-outline-primary">En cours</button>
-                            <button type="button" class="btn btn-outline-primary">Soumissions</button>
+                            <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
                             <button type="button" class="btn btn-outline-primary">Modifier</button>
                             <button type="button" class="btn btn-outline-primary">Supprimer</button>
                           </td>
@@ -125,14 +130,22 @@
 
                     </tbody>
                   </table>
-
-                  
-                
               </div>
           </div>
+
+
+
         </div>
         </div>
           
     
 </body>
 </html>
+<?php
+  }
+  else
+  {
+    echo "<h1> ERROR 301:</h1> <p>Unauthorized Access !</p>";
+  }
+
+?>

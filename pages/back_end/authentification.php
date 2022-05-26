@@ -26,7 +26,7 @@
 	}
 
 
-	echo "test1";
+	
 	if( !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['type_user']) )
 	{
 		echo "test2";
@@ -58,6 +58,7 @@
 			echo "test3";
 			
 			$_SESSION['user_id'] = $result[0];
+			$_SESSION['main_page'] = $result[1];
 			$_SESSION['user_type'] = $result[2];
 
 			
@@ -67,7 +68,7 @@
 		 	}
 
 		 	if(!isset($_SESSION['page']))
-		 		header('location:'.$result[1]);
+		 		header('location:'.$_SESSION['main_page']);
 		 	else
 		 		header('location:'.$_SESSION['page']);
 				

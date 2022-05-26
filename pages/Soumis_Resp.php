@@ -1,7 +1,16 @@
 <?php 
 session_start();
-if(!isset($_SESSION['Resp']))
-    header('location:Authentification.php');
+if(empty($_SESSION['user_id']) || empty($_SESSION['user_type']))
+{
+  header('location:login.php');
+  $_SESSION['page'] = $_SERVER['REQUEST_URI'];
+}
+    
+
+if($_SESSION['user_type'] == "Responsable")
+{
+
+  
 ?>
 
 <!DOCTYPE html>
@@ -38,7 +47,7 @@ if(!isset($_SESSION['Resp']))
                 <a class="nav-link navlink" href="#">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="#">Etudians</a><span class="active_link_line"></span>
+                <a class="nav-link navlink active_link_color" href="ListeEtudiants.php">Etudians</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Mes stages</a>
@@ -122,25 +131,17 @@ if(!isset($_SESSION['Resp']))
           
           <div class="col-md-6 col-sm-12 elm pub_col">
 
-<?php  include "Connexion.php";
+<?php  require('back_end/connexion.php');
 
-    
-    $Resp = $_SESSION['Resp'];
-    
-    $sql2 ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP AND STATU='Postulée' AND  ID_FORM='$Resp' AND ID_ETU='1' ";
-    $req2 =$bdd->query($sql2);
-    $result2 = $req2->fetchAll(PDO::FETCH_ASSOC);
+    if(isset($_GET['id_etu']))
+    {
+      $Resp = $_SESSION['user_id'];
+      $id_etu = $_GET['id_etu'];
 
-    /*if(!empty($result2)){
-        
-        foreach($result2 as $Offre)
-        {
-            $of_id = $Offre['ID_OFFRE'];
-            echo '<h2>'.print($Offre['POSTE']).'</h2><br>';
-            echo '<a href="Statu_Post_Resp.php?Post_Non_Retenue='.$of_id.'"><button>NON RETENUE</button></a>';
-            echo '<a href="Statu_Post_Resp.php?Post_Retenue='.$of_id.'"><button>RETENUE</button></a><hr>';
-        }
-    }*/
+      $sql2 ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP AND p.STATU='Postulée' AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' ";
+      $req2 =$bdd->query($sql2);
+      $result2 = $req2->fetchAll(PDO::FETCH_ASSOC);
+
      if(!empty($result2)){
             
             foreach($result2 as $Offre):                  
@@ -179,9 +180,9 @@ if(!isset($_SESSION['Resp']))
                 <div style="text-align:end;">
                     <?php
                         $of_id = $Offre['ID_OFFRE'];
-                        echo '<a href="Statu_Post_Resp.php?Post_Non_Retenue='.$of_id.'"><button class="butt_style" style="background:lightgrey;">NON RETENUE</button></a>';
+                        echo '<a href="back_end/Statu_Post_Resp.php?Post_Non_Retenue='.$of_id.'"><button class="butt_style" style="background:lightgrey;">NON RETENUE</button></a>';
                         echo"  ";
-                        echo '<a href="Statu_Post_Resp.php?Post_Retenue='.$of_id.'"><button class="butt_style" style="background:7096FF;">RETENUE</button></a>';
+                        echo '<a href="back_end/Statu_Post_Resp.php?Post_Retenue='.$of_id.'"><button class="butt_style" style="background:7096FF;">RETENUE</button></a>';
                         
                     ?>
                 </div>
@@ -189,7 +190,14 @@ if(!isset($_SESSION['Resp']))
 
 
             </div><br>
-            <?php endforeach;}?>            
+            <?php 
+              endforeach;}
+              } 
+              else
+              {
+                echo "couldn't get data !";
+              }
+            ?>            
           </div>
           <div class="col-3 d-none d-md-block elm blank_col"></div>
         </div>
@@ -210,6 +218,15 @@ if(!isset($_SESSION['Resp']))
         };
 
 </script>
+<?php
+
+  }
+  else
+  {
+    echo "<h1> ERROR 301:</h1> <p>Unauthorized Access !</p>";
+  }
+
+?>
 
 
 

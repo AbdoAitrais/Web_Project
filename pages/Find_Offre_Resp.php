@@ -1,13 +1,13 @@
 <?php 
   ob_start();
   session_start();
-  if(empty($_SESSION['user_id']) || empty($_SESSION['user_type']))
+  if( empty($_SESSION['user_id']) || empty($_SESSION['user_type']) )
   {
-    header('location:login.php');
     $_SESSION['page'] = $_SERVER['REQUEST_URI'];
+    header('location: login.php');
   }
-  
-  if( $_SESSION['user_type'] == "Etudiant")
+
+  if($_SESSION['user_type'] == "Responsable")
   {
 ?>
 
@@ -39,13 +39,13 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="Find_Offre_Etu.php">Find offers</a><span class="active_link_line"></span>
+                <a class="nav-link navlink active_link_color" href="Find_Offre_Resp.php">Find offers</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="Soumissions_Etu.php">Soumissions</a>
+                <a class="nav-link navlink " href="#">Etudians</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Mes stages</a>
@@ -59,7 +59,7 @@
                 <a class="nav-link navlink blue" href="#">Contact Us</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink blue " href="back_end/logout.php">Log out</a>
+                <a class="nav-link navlink blue " href="#">Log out</a>
               </li>
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
@@ -73,7 +73,7 @@
       <div class="" style="margin-top: 60px;">
         <div class="row">
           <div class="col-3 d-none d-md-block elm guid1_col"></div>
-          <form action="Find_Offre_Etu.php" method='POST'>
+          <form action="Find_Offre_Resp.php" method='POST'>
             <div class="col-md-6 col-sm-12 elm pub_col" style="position:fixed; text-align: center; display:flex; justify-content:center;">
               <div class="search">
                   <div class="input-group rounded">
@@ -129,44 +129,17 @@
           
           <div class="col-md-6 col-sm-12 elm pub_col">
          
-            <?php require("back_end/connexion.php");
-                ///*** Postulation Verification
-                    /// ***
-                    $Etu=$_SESSION['user_id'];
-                    /// ***Test S'il ya un offre en etat acceptee
-                    $Est_Accepte = 0;
-                    $sql6 ="SELECT * FROM postuler WHERE ID_ETU='$Etu'";
-                    $req6 =$bdd->query($sql6);
-                    $result6 = $req6->fetchAll(PDO::FETCH_ASSOC);   
-                    if(!empty($result6)){
-
-                        foreach($result6 as $Offre_Statu){
-                          if($Offre_Statu['STATU'] == 'Acceptée'){
-                               $Est_Accepte = 1;
-                               break;
-                          }
-                        }
-                    }
-
-                    ///Niveau de l'etudiant
-                    $sql1 ="SELECT NIVEAU FROM etudiant WHERE ID_ETU='$Etu' ";
-                    $req1 =$bdd->query($sql1);
-                    $result1 = $req1->fetch(PDO::FETCH_ASSOC);
-                    $NIVEAU=$result1['NIVEAU'];
-                    
-                    ///Formation de l'etudiant
-                    $sql7 ="SELECT ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
-                    $req7 =$bdd->query($sql7);
-                    $result7 = $req7->fetch(PDO::FETCH_ASSOC);
-                    $FORMATION=$result7['ID_FORM'];
-                    
+            <?php require("Connexion.php");
+                    //$Etu=$_SESSION['Etu'];
+                    $Resp = $_SESSION['Resp'];
+                                
                     ///Tous les offres de cette etudiant
-                    $sql2 ="SELECT * FROM offre O,entreprise E WHERE E.ID_ENTREP=O.ID_ENTREP AND O.NIVEAU_OFFRE='$NIVEAU' AND O.ID_FORM='$FORMATION' AND O.ID_OFFRE NOT IN(SELECT ID_OFFRE FROM postuler WHERE ID_ETU='$Etu')";
+                    $sql2 ="SELECT * FROM offre O,entreprise E WHERE E.ID_ENTREP=O.ID_ENTREP AND O.ID_FORM='$Resp'";
                     ///***Search bar
                     if(isset($_POST['Filter']) && !empty( $_POST['Filter'] )){
 
                       $Filter_search = $_POST['Filter'];
-                      $sql2=$sql2." AND( (E.VILLE = '$Filter_search' ) OR (O.POSTE = '$Filter_search' ) OR (O.DESCRIP LIKE '%$Filter_search%' ) )";
+                      $sql2=$sql2." AND( (E.VILLE = '$Filter_search' ) OR (O.POSTE = '$Filter_search' ) OR (O.DESCRIP LIKE '%$Filter_search%' ) OR (E.NOM_ENTREP LIKE '$Filter_search' ) )";
 
                     }
                     /// ***Order by
@@ -182,13 +155,10 @@
             ?>
           
             <div class="brd">
-              <?php
-                  $Etat_Offre = 0;
-                  
-                  if($Offre['STATUOFFRE'] == 'Nouveau'){
+              <?php                  
+                  if($Offre['STATUOFFRE'] == 'Nouveau')
                         echo '<div class="greenc"> </div> <br>'; 
-                        $Etat_Offre = 1;
-                  }else if($Offre['STATUOFFRE'] == 'Completée')
+                  else if($Offre['STATUOFFRE'] == 'Completée')
                         echo '<div class="grayc"> </div> <br>';
                   else if($Offre['STATUOFFRE'] == 'Closed')
                         echo '<div class="redc"> </div> <br>';  
@@ -212,20 +182,6 @@
                 </div>
 
               </div>
-    
-              <div class="butt_align">
-                <div style="text-align:end;">
-                    <?php
-                        $of_id = $Offre['ID_OFFRE'];
-                        if((!$Etat_Offre) || ($Est_Accepte))    
-                              echo'';
-                        else
-                              echo'<a href="back_end/Statu_Post_Etu.php?offre_post='.$of_id.'"><button class="butt_style" >POSTULER</button></a>';
-                     
-                    ?>
-                </div>
-              </div>
-
 
             </div><br>
             <?php endforeach;} ?>            
@@ -238,6 +194,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
     crossorigin="anonymous"></script>
+
     <script>
        document.addEventListener("DOMContentLoaded", function() { 
             var scrollpos = localStorage.getItem('scrollpos');
@@ -259,7 +216,6 @@
   {
     echo "<h1> ERROR 301:</h1> <p>Unauthorized Access !</p>";
   }
+
 ?>
-
-
 
