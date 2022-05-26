@@ -157,14 +157,24 @@
             <div class="brd">
               <?php                  
                   if($Offre['STATUOFFRE'] == 'Nouveau')
-                        echo '<div class="greenc"> </div> <br>'; 
+                        echo '<div class="greenc"> </div>'; 
                   else if($Offre['STATUOFFRE'] == 'Completée')
-                        echo '<div class="grayc"> </div> <br>';
+                        echo '<div class="grayc"> </div>';
                   else if($Offre['STATUOFFRE'] == 'Closed')
-                        echo '<div class="redc"> </div> <br>';  
+                        echo '<div class="redc"> </div>';  
               ?>
               
-
+              <div class="edit" onclick="menuToggle()"><i ><img src="icons/edt.png" alt=""></i></div>
+              <div style="display: flex; justify-content: end; margin-right: -0px;">
+                <div class="menu" id="mn">
+            
+                  <ul>
+                    <li><img src="icons/edit.png" alt=""><a href="">Modifier</a> </li>
+                    <li><img src="icons/file.png" alt=""><a href="">File d'attente</a> </li>
+                  </ul>
+                </div>
+              </div><br>
+              
               <div class="content">
 
                 <span class="poste" ><?php print($Offre['POSTE'])?></span> <br><br>
@@ -204,6 +214,11 @@
         window.onbeforeunload = function() {
             localStorage.setItem('scrollpos', window.scrollY);
         };
+      
+      function menuToggle(){
+          const toggleMenu = document.querySelector(".menu");
+          toggleMenu.classList.toggle('active');
+      };
 
     </script>
 
