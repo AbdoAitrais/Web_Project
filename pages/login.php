@@ -1,3 +1,8 @@
+<?php
+  ob_start();
+  session_start();
+  include('back_end/connexion.php');
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,7 +44,14 @@
                     <label class="inptit" for="password">Password</label><br>
                     <input type="password" id="password" name="password">
                   </div>
-                </div><br><br>
+                </div><br>
+                <?php 
+                  if( !empty($_SESSION['error']))
+                  {
+                    echo "<p style='display: flex; justify-content: center; color: red;'> ".$_SESSION['error']."</p>" ;		
+                  }
+                ?>
+                <br>
   
                 <div class="select">
                   <select class="form-select" aria-label="Default select example" name="type_user" >

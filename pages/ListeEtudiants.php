@@ -1,10 +1,10 @@
 <?php
   ob_start();
   session_start();
-  if( empty($_SESSION['pseudo']) )
+  if( empty($_SESSION['user_id']) )
   {
     $_SESSION['page'] = $_SERVER['REQUEST_URI'];
-    header('location: login.html');
+    header('location: login.php');
   }
   else
   {

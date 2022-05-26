@@ -4,5 +4,5 @@ session_start();
 $_SESSION['pseudo'] = '';
 session_destroy();
 //echo $_SESSION['pseudo'];
-header('location: ../login.html');
+header('location: ../login.php');
 ?>

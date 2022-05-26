@@ -1,3 +1,13 @@
+<?php
+    ob_start();
+    session_start();
+    if( empty($_SESSION['user_id']) )
+    {
+      $_SESSION['page'] = $_SERVER['REQUEST_URI'];
+      header('location: login.php');
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

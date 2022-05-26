@@ -1,5 +1,6 @@
 <?php
         
+		
 
 		$server = "localhost";//specifier le port si vous utiliser plusieurs serveurs
 		$dataB = "bd_fstage";
@@ -10,7 +11,6 @@
 		try
 		{
 			$bdd = new PDO($dsn,$user,$password,array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'));
-			echo "test0";
 		}
 		catch (PDOException $e)
 		{
