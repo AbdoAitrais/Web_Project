@@ -5,13 +5,6 @@
 	
 
 ?>
-<?php  
-	ob_start();
-	session_start();	
-	require('connexion.php');
-	
-
-?>
 
 <?php
 
