@@ -44,7 +44,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Find offers</a>
+                <a class="nav-link navlink" href="Find_Offre_Resp.php">Find offers</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Historique</a>

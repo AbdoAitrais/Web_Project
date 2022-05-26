@@ -47,10 +47,10 @@ if($_SESSION['user_type'] == "Responsable")
                 <a class="nav-link navlink" href="#">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="ListeEtudiants.php">Etudians</a><span class="active_link_line"></span>
+                <a class="nav-link navlink active_link_color" href="ListeEtudiants.php">Etudiants</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Mes stages</a>
+                <a class="nav-link navlink" href="#">Enseignants</a>
               </li>
             </ul>
             <ul class="navbar-nav ms-auto margin ">
@@ -61,7 +61,7 @@ if($_SESSION['user_type'] == "Responsable")
                 <a class="nav-link navlink blue" href="#">Contact Us</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink blue " href="#">Log out</a>
+                <a class="nav-link navlink blue " href="back_end/logout.php">Log out</a>
               </li>
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>

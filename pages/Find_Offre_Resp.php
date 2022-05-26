@@ -45,10 +45,10 @@
                 <a class="nav-link navlink" href="#">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="#">Etudians</a>
+                <a class="nav-link navlink " href="ListeEtudiants.php">Etudiants</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Mes stages</a>
+                <a class="nav-link navlink" href="#">Enseignants</a>
               </li>
             </ul>
             <ul class="navbar-nav ms-auto margin ">
@@ -129,9 +129,9 @@
           
           <div class="col-md-6 col-sm-12 elm pub_col">
          
-            <?php require("Connexion.php");
+            <?php require("back_end/connexion.php");
                     //$Etu=$_SESSION['Etu'];
-                    $Resp = $_SESSION['Resp'];
+                    $Resp = $_SESSION['user_id'];
                                 
                     ///Tous les offres de cette etudiant
                     $sql2 ="SELECT * FROM offre O,entreprise E WHERE E.ID_ENTREP=O.ID_ENTREP AND O.ID_FORM='$Resp'";
