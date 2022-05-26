@@ -1,4 +1,10 @@
+<?php  
+	ob_start();
+	session_start();	
+	require('connexion.php');
+	
 
+?>
 <?php  
 	ob_start();
 	session_start();	
@@ -9,10 +15,10 @@
 
 <?php
 
-	function get_user_id_type_mainPage($table_name,$id_table,$table_login,$table_pass,$main_page,$user_type,$name,$pass)
+	function get_user_id_type_mainPage($table_name,$id_table,$main_page,$user_type,$name,$pass)
 	{
 		require('connexion.php');
-		$Smt = $bdd->prepare("SELECT * FROM $table_name WHERE $table_login=? and $table_pass=?");
+		$Smt = $bdd->prepare("SELECT * FROM $table_name natural join users WHERE LOGIN=? AND PASSWORD=? AND ACTIVE=1");
 		$Smt -> execute(array($name,$pass));
 		$rows = $Smt -> fetch();
 		var_dump($name);
@@ -21,6 +27,7 @@
 		
 		$Smt->closeCursor();//vider le curseur (free)
 		$results = array($rows[$id_table],$main_page,$user_type);//array contains id and main page and user type
+		
 		var_dump($results);
 		return $results;
 	}
@@ -36,17 +43,17 @@
 		
 		if ($type_user == "Etudiant")
 		{
-			$result = get_user_id_type_mainPage('etudiant','ID_ETU','LOGIN_ETU','PASS_ETU',
-										'Find_Offre_Etu.php','Etudiant',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
+			$result = get_user_id_type_mainPage('etudiant','ID_ETU',
+												'Find_Offre_Etu.php','Etudiant',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
 		}
 		else if ($type_user == "Responsable")
 		{
-			$result = get_user_id_type_mainPage('formation','ID_FORM','LOGIN_RESP','PASS_RESP',
+			$result = get_user_id_type_mainPage('formation','ID_FORM',
 										'ListeEtudiants.php','Responsable',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
 		}
 		else if ($type_user == "Admin")
 		{
-			$result = get_user_id_type_mainPage('admin','ID_ADMIN','LOGIN_ADMIN','PASS_ADMIN',
+			$result = get_user_id_type_mainPage('admin','ID_ADMIN',
 										'admin.php','Admin',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
 		}
 		
