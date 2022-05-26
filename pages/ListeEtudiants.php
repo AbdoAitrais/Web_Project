@@ -97,7 +97,16 @@
         <div class="row">
             <div class="col-md-10 elm pub_col">
 
-          
+                  <div class="tableHead" >
+                    <h4>Liste des etudiants</h4>
+                    <div class="select">
+                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="type_user" >
+                          <option value="1ere" selected>1ere</option>
+                          <option value="2eme">2eme</option>
+                          <option value="3eme">3eme</option>
+                        </select>
+                      </div>
+                </div>
                 <table class="table">
                     <thead>
                       <tr>
@@ -115,10 +124,10 @@
                     
                       ?>
                         <tr>
-                          <th scope="row" ><?php echo $row['NIVEAU'] ; ?></th>
+                          <th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU'] ; ?></th>
                           <td><?php echo $row['NOM_ETU']; ?></td>
                           <td><?php echo $row['PRENOM_ETU']; ?></td>
-                          <td><?php echo $row['CNE']; ?></td>
+                          <td style="color: #7096FF;"><?php echo $row['CNE']; ?></td>
                           <td style="text-align: end;">
                             <button type="button" class="btn btn-outline-primary">En cours</button>
                             <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>

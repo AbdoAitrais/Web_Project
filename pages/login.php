@@ -58,7 +58,7 @@
                 <br>
   
                 <div class="select">
-                  <select class="form-select" aria-label="Default select example" name="type_user" >
+                <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="type_user" >
                     <option value="Etudiant" selected>Etudiant</option>
                     <option value="Responsable">Responsable</option>
                     <option value="Admin">Admin</option>

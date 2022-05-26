@@ -269,3 +269,34 @@ body,nav {
     margin-left: 5% !important;
     margin-right: 5% !important;
 }
+
+.table{
+  margin-top: 2% !important;
+}
+
+.tableHead{
+  border-bottom: 2px solid #d3cdcd;
+  display: flex;
+  justify-content: space-between;
+}
+
+thead{
+  border-color: #BFBFBF !important;
+}
+
+/** Select **/
+
+.form-select{
+  background-image: url("icons/filter.png") !important;
+  background-color: #f0f2fa  !important;
+}
+
+.select{
+  width: 10%;
+}
+@media all and (max-width: 800px)
+{
+  .select{
+    width: 18%;
+  }
+}
