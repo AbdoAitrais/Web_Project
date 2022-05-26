@@ -41,7 +41,7 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="#">Find offers</a>
+                <a class="nav-link navlink " href="Find_Offre_Resp.php">Find offers</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Historique</a>
@@ -193,10 +193,7 @@
             <?php 
               endforeach;}
               } 
-              else
-              {
-                echo "couldn't get data !";
-              }
+              
             ?>            
           </div>
           <div class="col-3 d-none d-md-block elm blank_col"></div>

@@ -148,20 +148,20 @@
                         }
                     }
 
-                    ///Niveau de l'etudiant
-                    $sql1 ="SELECT NIVEAU FROM etudiant WHERE ID_ETU='$Etu' ";
+                    ///Niveau et Formation de l'etudiant
+                    $sql1 ="SELECT NIVEAU,ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
                     $req1 =$bdd->query($sql1);
                     $result1 = $req1->fetch(PDO::FETCH_ASSOC);
                     $NIVEAU=$result1['NIVEAU'];
-                    
+                    $FORMATION=$result1['ID_FORM'];
                     ///Formation de l'etudiant
-                    $sql7 ="SELECT ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
+                    /*$sql7 ="SELECT ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
                     $req7 =$bdd->query($sql7);
-                    $result7 = $req7->fetch(PDO::FETCH_ASSOC);
-                    $FORMATION=$result7['ID_FORM'];
+                    $result7 = $req7->fetch(PDO::FETCH_ASSOC);*/
+                    
                     
                     ///Tous les offres de cette etudiant
-                    $sql2 ="SELECT * FROM offre O,entreprise E WHERE E.ID_ENTREP=O.ID_ENTREP AND O.NIVEAU_OFFRE='$NIVEAU' AND O.ID_FORM='$FORMATION' AND O.ID_OFFRE NOT IN(SELECT ID_OFFRE FROM postuler WHERE ID_ETU='$Etu')";
+                    $sql2 ="SELECT * FROM offre O,entreprise E WHERE E.ID_ENTREP=O.ID_ENTREP AND O.NIVEAU_OFFRE='$NIVEAU' AND O.ID_FORM='$FORMATION' AND O.ID_OFFRE NOT IN(SELECT ID_OFFRE FROM postuler WHERE STATU!='Postulée')";
                     ///***Search bar
                     if(isset($_POST['Filter']) && !empty( $_POST['Filter'] )){
 
@@ -217,9 +217,17 @@
                 <div style="text-align:end;">
                     <?php
                         $of_id = $Offre['ID_OFFRE'];
+                        /// *** Postulee
+                        $sql3 ="SELECT * FROM postuler WHERE  ID_ETU='$Etu' AND ID_OFFRE='$of_id' AND STATU='Postulée' ";
+                        $req3 =$bdd->query($sql3);
+                        $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
+
+                        ///Test d'affichage
                         if((!$Etat_Offre) || ($Est_Accepte))    
                               echo'';
-                        else
+                        else if(!empty($result3))
+                              echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">Postulée</label>';
+                        else 
                               echo'<a href="back_end/Statu_Post_Etu.php?offre_post='.$of_id.'"><button class="butt_style" >POSTULER</button></a>';
                      
                     ?>

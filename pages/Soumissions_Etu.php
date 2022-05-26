@@ -153,22 +153,7 @@
                         
                         require('back_end/connexion.php');
                         $Etu = $_SESSION['user_id'];  
-                        
-                        
-                        /*
-                        $sql6 ="SELECT * FROM postuler WHERE ID_ETU='$Etu'";
-                        $req6 =$bdd->query($sql6);
-                        $result6 = $req6->fetchAll(PDO::FETCH_ASSOC);   
-                        
-                        if(!empty($result6)){
-
-                            foreach($result6 as $Offre_Statu){
-                            if($Offre_Statu['STATU'] == 'Acceptée'){
-                                $Est_Accepte = 1;
-                                break;
-                                }
-                            }
-                        }*/                   
+                                          
                         if(!empty($result2))
                         {
                             foreach($result2 as $Offre):
@@ -219,9 +204,9 @@
                                 echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">Non Acceptée</label>';
                                 break;
                             case 3:
-                                echo'<a href="Statu_Post_Etu.php?offre_non_accepte='.$of_id.'"><button class="butt_style" style="background:lightgrey;" >REFUSER</button></a>';
+                                echo'<a href="back_end/Statu_Post_Etu.php?offre_non_accepte='.$of_id.'"><button class="butt_style" style="background:lightgrey;" >REFUSER</button></a>';
                                 echo"  ";
-                                echo'<a href="Statu_Post_Etu.php?offre_accepte='.$of_id.'"><button class="butt_style" style="background:7096FF;">ACCEPTER</button></a>';
+                                echo'<a href="back_end/Statu_Post_Etu.php?offre_accepte='.$of_id.'"><button class="butt_style" style="background:7096FF;">ACCEPTER</button></a>';
                                 break;
                             case 4:
                                 echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">Postulée</label>';

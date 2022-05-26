@@ -39,14 +39,15 @@
             }else if(isset($_GET['offre_accepte'])){
                 
                 $Offre_ID = $_GET['offre_accepte'] ;  
+                
                 $sql4="UPDATE postuler SET STATU='Acceptée' WHERE ID_ETU='$Etu' AND ID_OFFRE='$Offre_ID' ";
                 $sql5="UPDATE postuler SET STATU='Non Acceptée' WHERE ID_ETU='$Etu' AND STATU='Retenue' ";
                 $sql6="DELETE FROM postuler WHERE ID_ETU='$Etu' AND STATU='Postulée' ";
                 
                 $bdd->exec($sql5);
                 $bdd->exec($sql6);
-
                 $bdd->exec($sql4);
+                
                 header('location:../Soumissions_Etu.php');
             }
         
