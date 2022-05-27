@@ -75,18 +75,18 @@
       <div class="" style="margin-top: 60px;">
         <div class="row">
           <div class="col-3 d-none d-md-block elm guid1_col"></div>
-          <div class="col-md-6 col-sm-12 elm pub_col" style="position:fixed; text-align: center; display:flex; justify-content:center;">
-           
-          <div class="search">
-              <div class="input-group rounded">
-                <input type="search" class="form-control rounded" placeholder="Type a Keyword, Title, City" aria-label="Search" aria-describedby="search-addon" />
-                <span class="input-group-text border-0" id="search-addon">
-                  <i class="fas fa-search"><img src="icons/search.png"></i>
-                </span>
+          <form action="Soumis_Resp.php?id_etu=<?php if(isset($_GET['id_etu']))print($_GET['id_etu']);?>" method='POST'>
+            <div class="col-md-6 col-sm-12 elm pub_col" style="position:fixed; text-align: center; display:flex; justify-content:center;">
+              <div class="search">
+                  <div class="input-group rounded">
+                      <input type="search" class="form-control rounded" name='Filter' placeholder="Type a Keyword, Title, City" aria-label="Search" aria-describedby="search-addon" />
+                      <span class="input-group-text border-0" id="search-addon">
+                          <button type='submit' style="border:none;background:none;"><i class="fas fa-search"><img src="icons/search.png"></i></button>
+                      </span>
+                  </div>
+                </div>
               </div>
-            </div>
-
-          </div>
+          </form>
           <div class="col-3 d-none d-md-block elm blank_col"></div>
         </div>
 
@@ -125,7 +125,7 @@
               <div class="redc"> 
                 <span class="guide">Close</span>
               </div> <br>
-
+              
             </div>
           </div>
           
@@ -138,9 +138,20 @@
       $Resp = $_SESSION['user_id'];
       $id_etu = $_GET['id_etu'];
 
-      $sql2 ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP AND p.STATU='Postulée' AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' ";
+      $sql2 ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP  AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' ";
+      
+      ///***Search bar
+      if(isset($_POST['Filter']) && !empty( $_POST['Filter'] )){
+
+          $Filter_search = $_POST['Filter'];
+          $sql2=$sql2." AND( (e.VILLE = '$Filter_search' ) OR (o.POSTE = '$Filter_search' ) OR (o.DESCRIP LIKE '%$Filter_search%' ) OR (e.NOM_ENTREP LIKE '$Filter_search' ) OR (p.STATU LIKE '$Filter_search' ) )";
+        
+      }
+      /// ***Order by
+      $sql2=$sql2." ORDER BY o.ID_OFFRE DESC";
       $req2 =$bdd->query($sql2);
       $result2 = $req2->fetchAll(PDO::FETCH_ASSOC);
+      
 
      if(!empty($result2)){
             
@@ -180,9 +191,23 @@
                 <div style="text-align:end;">
                     <?php
                         $of_id = $Offre['ID_OFFRE'];
-                        echo '<a href="back_end/Statu_Post_Resp.php?Post_Non_Retenue='.$of_id.'"><button class="butt_style" style="background:lightgrey;">NON RETENUE</button></a>';
-                        echo"  ";
-                        echo '<a href="back_end/Statu_Post_Resp.php?Post_Retenue='.$of_id.'"><button class="butt_style" style="background:7096FF;">RETENUE</button></a>';
+                        $sql_statu = "SELECT STATU FROM postuler WHERE ID_OFFRE ='$of_id' AND ID_ETU='$id_etu' ";
+                        $req_statu =$bdd->query($sql_statu);
+                        $result_statu = $req_statu->fetch(PDO::FETCH_ASSOC);
+                        if(!empty($result_statu)){
+                          
+                          $Statu_etu =  $result_statu['STATU'];
+                          if($Statu_etu == 'Postulée'){
+                              echo '<a href="back_end/Statu_Post_Resp.php?Post_Non_Retenue='.$of_id.'&id_etu='.$id_etu.'"><button class="butt_style" style="background:lightgrey;">NON RETENUE</button></a>';
+                              echo"  ";
+                              echo '<a href="back_end/Statu_Post_Resp.php?Post_Retenue='.$of_id.'&id_etu='.$id_etu.'"><button class="butt_style" style="background:7096FF;">RETENUE</button></a>';
+                          }else{
+                              echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">'.$Statu_etu.'</label>';
+                          }
+                          
+                        }
+                        
+                        
                         
                     ?>
                 </div>
@@ -205,8 +230,10 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
     crossorigin="anonymous"></script>
     <script>
-       document.addEventListener("DOMContentLoaded", function() { 
+      document.addEventListener("DOMContentLoaded", function() { 
+        
         var scrollpos = localStorage.getItem('scrollpos');
+        
         if (scrollpos) window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
         });
 
@@ -214,7 +241,7 @@
             localStorage.setItem('scrollpos', window.scrollY);
         };
 
-</script>
+    </script>
 <?php
 
   }

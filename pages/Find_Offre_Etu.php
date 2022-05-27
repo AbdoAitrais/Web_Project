@@ -66,8 +66,9 @@
               </li>
             </ul>
           </div>
+        </div>
       </nav>
-    </div>
+    
 
     <div class="container-fluid ">
       <div class="" style="margin-top: 60px;">
@@ -135,6 +136,7 @@
                     $Etu=$_SESSION['user_id'];
                     /// ***Test S'il ya un offre en etat acceptee
                     $Est_Accepte = 0;
+                    
                     $sql6 ="SELECT * FROM postuler WHERE ID_ETU='$Etu'";
                     $req6 =$bdd->query($sql6);
                     $result6 = $req6->fetchAll(PDO::FETCH_ASSOC);   
@@ -154,11 +156,8 @@
                     $result1 = $req1->fetch(PDO::FETCH_ASSOC);
                     $NIVEAU=$result1['NIVEAU'];
                     $FORMATION=$result1['ID_FORM'];
-                    ///Formation de l'etudiant
-                    /*$sql7 ="SELECT ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
-                    $req7 =$bdd->query($sql7);
-                    $result7 = $req7->fetch(PDO::FETCH_ASSOC);*/
                     
+                  
                     
                     ///Tous les offres de cette etudiant
                     $sql2 ="SELECT * FROM offre O,entreprise E WHERE E.ID_ENTREP=O.ID_ENTREP AND O.NIVEAU_OFFRE='$NIVEAU' AND O.ID_FORM='$FORMATION' AND O.ID_OFFRE NOT IN(SELECT ID_OFFRE FROM postuler WHERE STATU!='Postulée')";
@@ -166,7 +165,7 @@
                     if(isset($_POST['Filter']) && !empty( $_POST['Filter'] )){
 
                       $Filter_search = $_POST['Filter'];
-                      $sql2=$sql2." AND( (E.VILLE = '$Filter_search' ) OR (O.POSTE = '$Filter_search' ) OR (O.DESCRIP LIKE '%$Filter_search%' ) )";
+                      $sql2=$sql2." AND( (E.VILLE = '$Filter_search' ) OR (O.POSTE = '$Filter_search' ) OR (O.DESCRIP LIKE '%$Filter_search%' ) OR (E.NOM_ENTREP LIKE '$Filter_search' ) )";
 
                     }
                     /// ***Order by
@@ -255,6 +254,7 @@
         window.onbeforeunload = function() {
             localStorage.setItem('scrollpos', window.scrollY);
         };
+
 
     </script>
 

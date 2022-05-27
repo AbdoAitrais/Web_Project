@@ -8,10 +8,10 @@
 
     if( $_SESSION['user_type'] == "Responsable" )
     {
-        if(isset($_GET['Post_Retenue']) || isset($_GET['Post_Non_Retenue']))
+        if((isset($_GET['Post_Retenue']) || isset($_GET['Post_Non_Retenue'])) && (isset($_GET['id_etu'])) )
         {
             
-            $Etu=1;
+            $Etu=$_GET['id_etu'];
             $curdate = date("Y-m-d");
 
             if(isset($_GET['Post_Non_Retenue'])){
@@ -41,7 +41,7 @@
                 $bdd->exec($sql5);
             }
             $bdd->exec($sql4);
-            header('location:../Soumis_Resp.php');
+            header('location:../Soumis_Resp.php?id_etu='.$Etu);
         }
     }
     else

@@ -129,34 +129,14 @@
           
           <div class="col-md-6 col-sm-12 elm pub_col">
          
-            <?php require('back_end/connexion.php');
-                ///*** Postulation Verification
-                    
-                    /// ***
-                    $Etu=$_SESSION['user_id'];
-                    /// ***Test S'il ya un offre en etat acceptee
-                    
-                    ///Niveau de l'etudiant
-                    $sql1 ="SELECT NIVEAU FROM etudiant WHERE ID_ETU='$Etu' ";
-                    $req1 =$bdd->query($sql1);
-                    $result1 = $req1->fetch(PDO::FETCH_ASSOC);
-                    $NIVEAU=$result1['NIVEAU'];
-                    
-                    ///Formation de l'etudiant
-                    $sql7 ="SELECT ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
-                    $req7 =$bdd->query($sql7);
-                    $result7 = $req7->fetch(PDO::FETCH_ASSOC);
-                    $FORMATION=$result7['ID_FORM'];
-                    
-                    /// ***                      
-                    function Create_Offres($result2 ,$Etat_Offre){
-                        
-                        require('back_end/connexion.php');
-                        $Etu = $_SESSION['user_id'];  
-                                          
-                        if(!empty($result2))
-                        {
-                            foreach($result2 as $Offre):
+            <?php 
+
+            function Create_Offres($result2 ,$Etat_Offre){
+                require('back_end/connexion.php');
+                
+                if(!empty($result2))
+                  {
+                    foreach($result2 as $Offre):
                                                
             ?>
           
@@ -223,6 +203,17 @@
             </div><br>
             <?php endforeach;} }
             
+            require('back_end/connexion.php');
+            /// ***ID  etudiant
+            $Etu=$_SESSION['user_id'];
+                    
+            ///Niveau et Formation de l'etudiant
+            $sql1 ="SELECT NIVEAU,ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
+            $req1 =$bdd->query($sql1);
+            $result1 = $req1->fetch(PDO::FETCH_ASSOC);
+            $NIVEAU=$result1['NIVEAU'];
+            $FORMATION=$result1['ID_FORM'];
+            
             /// ***
             $Filter_sql = "";
             /// ***
@@ -233,7 +224,7 @@
 
             }
             /// *** SELECTION ET JOINTURE
-            $select_join = "SELECT * FROM offre O,entreprise E,postuler P WHERE E.ID_ENTREP=O.ID_ENTREP AND O.ID_OFFRE = P.ID_OFFRE";
+            $select_join = "SELECT * FROM offre O,entreprise E,postuler P WHERE E.ID_ENTREP=O.ID_ENTREP AND O.ID_OFFRE = P.ID_OFFRE AND P.ID_ETU='$Etu' ";
 
             /// *** Retenue
             $sql9 =$select_join." AND P.STATU='Retenue'".$Filter_sql;            
@@ -276,7 +267,18 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
     crossorigin="anonymous"></script>
+    
+    <script>
+       document.addEventListener("DOMContentLoaded", function() { 
+        var scrollpos = localStorage.getItem('scrollpos');
+        if (scrollpos) window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
+        });
 
+        window.onbeforeunload = function() {
+            localStorage.setItem('scrollpos', window.scrollY);
+        };
+
+    </script>
 
 </body>
 </html>

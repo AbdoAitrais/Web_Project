@@ -4,7 +4,7 @@
 
     if( empty($_SESSION['user_id']) || empty($_SESSION['user_type']) )
         header('location:authentification.php');
-
+   
     if( $_SESSION['user_type'] == "Etudiant" )
     {
         require('connexion.php');
@@ -16,12 +16,10 @@
                 $Offre_ID = $_GET['offre_post'] ;  
                 $curdate = date("Y-m-d");
                 $sql4="INSERT INTO postuler(ID_ETU,ID_OFFRE,STATU,DATEPOST) values('$Etu','$Offre_ID','Postulée','$curdate') ";
-                $bdd->exec($sql4);
-                
+                $bdd->exec($sql4);               
                 ///*** MAIL SENDING
                 
                 /// ***
-
                 header('location:../Find_Offre_Etu.php');
             
             }else if(isset($_GET['offre_non_accepte'])){
@@ -51,7 +49,9 @@
                 header('location:../Soumissions_Etu.php');
             }
         
-        }  
+        }
+        
+            
     }
     else
     {
