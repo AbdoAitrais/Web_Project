@@ -75,7 +75,7 @@
     
 
     <div class="container-fluid ">
-      <div class="" style="margin-top: 60px;">
+      <div class="" style="margin-top: 56px;">
         <div class="row">
           <div class="col-3 d-none d-md-block elm guid1_col" ></div>
           <form action="Find_Offre_Resp.php" method='POST'>
@@ -211,14 +211,16 @@
     crossorigin="anonymous"></script>
 
     <script>
-       document.addEventListener("DOMContentLoaded", function() { 
-            var scrollpos = localStorage.getItem('scrollpos');
-            if (scrollpos) window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
-        });
+      
+      var scrollpos = localStorage.getItem('scrollpos_Find_Offre_Resp');
+      if (scrollpos){
+            window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
+            localStorage.removeItem('scrollpos_Find_Offre_Resp');
+      }
 
-        window.onbeforeunload = function() {
-            localStorage.setItem('scrollpos', window.scrollY);
-        };
+      function LastScroll(){
+        localStorage.setItem('scrollpos_Find_Offre_Resp', window.scrollY);
+      }
       
       function menuToggle(indice){
         

@@ -32,27 +32,31 @@
 
   
     
-    <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
         <div class="container-fluid">
-          <a class="navbar-brand navt" href="#">FSTAGE</a>
+          <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Find_Offre_Resp.php">Find offers</a>
+                <a class="nav-link navlink active_link_color" href="Find_Offre_Resp.php">Find offers</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="ListeEtudiants.php">Etudiants</a><span class="active_link_line"></span>
+                <a class="nav-link navlink " href="ListeEtudiants.php">Etudiants</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Enseignants</a>
               </li>
             </ul>
+            
+            <div class="" style="position: fixed; margin-left: 47%;">
+                  <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
+            </div>
             <ul class="navbar-nav ms-auto margin ">
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
@@ -68,8 +72,8 @@
               </li>
             </ul>
           </div>
+        </div>
       </nav>
-    </div>
 
     <div class="container-fluid ">
       <div class="" style="margin-top: 60px;">
@@ -125,7 +129,7 @@
               <div class="redc"> 
                 <span class="guide">Close</span>
               </div> <br>
-              
+
             </div>
           </div>
           
@@ -163,9 +167,9 @@
                   if($Offre['STATUOFFRE'] == 'Nouveau')
                         echo '<div class="greenc"> </div> <br>'; 
                   else if($Offre['STATUOFFRE'] == 'Completée')
-                        echo '<div class="redc"> </div> <br>';
+                        echo '<div class="grayc"> </div> <br>';
                   else if($Offre['STATUOFFRE'] == 'Closed')
-                        echo '<div class="grayc"> </div> <br>';  
+                        echo '<div class="redc"> </div> <br>';  
               ?>
               
 
@@ -230,16 +234,15 @@
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
     crossorigin="anonymous"></script>
     <script>
-      document.addEventListener("DOMContentLoaded", function() { 
-        
-        var scrollpos = localStorage.getItem('scrollpos');
-        
-        if (scrollpos) window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
-        });
+      var scrollpos = localStorage.getItem('scrollpos_Soumis_Resp');
+      if (scrollpos){
+            window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
+            localStorage.removeItem('scrollpos_Soumis_Resp');
+      }
 
-        window.onbeforeunload = function() {
-            localStorage.setItem('scrollpos', window.scrollY);
-        };
+      function LastScroll(){
+        localStorage.setItem('scrollpos_Soumis_Resp', window.scrollY);
+      }
 
     </script>
 <?php

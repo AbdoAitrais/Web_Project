@@ -32,7 +32,7 @@
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
         <div class="container-fluid">
-          <a class="navbar-brand navt" href="#">FSTAGE</a>
+          <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -42,15 +42,19 @@
                 <a class="nav-link navlink " href="Find_Offre_Etu.php">Find offers</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="#">Historique</a>
+                <a class="nav-link navlink" href="#">Historique</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink active_link_color" href="Soumissions_Etu.php">Soumissions</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Mes stages</a>
+                <a class="nav-link navlink" href="#">Stages</a>
               </li>
             </ul>
+            
+            <div class="" style="position: fixed; margin-left: 47%;">
+                  <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
+            </div>
             <ul class="navbar-nav ms-auto margin ">
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
@@ -66,11 +70,11 @@
               </li>
             </ul>
           </div>
+        </div>
       </nav>
-    </div>
 
     <div class="container-fluid ">
-      <div class="" style="margin-top: 60px;">
+      <div class="" style="margin-top: 56px;">
         <div class="row">
           <div class="col-3 d-none d-md-block elm guid1_col"></div>
           <form action="Soumissions_Etu.php" method='POST'>
@@ -269,14 +273,18 @@
     crossorigin="anonymous"></script>
     
     <script>
-       document.addEventListener("DOMContentLoaded", function() { 
-        var scrollpos = localStorage.getItem('scrollpos');
-        if (scrollpos) window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
-        });
+      
+      var scrollpos = localStorage.getItem('scrollpos_Soumis_Etu');
+      
+      if (scrollpos){
+            window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
+            localStorage.removeItem('scrollpos_Soumis_Etu');
+      }
 
-        window.onbeforeunload = function() {
-            localStorage.setItem('scrollpos', window.scrollY);
-        };
+      function LastScroll(){
+        localStorage.setItem('scrollpos_Soumis_Etu', window.scrollY);
+      }
+
 
     </script>
 
