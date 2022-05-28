@@ -287,16 +287,27 @@ thead{
 /** Select **/
 
 .form-select{
-  background-image: url("icons/filter.png") !important;
   background-color: #f0f2fa  !important;
 }
 
 .select{
   width: 10%;
+  height: 1.8rem;
 }
 @media all and (max-width: 800px)
 {
   .select{
     width: 18%;
   }
+}
+
+/** submit button **/
+
+.submit{
+  background-image: url("icons/filter.png") !important;
+  background-repeat: no-repeat;
+  background-position: center;
+  border: none;
+  background-color: #FFFFFF;
+  width: 2rem;
 }

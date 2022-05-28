@@ -1,12 +1,12 @@
 <?php
   ob_start();
   session_start();
-  if(empty($_SESSION['user_id']) || empty($_SESSION['user_type']))
+  if( empty($_SESSION['user_id']) || empty($_SESSION['user_type']) )
   {
     $_SESSION['page'] = $_SERVER['REQUEST_URI'];
-    header('location:login.php');
+    header('location: login.php');
   }
-
+  
     if($_SESSION['user_type'] == "Responsable")
     {
       require('back_end/connexion.php');
@@ -27,7 +27,6 @@
       
     
   
-
 
 ?>
 <!DOCTYPE html>
@@ -114,11 +113,11 @@
         <div class="row">
             <div class="col-md-10 elm pub_col">
 
-                <form action="ListeEtudiants.php" method="post">
+                <form action="ListeEtudiants.php" method="post" id="form" >
                   <div class="tableHead" >
                         <h4>Liste des etudiants</h4>
-                        <div class="select" style="display:flex;">
-                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="niveau_user" >
+                        <div class="select" style="display:flex; width:auto;">
+                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="niveau_user" onchange = "changeFunc();">
                               <?php 
                               
                               if(isset($_SESSION['last_niveau_user'] )){
@@ -154,13 +153,13 @@
                               }else{
                               
                               ?>
-                              <option value=0 selected>Tout</option>
+                              <option value=0 selected >Tout</option>
                               <option value=1  >1ere</option>
                               <option value=2 >2eme</option>
                               <option value=3>3eme</option><?php } ?>
                                       
                             </select>
-                            <button type="submit">search</button>
+                            <button type="submit" class="submit"></button>
                         </div>
                   </div>
                 </form>
@@ -183,14 +182,18 @@
                     
                       ?>
                         <tr>
-                          <th scope="col">N</th>
-                          <th scope="col">Nom</th>
-                          <th scope="col">Prénom</th>
-                          <th scope="col">CNE</th>
-                          <th scope="col"></th>
+                          <th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU'] ; ?></th>
+                          <td><?php echo $row['NOM_ETU']; ?></td>
+                          <td><?php echo $row['PRENOM_ETU']; ?></td>
+                          <td style="color: #7096FF;"><?php echo $row['CNE']; ?></td>
+                          <td style="text-align: end;">
+                            <button type="button" class="btn btn-outline-primary">En cours</button>
+                            <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
+                            <button type="button" class="btn btn-outline-primary">Modifier</button>
+                            <button type="button" class="btn btn-outline-primary">Supprimer</button>
+                          </td>
                         </tr>
-                      </thead>
-                      <tbody>
+                    <?php endforeach; ?>
 
                     </tbody>
                   </table>
@@ -198,7 +201,6 @@
           </div>
           
 
-        </form>
 
 
         </div>
@@ -207,3 +209,33 @@
     
 </body>
 </html>
+<?php
+  }
+  else
+  {
+    echo "<h1> ERROR 301:</h1> <p>Unauthorized Access !</p>";
+  }
+
+?>
+<script>
+  
+  //   var option = document.getElementsByTagName("option");
+    
+  //   console.log(option);
+  //    for (var i = 0; i < option.length; i++) {
+  //      option[i].onchange = function() {
+  //        console.log("test");
+  //        console.log(this);
+  //        var form = document.getElementById("form").submit();
+  //        console.log(opt);
+
+  //      }
+
+  // }
+  function changeFunc() 
+  {
+    document.getElementById("form").submit();
+  }
+
+
+</script>
