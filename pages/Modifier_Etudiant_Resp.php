@@ -89,7 +89,7 @@ if ($uploadOk == 0) {
         NUMTEL_ETU=? , NIVEAU=? , PROMOTION=? , DATENAISS_ETU=? , CV=? WHERE ID_ETU=?");
         $Smt -> execute(array($nom_etu,$prenom_etu,$email_etu,$cin_etu,$cne,$adresse_etu,$numtel_etu,$niveau,$promotion,$datenaiss_etu,$cv,$id_etu));
         
-        //header('location:ListeEtudiants.php');
+        header('location:ListeEtudiants.php');
 
       }
 
