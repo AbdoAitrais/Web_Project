@@ -207,11 +207,3 @@
     
 </body>
 </html>
-<?php
-  }
-  else
-  {
-    echo "<h1>ERROR 301</h1> <p>Unauthorized Access !</p>";
-  }
-
-?>
