@@ -43,7 +43,7 @@
                 <a class="nav-link navlink active_link_color" href="Find_Offre_Resp.php">Find offers</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Historique</a>
+                <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink " href="ListeEtudiants.php">Etudiants</a>
