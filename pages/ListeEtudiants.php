@@ -11,14 +11,20 @@
     {
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
-      if( empty($_POST['filter']) )
-      {
-        $filter = htmlspecialchars($_POST['filter']);
-
-        $req = "SELECT * FROM etudiant WHERE ID_FORM='$id_form' ";
-        $Smt = $bdd->query($req);
-        $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+    
+      $req = "SELECT * FROM etudiant WHERE ID_FORM='$id_form'";
+      if(isset($_POST['niveau_user']) ){
+        $Niveau_user =$_POST['niveau_user'] ;
+        if($Niveau_user)
+          $req =$req." AND NIVEAU='$Niveau_user' "; 
+        
+        $_SESSION['last_niveau_user'] = $Niveau_user;
       }
+        
+      
+      $Smt = $bdd->query($req);
+      $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+      
     
   
 
@@ -40,16 +46,17 @@
     <title>Listes des Etudiants</title>
 </head>
 <body>
+      
     <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
         <div class="container-fluid">
-          <a class="navbar-brand navt" href="#">FSTAGE</a>
+          <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="Find_Offre_Resp.php">Find offers</a>
+                <a class="nav-link navlink " href="Find_Offre_Resp.php">Find offers</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Historique</a>
@@ -61,6 +68,10 @@
                 <a class="nav-link navlink" href="#">Enseignants</a>
               </li>
             </ul>
+            
+            <div class="" style="position: fixed; margin-left: 47%;">
+                  <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
+            </div>
             <ul class="navbar-nav ms-auto margin ">
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
@@ -76,6 +87,7 @@
               </li>
             </ul>
           </div>
+        </div>
       </nav>
 
     <div class="container-fluid ">
@@ -99,22 +111,77 @@
         </div>
 
 
-        <form action="ListeEtudiants.php" method="post" > 
-          <div class="row">
-              <div class="col-md-10 elm pub_col">
-                    <div class="tableHead" >
-                        <h4>Liste des etudiants</h4>
-                        <div class="select">
-                          <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="filter" >
-                                <option value="1" selected>1ere</option>
-                                <option value="2">2eme</option>
-                                <option value="3">3eme</option>
-                              </select>
-                          </div>
-                      </div>
+        <div class="row">
+            <div class="col-md-10 elm pub_col">
 
-                  <table class="table">
-                      <thead>
+                <form action="ListeEtudiants.php" method="post">
+                  <div class="tableHead" >
+                        <h4>Liste des etudiants</h4>
+                        <div class="select" style="display:flex;">
+                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="niveau_user" >
+                              <?php 
+                              
+                              if(isset($_SESSION['last_niveau_user'] )){
+                                switch($_SESSION['last_niveau_user'] ){
+                                  case 0:
+                                    echo'<option value=0 selected>Tout</option>
+                                        <option value=1  >1ere</option>
+                                        <option value=2 >2eme</option>
+                                        <option value=3>3eme</option>';
+                                    break;
+                                  case 1:
+                                    echo '<option value=0 >Tout</option>
+                                          <option value=1 selected >1ere</option>
+                                          <option value=2>2eme</option>
+                                          <option value=3>3eme</option>';
+                                    break;
+                                  case 2:
+                                    echo '<option value=0 >Tout</option>
+                                          <option value=1  >1ere</option>
+                                          <option value=2 selected>2eme</option>
+                                          <option value=3>3eme</option>';
+                                    break;
+                                  case 3:
+                                          echo
+                                              '<option value=0 >Tout</option>
+                                              <option value=1  >1ere</option>
+                                              <option value=2 >2eme</option>
+                                              <option value=3 selected>3eme</option>';
+                                    break;
+                                
+                                }
+                                   unset($_SESSION['last_niveau_user']);
+                              }else{
+                              
+                              ?>
+                              <option value=0 selected>Tout</option>
+                              <option value=1  >1ere</option>
+                              <option value=2 >2eme</option>
+                              <option value=3>3eme</option><?php } ?>
+                                      
+                            </select>
+                            <button type="submit">search</button>
+                        </div>
+                  </div>
+                </form>
+                  
+
+                <table class="table">
+                    <thead>
+                      <tr>
+                        <th scope="col">N</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">CNE</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                   
+                    <?php foreach ($rows as $row): 
+                    
+                      ?>
                         <tr>
                           <th scope="col">N</th>
                           <th scope="col">Nom</th>
@@ -125,28 +192,11 @@
                       </thead>
                       <tbody>
 
-                    
-                      <?php foreach ($rows as $row): 
-                      
-                        ?>
-                          <tr>
-                            <th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU'] ; ?></th>
-                            <td><?php echo $row['NOM_ETU']; ?></td>
-                            <td><?php echo $row['PRENOM_ETU']; ?></td>
-                            <td style="color: #7096FF;"><?php echo $row['CNE']; ?></td>
-                            <td style="text-align: end;">
-                              <button type="button" class="btn btn-outline-primary">En cours</button>
-                              <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
-                              <button type="button" class="btn btn-outline-primary">Modifier</button>
-                              <button type="button" class="btn btn-outline-primary">Supprimer</button>
-                            </td>
-                          </tr>
-                      <?php endforeach; ?>
-
-                      </tbody>
-                    </table>
-                </div>
-            </div>
+                    </tbody>
+                  </table>
+              </div>
+          </div>
+          
 
         </form>
 

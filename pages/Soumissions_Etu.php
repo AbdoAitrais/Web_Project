@@ -32,7 +32,7 @@
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
         <div class="container-fluid">
-          <a class="navbar-brand navt" href="#">FSTAGE</a>
+          <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -42,15 +42,19 @@
                 <a class="nav-link navlink " href="Find_Offre_Etu.php">Find offers</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="#">Historique</a>
+                <a class="nav-link navlink" href="#">Historique</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink active_link_color" href="Soumissions_Etu.php">Soumissions</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Mes stages</a>
+                <a class="nav-link navlink" href="#">Stages</a>
               </li>
             </ul>
+            
+            <div class="" style="position: fixed; margin-left: 47%;">
+                  <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
+            </div>
             <ul class="navbar-nav ms-auto margin ">
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
@@ -66,11 +70,11 @@
               </li>
             </ul>
           </div>
+        </div>
       </nav>
-    </div>
 
     <div class="container-fluid ">
-      <div class="" style="margin-top: 60px;">
+      <div class="" style="margin-top: 56px;">
         <div class="row">
           <div class="col-3 d-none d-md-block elm guid1_col"></div>
           <form action="Soumissions_Etu.php" method='POST'>
@@ -129,34 +133,14 @@
           
           <div class="col-md-6 col-sm-12 elm pub_col">
          
-            <?php require('back_end/connexion.php');
-                ///*** Postulation Verification
-                    
-                    /// ***
-                    $Etu=$_SESSION['user_id'];
-                    /// ***Test S'il ya un offre en etat acceptee
-                    
-                    ///Niveau de l'etudiant
-                    $sql1 ="SELECT NIVEAU FROM etudiant WHERE ID_ETU='$Etu' ";
-                    $req1 =$bdd->query($sql1);
-                    $result1 = $req1->fetch(PDO::FETCH_ASSOC);
-                    $NIVEAU=$result1['NIVEAU'];
-                    
-                    ///Formation de l'etudiant
-                    $sql7 ="SELECT ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
-                    $req7 =$bdd->query($sql7);
-                    $result7 = $req7->fetch(PDO::FETCH_ASSOC);
-                    $FORMATION=$result7['ID_FORM'];
-                    
-                    /// ***                      
-                    function Create_Offres($result2 ,$Etat_Offre){
-                        
-                        require('back_end/connexion.php');
-                        $Etu = $_SESSION['user_id'];  
-                                          
-                        if(!empty($result2))
-                        {
-                            foreach($result2 as $Offre):
+            <?php 
+
+            function Create_Offres($result2 ,$Etat_Offre){
+                require('back_end/connexion.php');
+                
+                if(!empty($result2))
+                  {
+                    foreach($result2 as $Offre):
                                                
             ?>
           
@@ -223,6 +207,17 @@
             </div><br>
             <?php endforeach;} }
             
+            require('back_end/connexion.php');
+            /// ***ID  etudiant
+            $Etu=$_SESSION['user_id'];
+                    
+            ///Niveau et Formation de l'etudiant
+            $sql1 ="SELECT NIVEAU,ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
+            $req1 =$bdd->query($sql1);
+            $result1 = $req1->fetch(PDO::FETCH_ASSOC);
+            $NIVEAU=$result1['NIVEAU'];
+            $FORMATION=$result1['ID_FORM'];
+            
             /// ***
             $Filter_sql = "";
             /// ***
@@ -233,7 +228,7 @@
 
             }
             /// *** SELECTION ET JOINTURE
-            $select_join = "SELECT * FROM offre O,entreprise E,postuler P WHERE E.ID_ENTREP=O.ID_ENTREP AND O.ID_OFFRE = P.ID_OFFRE";
+            $select_join = "SELECT * FROM offre O,entreprise E,postuler P WHERE E.ID_ENTREP=O.ID_ENTREP AND O.ID_OFFRE = P.ID_OFFRE AND P.ID_ETU='$Etu' ";
 
             /// *** Retenue
             $sql9 =$select_join." AND P.STATU='Retenue'".$Filter_sql;            
@@ -276,7 +271,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
     crossorigin="anonymous"></script>
+    
+    <script>
+      
+      var scrollpos = localStorage.getItem('scrollpos_Soumis_Etu');
+      
+      if (scrollpos){
+            window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
+            localStorage.removeItem('scrollpos_Soumis_Etu');
+      }
 
+      function LastScroll(){
+        localStorage.setItem('scrollpos_Soumis_Etu', window.scrollY);
+      }
+
+
+    </script>
 
 </body>
 </html>

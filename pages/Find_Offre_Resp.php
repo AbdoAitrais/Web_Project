@@ -32,7 +32,7 @@
     
     <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
         <div class="container-fluid">
-          <a class="navbar-brand navt" href="#">FSTAGE</a>
+          <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -51,6 +51,10 @@
                 <a class="nav-link navlink" href="#">Enseignants</a>
               </li>
             </ul>
+            
+            <div class="" style="position: fixed; margin-left: 47%;">
+                  <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
+            </div>
             <ul class="navbar-nav ms-auto margin ">
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
@@ -66,15 +70,16 @@
               </li>
             </ul>
           </div>
+        </div>
       </nav>
-    </div>
+    
 
     <div class="container-fluid ">
-      <div class="" style="margin-top: 60px;">
+      <div class="" style="margin-top: 56px;">
         <div class="row">
-          <div class="col-3 d-none d-md-block elm guid1_col"></div>
+          <div class="col-3 d-none d-md-block elm guid1_col" ></div>
           <form action="Find_Offre_Resp.php" method='POST'>
-            <div class="col-md-6 col-sm-12 elm pub_col" style="position:fixed; text-align: center; display:flex; justify-content:center;">
+            <div class="col-md-6 col-sm-12 elm pub_col" style="position:fixed; text-align: center; display:flex; justify-content:center;z-index:9 !important;">
               <div class="search">
                   <div class="input-group rounded">
                       <input type="search" class="form-control rounded" name='Filter' placeholder="Type a Keyword, Title, City" aria-label="Search" aria-describedby="search-addon" />
@@ -85,7 +90,7 @@
                 </div>
               </div>
           </form>
-          <div class="col-3 d-none d-md-block elm blank_col"></div>
+          <div class="col-3 d-none d-md-block elm blank_col" ></div>
         </div>
 
         <div class="row" style="margin-top: 56px;">
@@ -148,7 +153,7 @@
                     /// ***  
                     $req2 =$bdd->query($sql2);
                     $result2 = $req2->fetchAll(PDO::FETCH_ASSOC);
-                    
+                    $indice = 0;
                     if(!empty($result2))
                     {
                         foreach($result2 as $Offre):                  
@@ -164,13 +169,13 @@
                         echo '<div class="redc"> </div>';  
               ?>
               
-              <div class="edit" onclick="menuToggle()"><i ><img src="icons/edt.png" alt=""></i></div>
+              <div class="edit" ><i  onclick="menuToggle(<?php print($indice);?>)" ><img src="icons/edt.png" alt=""></i></div>
               <div style="display: flex; justify-content: end; margin-right: -0px;">
                 <div class="menu" id="mn">
             
                   <ul>
-                    <li><img src="icons/edit.png" alt=""><a href="">Modifier</a> </li>
-                    <li><img src="icons/file.png" alt=""><a href="">File d'attente</a> </li>
+                    <li><img src="icons/edit.png" alt=""><a href="#">Modifier</a> </li>
+                    <li><img src="icons/file.png" alt=""><a href="#">File d'attente</a> </li>
                   </ul>
                 </div>
               </div><br>
@@ -194,7 +199,7 @@
               </div>
 
             </div><br>
-            <?php endforeach;} ?>            
+            <?php $indice++; endforeach;} ?>            
           </div>
           <div class="col-3 d-none d-md-block elm blank_col"></div>
         </div>
@@ -206,18 +211,23 @@
     crossorigin="anonymous"></script>
 
     <script>
-       document.addEventListener("DOMContentLoaded", function() { 
-            var scrollpos = localStorage.getItem('scrollpos');
-            if (scrollpos) window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
-        });
-
-        window.onbeforeunload = function() {
-            localStorage.setItem('scrollpos', window.scrollY);
-        };
       
-      function menuToggle(){
-          const toggleMenu = document.querySelector(".menu");
-          toggleMenu.classList.toggle('active');
+      var scrollpos = localStorage.getItem('scrollpos_Find_Offre_Resp');
+      if (scrollpos){
+            window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
+            localStorage.removeItem('scrollpos_Find_Offre_Resp');
+      }
+
+      function LastScroll(){
+        localStorage.setItem('scrollpos_Find_Offre_Resp', window.scrollY);
+      }
+      
+      function menuToggle(indice){
+        
+          const toggleMenu = document.getElementsByClassName("menu");
+          toggleMenu[indice].classList.toggle('active');
+        
+          
       };
 
     </script>
