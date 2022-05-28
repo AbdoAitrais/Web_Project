@@ -16,11 +16,15 @@
       if(isset($_POST['niveau_user']) ){
         $Niveau_user =$_POST['niveau_user'] ;
         if($Niveau_user)
-          $req =$req." AND NIVEAU='$Niveau_user' "; 
+          $req =$req." AND NIVEAU='$Niveau_user'"; 
         
         $_SESSION['last_niveau_user'] = $Niveau_user;
       }
-        
+      
+      if(isset($_POST['Filter']) && !empty($_POST['Filter'])){
+        $Filter_search = $_POST['Filter'];
+        $req=$req." AND( (NOM_ETU = '$Filter_search' ) OR (PRENOM_ETU = '$Filter_search' ) OR (CNE = '$Filter_search' ))";
+      }
       
       $Smt = $bdd->query($req);
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
@@ -92,7 +96,7 @@
     <div class="container-fluid ">
       <div class="" style="margin-top: 60px;">
         <div class="row">
-          <form action="ListeEtudiants.php" method='POST'>
+        <form action="ListeEtudiants.php" method="post" id="form" >
             <div class="col-md-6 col-sm-12 elm pub_col" style="display: flex; justify-content: center;">
               
               
@@ -106,18 +110,16 @@
               </div>
               
             </div>
-          </form>
         </div>
 
 
         <div class="row">
             <div class="col-md-10 elm pub_col">
 
-                <form action="ListeEtudiants.php" method="post" id="form" >
                   <div class="tableHead" >
                         <h4>Liste des etudiants</h4>
                         <div class="select" style="display:flex; width:auto;">
-                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="niveau_user" onchange = "changeFunc();">
+                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="niveau_user" >
                               <?php 
                               
                               if(isset($_SESSION['last_niveau_user'] )){
@@ -187,7 +189,7 @@
                           <td><?php echo $row['PRENOM_ETU']; ?></td>
                           <td style="color: #7096FF;"><?php echo $row['CNE']; ?></td>
                           <td style="text-align: end;">
-                            <button type="button" class="btn btn-outline-primary">En cours</button>
+                            <a href="Encours_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary">En cours</button></a>
                             <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
                             <a href="Modifier_Etudiant_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
                             <button type="button" class="btn btn-outline-primary">Supprimer</button>

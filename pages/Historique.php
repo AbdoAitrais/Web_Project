@@ -13,13 +13,20 @@
     
       $req = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,POSTE,NOM_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND o.ID_FORM='$id_form' ";
       if(isset($_POST['niveau_user']) ){
+        
         $Niveau_user =$_POST['niveau_user'] ;
         if($Niveau_user)
           $req =$req." AND NIVEAU_STAGE='$Niveau_user' "; 
         
         $_SESSION['last_niveau_stage'] = $Niveau_user;
       }
+
+      if(isset($_POST['Filter']) && !empty($_POST['Filter'])){
         
+        $Filter_search = $_POST['Filter'];
+        
+        $req=$req." AND( (etu.NOM_ETU LIKE '$Filter_search' ) OR (etu.PRENOM_ETU LIKE '$Filter_search' ) OR (o.POSTE LIKE '$Filter_search' ) OR (ent.NOM_ENTREP LIKE '$Filter_search' ) )";
+      }
       
       $Smt = $bdd->query($req);
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
@@ -113,7 +120,7 @@
       <div class="" style="margin-top: 60px;">
         <div class="row">
 
-            <form action="Historique.php" method='POST'>
+        <form action="Historique.php" method="post" id="form" >
                 <div class="col-md-6 col-sm-12 elm pub_col" style="display: flex; justify-content: center;">
                 
                 
@@ -127,7 +134,6 @@
                 </div>
                 
                 </div>
-            </form>
             
         </div>
 
@@ -136,11 +142,10 @@
         <div class="row">
             <div class="col-md-10 elm pub_col">
 
-                <form action="Historique.php" method="post" id="form" >
                   <div class="tableHead" >
                         <h4>Liste des stages</h4>
                         <div class="select" style="display:flex; width:auto;">
-                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="niveau_user" onchange = "changeFunc();">
+                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="niveau_user" >
                               <?php 
                               
                               if(isset($_SESSION['last_niveau_stage'] )){
