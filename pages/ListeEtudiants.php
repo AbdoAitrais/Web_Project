@@ -219,19 +219,6 @@
 ?>
 <script>
   
-  //   var option = document.getElementsByTagName("option");
-    
-  //   console.log(option);
-  //    for (var i = 0; i < option.length; i++) {
-  //      option[i].onchange = function() {
-  //        console.log("test");
-  //        console.log(this);
-  //        var form = document.getElementById("form").submit();
-  //        console.log(opt);
-
-  //      }
-
-  // }
   function changeFunc() 
   {
     document.getElementById("form").submit();
