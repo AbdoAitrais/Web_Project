@@ -189,7 +189,7 @@
                           <td style="text-align: end;">
                             <button type="button" class="btn btn-outline-primary">En cours</button>
                             <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
-                            <button type="button" class="btn btn-outline-primary">Modifier</button>
+                            <a href="Modifier_Etudiant_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
                             <button type="button" class="btn btn-outline-primary">Supprimer</button>
                           </td>
                         </tr>
