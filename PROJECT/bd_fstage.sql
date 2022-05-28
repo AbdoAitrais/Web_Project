@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 27 mai 2022 à 10:38
+-- Généré le : sam. 28 mai 2022 à 15:59
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -154,7 +154,7 @@ CREATE TABLE IF NOT EXISTS `etudiant` (
 
 INSERT INTO `etudiant` (`ID_ETU`, `ID_FORM`, `NOM_ETU`, `PRENOM_ETU`, `CIN_ETU`, `CNE`, `NIVEAU`, `PROMOTION`, `DATENAISS_ETU`, `ADRESSE_ETU`, `EMAIL_ETU`, `NUMTEL_ETU`, `CV`, `ID_USER`) VALUES
 (1, 1, 'ANAS', 'KABILA', NULL, NULL, 3, 2020, NULL, NULL, NULL, NULL, NULL, 1),
-(2, 1, 'ABDO', 'RAIS', NULL, NULL, 3, 2021, NULL, NULL, NULL, NULL, NULL, 2),
+(2, 1, 'ABDO', 'RAIS', NULL, NULL, 2, 2021, NULL, NULL, NULL, NULL, NULL, 2),
 (3, 2, 'YASSINE', 'JRAYFY', NULL, NULL, 1, 2022, NULL, NULL, NULL, NULL, NULL, 3);
 
 -- --------------------------------------------------------
@@ -242,15 +242,15 @@ CREATE TABLE IF NOT EXISTS `offre` (
 
 INSERT INTO `offre` (`ID_OFFRE`, `ID_FORM`, `ID_ENTREP`, `STATUOFFRE`, `NBRCANDIDAT`, `POSTE`, `DUREE`, `DATEDEBUT`, `DATEFIN`, `DESCRIP`, `NIVEAU_OFFRE`, `SOURCE_OFFRE`) VALUES
 (1, 1, 1, 'Closed', 0, 'DATA ANALYST', 90, '2022-05-01', '2022-05-26', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 0),
-(2, 1, 1, 'Closed', 4, 'IT SUPPORT', 60, '2022-05-01', '2022-05-24', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
-(3, 1, 2, 'Nouveau', 10, 'IT TECHNICIEN', 60, '2022-05-01', '2022-05-31', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
-(4, 1, 1, 'Nouveau', 8, 'HH1', 60, '2022-05-24', '2022-05-31', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
-(5, 1, 1, 'Nouveau', 8, 'HH2', 60, '2022-05-24', '2022-05-31', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
+(2, 1, 1, 'Nouveau', 3, 'IT SUPPORT', 60, '2022-05-01', '2022-05-29', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 2, 1),
+(3, 1, 2, 'Nouveau', 8, 'IT TECHNICIEN', 60, '2022-05-01', '2022-05-31', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 2, 1),
+(4, 1, 1, 'Nouveau', 5, 'HH1', 60, '2022-05-24', '2022-05-31', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
+(5, 1, 1, 'Nouveau', 4, 'HH2', 60, '2022-05-24', '2022-05-31', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
 (6, 1, 2, 'Nouveau', 5, 'HH3', 60, '2022-05-24', '2022-05-31', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
-(7, 1, 1, 'Nouveau', 10, 'HH4', 60, '2022-05-24', '2022-05-31', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
+(7, 1, 1, 'Nouveau', 4, 'HH4', 60, '2022-05-24', '2022-05-31', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
 (8, 1, 1, 'Nouveau', 8, 'HH5', 60, '2022-05-24', '2022-05-31', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
-(11, 1, 2, 'Nouveau', 9, 'HH6', 60, '2022-05-24', '2022-05-31', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
-(10, 2, 2, 'Nouveau', 10, 'HAHA', 30, '2022-05-31', '2022-06-10', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 1, 1);
+(11, 1, 2, 'Nouveau', 1, 'HH6', 60, '2022-05-24', '2022-05-31', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
+(10, 2, 2, 'Nouveau', 8, 'HAHA', 30, '2022-05-31', '2022-06-10', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 1, 1);
 
 -- --------------------------------------------------------
 
@@ -274,7 +274,11 @@ CREATE TABLE IF NOT EXISTS `postuler` (
 --
 
 INSERT INTO `postuler` (`ID_ETU`, `ID_OFFRE`, `STATU`, `DATEREPONS`, `DATEPOST`) VALUES
-(1, 4, 'Postulée', NULL, '2022-05-27');
+(1, 11, 'Non Acceptée', '2022-05-27', '2022-05-27'),
+(3, 10, 'Acceptée', '2022-05-28', '2022-05-28'),
+(1, 7, 'Acceptée', '2022-05-27', '2022-05-27'),
+(2, 2, 'Acceptée', '2022-05-28', '2022-05-28'),
+(2, 3, 'Non Acceptée', '2022-05-28', '2022-05-28');
 
 -- --------------------------------------------------------
 
@@ -313,9 +317,8 @@ DROP TABLE IF EXISTS `stage`;
 CREATE TABLE IF NOT EXISTS `stage` (
   `ID_STAGE` int(11) NOT NULL AUTO_INCREMENT,
   `ID_OFFRE` int(11) NOT NULL,
-  `ID_ENTREP` int(11) NOT NULL,
   `ID_RAPP` int(11) DEFAULT NULL,
-  `ID_ENS` int(11) NOT NULL,
+  `ID_ENS` int(11) DEFAULT NULL,
   `ID_ETU` int(11) NOT NULL,
   `DATEDEBUT_STAGE` date DEFAULT NULL,
   `NOTENCAD_ENTREP` float DEFAULT NULL,
@@ -326,9 +329,17 @@ CREATE TABLE IF NOT EXISTS `stage` (
   KEY `FK_CORRESPONDRE2` (`ID_RAPP`),
   KEY `FK_ENCADRER` (`ID_ENS`),
   KEY `FK_PEUT_DEVENIR` (`ID_OFFRE`),
-  KEY `FK_PRESENTER_PAR` (`ID_ENTREP`),
   KEY `FK_STAGIER` (`ID_ETU`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `stage`
+--
+
+INSERT INTO `stage` (`ID_STAGE`, `ID_OFFRE`, `ID_RAPP`, `ID_ENS`, `ID_ETU`, `DATEDEBUT_STAGE`, `NOTENCAD_ENTREP`, `NOTENCAD`, `CONTRAT`, `NIVEAU_STAGE`) VALUES
+(1, 7, NULL, NULL, 1, '2022-05-27', NULL, NULL, NULL, 3),
+(2, 2, NULL, NULL, 2, '2022-05-28', NULL, NULL, NULL, 2),
+(3, 10, NULL, NULL, 3, '2022-05-28', NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -361,7 +372,7 @@ DELIMITER $$
 -- Évènements
 --
 DROP EVENT `Closing_Offre`$$
-CREATE DEFINER=`root`@`localhost` EVENT `Closing_Offre` ON SCHEDULE EVERY 1 MINUTE STARTS '2022-05-25 22:35:33' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE offre  SET STATUOFFRE="Closed" WHERE DATEFIN=(SELECT CURRENT_DATE)$$
+CREATE DEFINER=`root`@`localhost` EVENT `Closing_Offre` ON SCHEDULE EVERY 1 DAY STARTS '2022-05-28 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE offre  SET STATUOFFRE="Closed" WHERE DATEFIN=(SELECT CURRENT_DATE)$$
 
 DELIMITER ;
 COMMIT;
