@@ -1,10 +1,10 @@
 <?php 
   ob_start();
   session_start();
-  if( empty($_SESSION['user_id']) || empty($_SESSION['user_type']) )
+  if(empty($_SESSION['user_id']) || empty($_SESSION['user_type']))
   {
     $_SESSION['page'] = $_SERVER['REQUEST_URI'];
-    header('location: login.php');
+    header('location:login.php');
   }
 
   if($_SESSION['user_type'] == "Responsable")
@@ -59,7 +59,7 @@
                 <a class="nav-link navlink blue" href="#">Contact Us</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink blue " href="#">Log out</a>
+                <a class="nav-link navlink blue " href="back_end/logout.php">Log out</a>
               </li>
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
@@ -229,7 +229,7 @@
   }
   else
   {
-    echo "<h1> ERROR 301:</h1> <p>Unauthorized Access !</p>";
+    echo "<h1>ERROR 301</h1> <p>Unauthorized Access !</p>";
   }
 
 ?>

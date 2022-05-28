@@ -2,10 +2,9 @@
   session_start();
   if(empty($_SESSION['user_id']) || empty($_SESSION['user_type']))
   {
-    header('location:login.php');
     $_SESSION['page'] = $_SERVER['REQUEST_URI'];
-  }
-      
+    header('location:login.php');
+  }  
 
   if($_SESSION['user_type'] == "Responsable")
   {
@@ -220,7 +219,7 @@
   }
   else
   {
-    echo "<h1> ERROR 301:</h1> <p>Unauthorized Access !</p>";
+    echo "<h1>ERROR 301</h1> <p>Unauthorized Access !</p>";
   }
 
 ?>

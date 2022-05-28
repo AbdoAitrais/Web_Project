@@ -1,22 +1,27 @@
 <?php
   ob_start();
   session_start();
-  if( empty($_SESSION['user_id']) || empty($_SESSION['user_type']) )
+  if(empty($_SESSION['user_id']) || empty($_SESSION['user_type']))
   {
     $_SESSION['page'] = $_SERVER['REQUEST_URI'];
-    header('location: login.php');
+    header('location:login.php');
   }
-  
+
     if($_SESSION['user_type'] == "Responsable")
     {
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
-    
-      $req = "SELECT * FROM etudiant WHERE ID_FORM='$id_form'";
-      $Smt = $bdd->query($req);
-      $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+      if( empty($_POST['filter']) )
+      {
+        $filter = htmlspecialchars($_POST['filter']);
+
+        $req = "SELECT * FROM etudiant WHERE ID_FORM='$id_form' ";
+        $Smt = $bdd->query($req);
+        $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+      }
     
   
+
 
 ?>
 <!DOCTYPE html>
@@ -94,54 +99,56 @@
         </div>
 
 
-        <div class="row">
-            <div class="col-md-10 elm pub_col">
-
-                  <div class="tableHead" >
-                    <h4>Liste des etudiants</h4>
-                    <div class="select">
-                    <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="type_user" >
-                          <option value="1ere" selected>1ere</option>
-                          <option value="2eme">2eme</option>
-                          <option value="3eme">3eme</option>
-                        </select>
+        <form action="ListeEtudiants.php" method="post" > 
+          <div class="row">
+              <div class="col-md-10 elm pub_col">
+                    <div class="tableHead" >
+                        <h4>Liste des etudiants</h4>
+                        <div class="select">
+                          <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="filter" >
+                                <option value="1" selected>1ere</option>
+                                <option value="2">2eme</option>
+                                <option value="3">3eme</option>
+                              </select>
+                          </div>
                       </div>
-                </div>
-                <table class="table">
-                    <thead>
-                      <tr>
-                        <th scope="col">N</th>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Prénom</th>
-                        <th scope="col">CNE</th>
-                        <th scope="col"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
 
-                   
-                    <?php foreach ($rows as $row): 
-                    
-                      ?>
+                  <table class="table">
+                      <thead>
                         <tr>
-                          <th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU'] ; ?></th>
-                          <td><?php echo $row['NOM_ETU']; ?></td>
-                          <td><?php echo $row['PRENOM_ETU']; ?></td>
-                          <td style="color: #7096FF;"><?php echo $row['CNE']; ?></td>
-                          <td style="text-align: end;">
-                            <button type="button" class="btn btn-outline-primary">En cours</button>
-                            <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
-                            <button type="button" class="btn btn-outline-primary">Modifier</button>
-                            <button type="button" class="btn btn-outline-primary">Supprimer</button>
-                          </td>
+                          <th scope="col">N</th>
+                          <th scope="col">Nom</th>
+                          <th scope="col">Prénom</th>
+                          <th scope="col">CNE</th>
+                          <th scope="col"></th>
                         </tr>
-                    <?php endforeach; ?>
+                      </thead>
+                      <tbody>
 
-                    </tbody>
-                  </table>
-              </div>
-          </div>
+                    
+                      <?php foreach ($rows as $row): 
+                      
+                        ?>
+                          <tr>
+                            <th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU'] ; ?></th>
+                            <td><?php echo $row['NOM_ETU']; ?></td>
+                            <td><?php echo $row['PRENOM_ETU']; ?></td>
+                            <td style="color: #7096FF;"><?php echo $row['CNE']; ?></td>
+                            <td style="text-align: end;">
+                              <button type="button" class="btn btn-outline-primary">En cours</button>
+                              <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
+                              <button type="button" class="btn btn-outline-primary">Modifier</button>
+                              <button type="button" class="btn btn-outline-primary">Supprimer</button>
+                            </td>
+                          </tr>
+                      <?php endforeach; ?>
 
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </form>
 
 
         </div>
@@ -154,7 +161,7 @@
   }
   else
   {
-    echo "<h1> ERROR 301:</h1> <p>Unauthorized Access !</p>";
+    echo "<h1>ERROR 301</h1> <p>Unauthorized Access !</p>";
   }
 
 ?>
