@@ -42,7 +42,7 @@
                 <a class="nav-link navlink " href="Find_Offre_Etu.php">Find offers</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Historique</a>
+                <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink active_link_color" href="Soumissions_Etu.php">Soumissions</a><span class="active_link_line"></span>

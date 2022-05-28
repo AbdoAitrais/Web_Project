@@ -47,12 +47,6 @@
                     $sql5="UPDATE postuler SET STATU='Non Acceptée' WHERE ID_ETU='$Etu' AND STATU='Retenue' ";
                     $sql6="DELETE FROM postuler WHERE ID_ETU='$Etu' AND STATU='Postulée' ";
                     
-                    /// ***ID DE L'ENTREPRISE D'OFFRE
-                    $sql_id_entrep = "SELECT ID_ENTREP FROM offre WHERE ID_OFFRE='$Offre_ID' ";
-                    $req_id_entrep = $bdd->query($sql_id_entrep);
-                    $result_id_entrep = $req_id_entrep->fetch(PDO::FETCH_ASSOC);
-                    $ID_ENTREP = $result_id_entrep['ID_ENTREP'];
-
                     /// ***ID DE NIVEAU DE L'ETUDIANT
                     $sql_niveau = "SELECT NIVEAU FROM etudiant WHERE ID_ETU='$Etu' ";
                     $req_niveau = $bdd->query($sql_niveau);
@@ -61,7 +55,7 @@
                     
                     
                     /// *** 
-                    $sql_stage = "INSERT INTO stage(ID_OFFRE,ID_ENTREP,ID_ETU,DATEDEBUT_STAGE,NIVEAU_STAGE) VALUES('$Offre_ID',$ID_ENTREP,'$Etu','$curdate' ,$NIVEAU)  ";
+                    $sql_stage = "INSERT INTO stage(ID_OFFRE,ID_ETU,DATEDEBUT_STAGE,NIVEAU_STAGE) VALUES('$Offre_ID','$Etu','$curdate' ,$NIVEAU)  ";
                     $bdd->exec($sql_stage);
 
                     /// ***

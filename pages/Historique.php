@@ -7,18 +7,17 @@
     header('location: login.php');
   }
   
-    if($_SESSION['user_type'] == "Responsable")
-    {
+    
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
     
-      $req = "SELECT * FROM etudiant WHERE ID_FORM='$id_form'";
+      $req = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,POSTE,NOM_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND o.ID_FORM='$id_form' ";
       if(isset($_POST['niveau_user']) ){
         $Niveau_user =$_POST['niveau_user'] ;
         if($Niveau_user)
-          $req =$req." AND NIVEAU='$Niveau_user' "; 
+          $req =$req." AND NIVEAU_STAGE='$Niveau_user' "; 
         
-        $_SESSION['last_niveau_user'] = $Niveau_user;
+        $_SESSION['last_niveau_stage'] = $Niveau_user;
       }
         
       
@@ -42,10 +41,10 @@
     rel="stylesheet" 
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
     crossorigin="anonymous">
-    <title>Listes des Etudiants</title>
+    <title>Historique</title>
 </head>
 <body>
-      
+     
     <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
         <div class="container-fluid">
           <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
@@ -54,20 +53,40 @@
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
+             
+             <?php 
+                    if($_SESSION['user_type'] == "Responsable")
+                    {
+             ?>  
               <li class="nav-item underline">
                 <a class="nav-link navlink " href="Find_Offre_Resp.php">Find offers</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="Historique.php">Historique</a>
+                <a class="nav-link navlink active_link_color" href="Historique.php">Historique</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="ListeEtudiants.php">Etudiants</a><span class="active_link_line"></span>
+                <a class="nav-link navlink " href="ListeEtudiants.php">Etudiants</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Enseignants</a>
               </li>
+              <?php 
+                    }else if($_SESSION['user_type'] == "Etudiant")
+                    {
+              ?>     
+              <li class="nav-item underline">
+                <a class="nav-link navlink " href="Find_Offre_Etu.php">Find offers</a>
+              </li>
+              <li class="nav-item underline">
+                <a class="nav-link navlink active_link_color" href="Historique.php">Historique</a><span class="active_link_line"></span>
+              </li>
+              <li class="nav-item underline">
+                <a class="nav-link navlink " href="Soumissions_Etu.php">Soumissions</a>
+              </li>
+              <li class="nav-item underline">
+                <a class="nav-link navlink" href="#">Stages</a>
+              </li><?php }?>    
             </ul>
-            
             <div class="" style="position: fixed; margin-left: 47%;">
                   <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
             </div>
@@ -88,40 +107,44 @@
           </div>
         </div>
       </nav>
+  
 
     <div class="container-fluid ">
       <div class="" style="margin-top: 60px;">
         <div class="row">
-          <form action="ListeEtudiants.php" method='POST'>
-            <div class="col-md-6 col-sm-12 elm pub_col" style="display: flex; justify-content: center;">
-              
-              
-              <div class="search">
-                <div class="input-group rounded">
-                  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="Filter"/>
-                  <span class="input-group-text border-0" id="search-addon">
-                  <button type='submit' style="border:none;background:none;"><i class="fas fa-search"><img src="icons/search.png"></i></button>
-                  </span>
+
+            <form action="Historique.php" method='POST'>
+                <div class="col-md-6 col-sm-12 elm pub_col" style="display: flex; justify-content: center;">
+                
+                
+                <div class="search">
+                    <div class="input-group rounded">
+                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="Filter"/>
+                    <span class="input-group-text border-0" id="search-addon">
+                    <button type='submit' style="border:none;background:none;"><i class="fas fa-search"><img src="icons/search.png"></i></button>
+                    </span>
+                    </div>
                 </div>
-              </div>
-              
-            </div>
-          </form>
+                
+                </div>
+            </form>
+            
         </div>
+
 
 
         <div class="row">
             <div class="col-md-10 elm pub_col">
 
-                <form action="ListeEtudiants.php" method="post" id="form" >
+                <form action="Historique.php" method="post" id="form" >
                   <div class="tableHead" >
-                        <h4>Liste des etudiants</h4>
+                        <h4>Liste des stages</h4>
                         <div class="select" style="display:flex; width:auto;">
                             <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="niveau_user" onchange = "changeFunc();">
                               <?php 
                               
-                              if(isset($_SESSION['last_niveau_user'] )){
-                                switch($_SESSION['last_niveau_user'] ){
+                              if(isset($_SESSION['last_niveau_stage'] )){
+                                switch($_SESSION['last_niveau_stage'] ){
                                   case 0:
                                     echo'<option value=0 selected>Tout</option>
                                         <option value=1  >1ere</option>
@@ -149,7 +172,7 @@
                                     break;
                                 
                                 }
-                                   unset($_SESSION['last_niveau_user']);
+                                   unset($_SESSION['last_niveau_stage']);
                               }else{
                               
                               ?>
@@ -171,7 +194,8 @@
                         <th scope="col">N</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
-                        <th scope="col">CNE</th>
+                        <th scope="col">Poste</th>
+                        <th scope="col">Entreprise</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
@@ -182,15 +206,15 @@
                     
                       ?>
                         <tr>
-                          <th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU'] ; ?></th>
+                          <th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU_STAGE'] ; ?></th>
+                          
                           <td><?php echo $row['NOM_ETU']; ?></td>
                           <td><?php echo $row['PRENOM_ETU']; ?></td>
-                          <td style="color: #7096FF;"><?php echo $row['CNE']; ?></td>
+                          <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
+                          <td style="color: #7096FF;"><?php echo $row['NOM_ENTREP']; ?></td>
                           <td style="text-align: end;">
-                            <button type="button" class="btn btn-outline-primary">En cours</button>
-                            <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
-                            <button type="button" class="btn btn-outline-primary">Modifier</button>
-                            <button type="button" class="btn btn-outline-primary">Supprimer</button>
+                            <button type="button" class="btn btn-outline-primary">Rapport</button>
+                            <button type="button" class="btn btn-outline-primary">Detail</button>
                           </td>
                         </tr>
                     <?php endforeach; ?>
@@ -209,14 +233,7 @@
     
 </body>
 </html>
-<?php
-  }
-  else
-  {
-    echo "<h1> ERROR 301:</h1> <p>Unauthorized Access !</p>";
-  }
 
-?>
 <script>
   
   function changeFunc() 
