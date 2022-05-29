@@ -184,7 +184,7 @@
                           <td style="color: #616161;"><?php print($jury['NOM_ENS'])?></td>
                           <td style="color: #616161;"><?php print($jury['PRENOM_ENS'])?></td>
                           <td style="text-align: end;">
-                            <a href="back_end/Jury_Ens_Resp.php?jury_supp=<?php print($jury['ID_ENS'])?>&id_etu=<?php print($id_etu);?>"><i><img src="icons/rubbish-bin.png" alt=""></i></a>
+                            <a href="back_end/Jury_Ens_Resp.php?jury_supp=<?php print($jury['ID_ENS'])?>&id_etu=<?php print($id_etu);?>" onclick ="LastScroll();"><i><img src="icons/rubbish-bin.png" alt=""></i></a>
                           </td>
                         </tr>
                         <?php endforeach;?>
@@ -218,7 +218,7 @@
                           <td style="color: #616161;"><?php print($enseignant['NOM_ENS'])?></td>
                           <td style="color: #616161;"><?php print($enseignant['PRENOM_ENS'])?></td>
                           <td style="text-align: end;">
-                            <a href="back_end/Jury_Ens_Resp.php?jury_add=<?php print($enseignant['ID_ENS'])?>&id_etu=<?php print($id_etu);?>"><i><img src="icons/add-user.png" alt=""></i></a>
+                            <a href="back_end/Jury_Ens_Resp.php?jury_add=<?php print($enseignant['ID_ENS'])?>&id_etu=<?php print($id_etu);?>" onclick ="LastScroll();"><i><img src="icons/add-user.png" alt=""></i></a>
                           </td>
                         </tr>
                       <?php endforeach;?>
@@ -245,6 +245,7 @@
         }
         
         var scrollpos = localStorage.getItem('scrollpos_Jury_Resp');
+        
         if (scrollpos){
               window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
               localStorage.removeItem('scrollpos_Jury_Resp');
