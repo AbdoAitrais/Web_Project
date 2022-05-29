@@ -33,7 +33,6 @@
       $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
     }
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -47,7 +46,7 @@
     rel="stylesheet" 
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
     crossorigin="anonymous">
-    <title>Encours</title>
+    <title>Notes</title>
 </head>
 <body>
       
@@ -124,25 +123,26 @@
 
                    
                         <tr>
-                          
+                          <?php if(!empty($result1)){?>
                           <th scope="row" style="color: #7196FF"><?php print($result1['NIVEAU_STAGE'])?></th>
                           <td style="color: #616161;"><?php print($result1['NOM_ETU'])?></td>
                           <td style="color: #616161;"><?php print($result1['PRENOM_ETU'])?></td>
                           <td style="color: #7196FF;"><?php print($result1['CNE'])?></td>
-                          <td style="color: #616161;"><?php print($result1['POSTE'])?>-<?php print($result1['NOM_ENTREP'])?></td>
+                          <td style="color: #616161;"><?php print($result1['POSTE'])?>-<?php print($result1['NOM_ENTREP']);}?></td>
+                          
                           <td class="opt">
                             <span onclick="menuToggle()">Options</span>
                             <div class="menu" id="mn1">
             
-                            <ul>
+                              <ul>
+                                
                                 <li><img src="icons/loupe.png" alt=""><a href="">Details</a> </li>
                                 <li><img src="icons/teacher.png" alt=""><a href="">Encadrant</a> </li>
                                 <li><img src="icons/jury.png" alt=""><a href="Jury_Resp?id_etu=<?php print($id_etu);?>">Jury</a> </li>
-                                <li><img src="icons/certificate.png" alt=""><a href="Notes_Resp?id_etu=<?php print($id_etu);?>"  data-bs-toggle="modal" data-bs-target="#exampleModal">Notes</a> </li>
+                                <li><img src="icons/certificate.png" alt=""><a href=""  data-bs-toggle="modal" data-bs-target="#staticBackdrop">Notes</a> </li>
                                 <li><img src="icons/application.png" alt=""><a href="">Rapport</a> </li>
-                            </ul>
-                            
-                          </div>
+                              </ul>
+                            </div>
                           </td>
                         </tr>
                     </tbody>
@@ -158,25 +158,53 @@
         </div>
 
 
-        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
+        <form action="Notes_Resp.php?id_etu=<?php print($id_etu);?>" method="post">
+          <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h3 class="modal-title" id="exampleModalLabel" style="color: #7096FF; font-weight: 600;">Notes</h3>
+                  <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Notes</h3>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div style="padding: 16px;  "><h5 style="border-bottom: 1px solid black;">Encadrants</h5></div>
+                <div style="padding: 16px;  ">
+                  <h5 style="border-bottom: 1px solid #717171; color: #717171; font-weight: 600;">Encadrants</h5>
+                  <table style="width: 100%; color: #616161;">
+                    <tr style="height: 50px;">
+                      <?php if(!empty($result2)){?>
+                      <td><?php print($result2['NOM_ENS']);?></td>
+                      <td><?php print($result2['PRENOM_ENS']);}?></td>
+
+                      <td style="text-align: end;">Note <input type="number" step="0.01" name="note_encad" style="width: 60px; margin-left: 5px; border: 1px solid #B3B3B3;"></td>
+                    </tr>
+                    <tr style="height: 50px;">
+                      <td colspan="2"> <?php if(!empty($result1))print($result1['NOM_ENTREP']);?></td>
+                  <td style="text-align: end;">Note <input type="number" step="0.01" name="note_entrep" style="width: 60px; margin-left: 5px; border: 1px solid #B3B3B3;"></td>
+                    </tr>
+                  </table>
+                </div>
                 
-                <div class="modal-body">
-                  ---
+                <div style="padding: 16px;  ">
+                  <h5 style="border-bottom: 1px solid #717171; color: #717171; font-weight: 600;">Jury</h5>
+                  <table style="width: 100%; color: #616161;">
+                      <?php if(!empty($result3)){
+                          foreach($result3 as $Jury):
+                      ?>
+                      <tr style="height: 50px;">
+                        <td><?php print($Jury['NOM_ENS']);?></td>
+                        <td><?php print($Jury['PRENOM_ENS']);?></td>
+                        <td style="text-align: end;">Note <input type="number" step="0.01" name="note_jury" style="width: 60px; margin-left: 5px; border: 1px solid #B3B3B3;"></td>
+                      </tr>
+                      <?php endforeach;}?>
+                  </table>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Save changes</button>
+                  <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
               </div>
             </div>
           </div>
+        </form>
           
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
@@ -194,7 +222,6 @@
 </body>
 </html>
 <?php
-
 }else
   {
     echo "<h1>ERROR 301</h1> <p>Unauthorized Access !</p>";
