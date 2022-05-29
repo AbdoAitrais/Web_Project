@@ -16,9 +16,21 @@
 
       $id_etu = $_GET['id_etu'];
 
-      $sql1 = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND etu.ID_ETU='$id_etu' AND s.DATEDEBUT_STAGE =(select max(DATEDEBUT_STAGE) FROM stage where ID_ETU='$id_etu')";
+      ///Stage
+      $sql1 = "SELECT ID_STAGE,NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND etu.ID_ETU='$id_etu' AND s.DATEDEBUT_STAGE =(SELECT max(DATEDEBUT_STAGE) FROM stage WHERE ID_ETU='$id_etu')";
       $req1 =$bdd->query($sql1);
       $result1 = $req1->fetch(PDO::FETCH_ASSOC);
+
+      $id_stage = $result1['ID_STAGE'];
+      ///L'Encadrant
+      $sql2 = "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS FROM enseignant e,stage s WHERE s.ID_ENS = e.ID_ENS AND s.ID_ETU = '$id_etu' ";
+      $req2 =$bdd->query($sql2);
+      $result2 = $req2->fetch(PDO::FETCH_ASSOC);
+
+      ///Jury
+      $sql3 = "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS FROM enseignant e,juri j WHERE j.ID_ENS = e.ID_ENS AND j.ID_STAGE = '$id_stage' ";
+      $req3 =$bdd->query($sql3);
+      $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
     }
 ?>
 
@@ -156,7 +168,7 @@
                 <div style="padding: 16px;  "><h5 style="border-bottom: 1px solid black;">Encadrants</h5></div>
                 
                 <div class="modal-body">
-                  ...
+                  ---
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>

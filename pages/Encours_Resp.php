@@ -16,7 +16,7 @@
 
       $id_etu = $_GET['id_etu'];
 
-      $sql1 = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND etu.ID_ETU='$id_etu' AND s.DATEDEBUT_STAGE =(select max(DATEDEBUT_STAGE) FROM stage where ID_ETU='$id_etu')";
+      $sql1 = "SELECT ID_STAGE,NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND etu.ID_ETU='$id_etu' AND s.DATEDEBUT_STAGE =(SELECT max(DATEDEBUT_STAGE) FROM stage WHERE ID_ETU='$id_etu')";
       $req1 =$bdd->query($sql1);
       $result1 = $req1->fetch(PDO::FETCH_ASSOC);
     }

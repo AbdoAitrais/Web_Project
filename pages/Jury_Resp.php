@@ -23,7 +23,7 @@
       $result1 = $req1->fetch(PDO::FETCH_ASSOC);
 
       /// *** Les donnees de jury 
-      $sql2 = "SELECT NOM_ENS,PRENOM_ENS FROM juri j,enseignant e,stage s WHERE j.ID_STAGE = s.ID_STAGE AND j.ID_ENS = e.ID_ENS AND s.ID_ETU = '$id_etu' ";
+      $sql2 = "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS FROM juri j,enseignant e,stage s WHERE j.ID_STAGE = s.ID_STAGE AND j.ID_ENS = e.ID_ENS AND s.ID_ETU = '$id_etu' ";
       $req2 =$bdd->query($sql2);
       $result2 = $req2->fetchAll(PDO::FETCH_ASSOC);
 
@@ -184,7 +184,7 @@
                           <td style="color: #616161;"><?php print($jury['NOM_ENS'])?></td>
                           <td style="color: #616161;"><?php print($jury['PRENOM_ENS'])?></td>
                           <td style="text-align: end;">
-                            <i><img src="icons/rubbish-bin.png" alt=""></i>
+                            <a href="back_end/Jury_Ens_Resp.php?jury_supp=<?php print($jury['ID_ENS'])?>&id_etu=<?php print($id_etu);?>"><i><img src="icons/rubbish-bin.png" alt=""></i></a>
                           </td>
                         </tr>
                         <?php endforeach;?>
@@ -216,9 +216,9 @@
                     <?php foreach($result3 as $enseignant) :?>
                         <tr>
                           <td style="color: #616161;"><?php print($enseignant['NOM_ENS'])?></td>
-                          <td style="color: #616161;"><?php print($enseignant['NOM_ENS'])?></td>
+                          <td style="color: #616161;"><?php print($enseignant['PRENOM_ENS'])?></td>
                           <td style="text-align: end;">
-                            <i><img src="icons/add-user.png" alt=""></i>
+                            <a href="back_end/Jury_Ens_Resp.php?jury_add=<?php print($enseignant['ID_ENS'])?>&id_etu=<?php print($id_etu);?>"><i><img src="icons/add-user.png" alt=""></i></a>
                           </td>
                         </tr>
                       <?php endforeach;?>
@@ -235,14 +235,23 @@
           
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
-        crossorigin="anonymous">
-      
-      
-      </script>
+        crossorigin="anonymous"></script>
+
+
       <script>
         function menuToggle(){
             const toggleMenu = document.querySelector(".menu");
             toggleMenu.classList.toggle('active');
+        }
+        
+        var scrollpos = localStorage.getItem('scrollpos_Jury_Resp');
+        if (scrollpos){
+              window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
+              localStorage.removeItem('scrollpos_Jury_Resp');
+        }
+
+        function LastScroll(){
+          localStorage.setItem('scrollpos_Jury_Resp', window.scrollY);
         }
       </script>
     
