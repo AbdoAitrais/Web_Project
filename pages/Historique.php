@@ -10,8 +10,16 @@
     
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
-    
+      
+      if($_SESSION['user_type'] == "Etudiant"){
+         
+        $sql = "SELECT ID_FORM FROM etudiant WHERE ID_ETU='$id_form' ";
+        $req = $bdd->query($sql); 
+        $result = $req->fetch(PDO::FETCH_ASSOC);
+        $id_form = $result['ID_FORM'] ;
+      }
       $req = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,POSTE,NOM_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND o.ID_FORM='$id_form' ";
+      
       if(isset($_POST['niveau_user']) ){
         
         $Niveau_user =$_POST['niveau_user'] ;
