@@ -40,13 +40,13 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="Find_Offre_Resp.php">Find offers</a><span class="active_link_line"></span>
+                <a class="nav-link navlink " href="Find_Offre_Resp.php">Find offers</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Liste_Etudiant_Resp.php">Etudiants</a>
+                <a class="nav-link navlink active_link_color" href="Liste_Etudiant_Resp.php">Etudiants</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Enseignants</a>
@@ -201,9 +201,9 @@
                           
                           $Statu_etu =  $result_statu['STATU'];
                           if($Statu_etu == 'Postulée'){
-                              echo '<a href="back_end/Statu_Post_Resp.php?Post_Non_Retenue='.$of_id.'&id_etu='.$id_etu.'"><button class="butt_style" style="background:lightgrey;">NON RETENUE</button></a>';
+                              echo '<a href="back_end/Statu_Post_Resp.php?Post_Non_Retenue='.$of_id.'&id_etu='.$id_etu.'"><button class="butt_style" style="background:lightgrey;" onClick="LastScroll()">NON RETENUE</button></a>';
                               echo"  ";
-                              echo '<a href="back_end/Statu_Post_Resp.php?Post_Retenue='.$of_id.'&id_etu='.$id_etu.'"><button class="butt_style" style="background:7096FF;">RETENUE</button></a>';
+                              echo '<a href="back_end/Statu_Post_Resp.php?Post_Retenue='.$of_id.'&id_etu='.$id_etu.'"><button class="butt_style" style="background:7096FF;" onClick="LastScroll()">RETENUE</button></a>';
                           }else{
                               echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">'.$Statu_etu.'</label>';
                           }
@@ -234,6 +234,7 @@
     crossorigin="anonymous"></script>
     <script>
       var scrollpos = localStorage.getItem('scrollpos_Soumis_Resp');
+      
       if (scrollpos){
             window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
             localStorage.removeItem('scrollpos_Soumis_Resp');

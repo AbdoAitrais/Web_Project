@@ -276,7 +276,7 @@ body,nav {
 }
 
 .tableHead{
-  border-bottom: 2px solid #A5A7AE;;
+  border-bottom: 2px solid #A5A7AE;
   display: flex;
   justify-content: space-between;
 }

@@ -3,7 +3,7 @@ html{
 }
 
 body,nav {
-    font-family: 'Poppins';
+    font-family: 'Poppins' !important;
 }
 
 
@@ -275,9 +275,14 @@ body,nav {
 }
 
 .tableHead{
-  border-bottom: 2px solid #d3cdcd;
+  border-bottom: 2px solid #A5A7AE;
   display: flex;
   justify-content: space-between;
+}
+
+.tableHead h4{
+  color: #717171;
+  font-weight: 600;
 }
 
 thead{
@@ -433,4 +438,9 @@ i img:hover{
 
 .form-check-input{
   margin-right: 5px;
+}
+
+th{
+  color: #9C9A9A;
+  font-weight: 600 !important;
 }
