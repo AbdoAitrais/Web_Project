@@ -193,7 +193,7 @@
                             <a href="Encours_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary">En cours</button></a>
                             <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
                             <a href="Modifier_Etudiant_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
-                            <button type="button" class="btn btn-outline-primary">Supprimer</button>
+                            <button type="button" class="btn btn-outline-primary">Désactiver</button>
                           </td>
                         </tr>
                     <?php endforeach; ?>

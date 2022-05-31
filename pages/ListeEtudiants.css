@@ -444,3 +444,24 @@ th{
   color: #9C9A9A;
   font-weight: 600 !important;
 }
+
+.todo-app-btn {
+  border: 0;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-align: center;
+  background: #7096FF;
+  color: #fff;
+  cursor: pointer;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 5px;
+}
+.todo-app-btn:hover {
+  background: #5d86f8;
+}
+
+.inp{
+  width:150px; margin-bottom: 10px;
+}
