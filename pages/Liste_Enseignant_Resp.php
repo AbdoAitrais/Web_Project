@@ -12,25 +12,14 @@
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
     
-      $req = "SELECT * FROM etudiant WHERE ID_FORM='$id_form'";
-      if(isset($_POST['niveau_user']) ){
-        $Niveau_user =$_POST['niveau_user'] ;
-        if($Niveau_user)
-          $req =$req." AND NIVEAU='$Niveau_user'"; 
-        
-        $_SESSION['last_niveau_user'] = $Niveau_user;
-      }
+      $req = "SELECT * FROM enseignant WHERE ID_DEPART IN (SELECT ID_DEPART FROM enseignant e, formation f WHERE f.ID_ENS = e.ID_ENS AND ID_FORM=?)";
       
-      if(isset($_POST['Filter']) && !empty($_POST['Filter'])){
-        $Filter_search = $_POST['Filter'];
-        $req=$req." AND( (NOM_ETU = '$Filter_search' ) OR (PRENOM_ETU = '$Filter_search' ) OR (CNE = '$Filter_search' ))";
-      }
       
-      $Smt = $bdd->query($req);
-      $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
       
-    
-  
+
+      $Smt = $bdd->prepare($req);
+      $Smt -> execute(array($id_form));
+	  $rows = $Smt -> fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <!DOCTYPE html>
@@ -46,7 +35,10 @@
     rel="stylesheet" 
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
     crossorigin="anonymous">
-    <title>Listes des Etudiants</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+	<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+    <title>Listes des Enseignants</title>
 </head>
 <body>
       
@@ -68,7 +60,7 @@
                 <a class="nav-link navlink active_link_color" href="Liste_Etudiant_Resp.php">Etudiants</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="Liste_Enseignant_Resp.php">Enseignants</a>
+                <a class="nav-link navlink" href="#">Enseignants</a>
               </li>
             </ul>
             
@@ -96,7 +88,7 @@
     <div class="container-fluid ">
       <div class="" style="margin-top: 100px; background-color:  #E5E5E5 !important;">
         <div class="row">
-        <form action="Liste_Etudiant_Resp.php" method="post" id="form" >
+        <form action="Liste_Etudiant_Resp.php" method="post" id="Form_Ens" >
             <div class="col-md-6 col-sm-12 elm pub_col" style="background: #E5E5E5 !important; display: flex; justify-content: center;">
               
               
@@ -118,63 +110,18 @@
                         border-radius: 35px !important; padding: 5%;">
 
                   <div class="tableHead" >
-                        <h4>Liste des etudiants</h4>
-                        <div class="select" style="display:flex; width:auto;">
-                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="niveau_user" >
-                              <?php 
-                              
-                              if(isset($_SESSION['last_niveau_user'] )){
-                                switch($_SESSION['last_niveau_user'] ){
-                                  case 0:
-                                    echo'<option value=0 selected>Tout</option>
-                                        <option value=1  >1ere</option>
-                                        <option value=2 >2eme</option>
-                                        <option value=3>3eme</option>';
-                                    break;
-                                  case 1:
-                                    echo '<option value=0 >Tout</option>
-                                          <option value=1 selected >1ere</option>
-                                          <option value=2>2eme</option>
-                                          <option value=3>3eme</option>';
-                                    break;
-                                  case 2:
-                                    echo '<option value=0 >Tout</option>
-                                          <option value=1  >1ere</option>
-                                          <option value=2 selected>2eme</option>
-                                          <option value=3>3eme</option>';
-                                    break;
-                                  case 3:
-                                          echo
-                                              '<option value=0 >Tout</option>
-                                              <option value=1  >1ere</option>
-                                              <option value=2 >2eme</option>
-                                              <option value=3 selected>3eme</option>';
-                                    break;
-                                
-                                }
-                                   unset($_SESSION['last_niveau_user']);
-                              }else{
-                              
-                              ?>
-                              <option value=0 selected >Tout</option>
-                              <option value=1  >1ere</option>
-                              <option value=2 >2eme</option>
-                              <option value=3>3eme</option><?php } ?>
-                                      
-                            </select>
-                            <button type="submit" class="submit"></button>
-                        </div>
+                        <h4>Liste des enseignants</h4>
+
                   </div>
                 </form>
                   
 
-                <table class="table">
+                <table class="table" id="MaTab">
                     <thead>
                       <tr>
-                        <th scope="col">N</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
-                        <th scope="col">CNE</th>
+                        <th scope="col">CIN</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
@@ -185,14 +132,12 @@
                     
                       ?>
                         <tr>
-                          <th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU'] ; ?></th>
-                          <td><?php echo $row['NOM_ETU']; ?></td>
-                          <td><?php echo $row['PRENOM_ETU']; ?></td>
-                          <td style="color: #7096FF;"><?php echo $row['CNE']; ?></td>
+                         
+                          <td><?php echo $row['NOM_ENS']; ?></td>
+                          <td><?php echo $row['PRENOM_ENS']; ?></td>
+                          <td style="color: #7096FF;"><?php echo $row['CIN_ENS']; ?></td>
                           <td style="text-align: end;">
-                            <a href="Encours_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary">En cours</button></a>
-                            <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
-                            <a href="Modifier_Etudiant_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
+                            <a href="Modifier_Enseignant_Resp.php?id_etu=<?php echo $row['ID_ENS']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
                             <button type="button" class="btn btn-outline-primary">Desactiver</button>
                           </td>
                         </tr>
@@ -226,10 +171,9 @@
 ?>
 <script>
   
-  function changeFunc() 
-  {
-    document.getElementById("form").submit();
-  }
+  $(document).ready( function () {
+    $('#MaTab').DataTable();
+} );
 
 
 </script>
