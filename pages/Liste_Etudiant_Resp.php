@@ -114,7 +114,7 @@
 
 
         <div class="row" >
-            <div class="col-md-9 elm pub_col" style=" background: #FFFFFF !important;
+            <div class="col-md-10 elm pub_col" style=" background: #FFFFFF !important;
                         border-radius: 35px !important; padding: 5%;">
 
                   <div class="tableHead" >
