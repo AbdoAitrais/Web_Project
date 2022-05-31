@@ -186,7 +186,7 @@
                       <td style="text-align: end;">Note <input type="number" step="0.01" min="0" max="20" value="<?php print($result2['NOTENCAD']);?>" name="note_encad" style="width: 60px; margin-left: 5px; border: 1px solid #B3B3B3;"></td>
                     </tr>
                     <tr style="height: 50px;">
-                      <td colspan="2"> <?php if(!empty($result1))print($result1['NOM_ENTREP']);?></td>
+                      <td colspan="2">Entreprise</td>
                   <td style="text-align: end;">Note <input type="number" step="0.01" min="0" max="20" value="<?php print($result1['NOTENCAD_ENTREP']);?>" name="note_entrep" style="width: 60px; margin-left: 5px; border: 1px solid #B3B3B3;"></td>
                     </tr>
                   </table>

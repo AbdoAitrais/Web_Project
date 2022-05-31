@@ -39,7 +39,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="ListeEtudiants.css">
+    <link rel="stylesheet" href="nextab.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
@@ -50,7 +50,7 @@
 </head>
 <body>
       
-    <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0; background: #F3F5F8 !important;">
         <div class="container-fluid">
           <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -94,10 +94,10 @@
       </nav>
 
     <div class="container-fluid ">
-      <div class="" style="margin-top: 60px;">
+      <div class="" style="margin-top: 100px; background-color:  #E5E5E5 !important;">
         <div class="row">
         <form action="ListeEtudiants.php" method="post" id="form" >
-            <div class="col-md-6 col-sm-12 elm pub_col" style="display: flex; justify-content: center;">
+            <div class="col-md-6 col-sm-12 elm pub_col" style="background: #E5E5E5 !important; display: flex; justify-content: center;">
               
               
               <div class="search">
@@ -113,8 +113,9 @@
         </div>
 
 
-        <div class="row">
-            <div class="col-md-10 elm pub_col">
+        <div class="row" >
+            <div class="col-md-9 elm pub_col" style=" background: #FFFFFF !important;
+                        border-radius: 35px !important; padding: 5%;">
 
                   <div class="tableHead" >
                         <h4>Liste des etudiants</h4>
