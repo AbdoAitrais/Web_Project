@@ -35,10 +35,32 @@
 
       ///Insertion des notes
       
-      /// ***Insertion des notes des jury
-      if(!empty($_POST['notes_jury'])  ){
+      if(!empty($_POST['notes_jury']) || !empty($_POST['note_encad']) || !empty($_POST['note_entrep']) ){
+          /// ***Insertion des notes des jury
+          if(!empty($_POST['notes_jury'])  ){
 
-          $notes_jury = $_POST['notes_jury'];
+            $notes_jury = $_POST['notes_jury'];
+            $i = 0;
+            foreach($result3 as $Jury){
+              
+                $Smt = $bdd->prepare("UPDATE juri SET NOTE =? WHERE ID_ENS=? AND ID_STAGE=? ");
+                $Smt -> execute(array($notes_jury[$i],$Jury['ID_ENS'],$id_stage));
+                $i++;
+            }
+        }
+
+        if(!empty($_POST['note_encad'])){
+          
+          $Smt = $bdd->prepare("UPDATE stage SET NOTENCAD =? WHERE ID_STAGE=? ");
+          $Smt -> execute(array($_POST['note_encad'],$id_stage));
+        }
+        if(!empty($_POST['note_entrep'])){
+          
+          $Smt = $bdd->prepare("UPDATE stage SET NOTENCAD_ENTREP =? WHERE ID_STAGE=? ");
+          $Smt -> execute(array($_POST['note_entrep'],$id_stage));
+        }
+        
+        header('refresh:0');
       }
     
 
@@ -64,7 +86,7 @@
 </head>
 <body>
       
-      <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;background: #F3F5F8 !important;">
         <div class="container-fluid">
           <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -135,7 +157,7 @@
                     </thead>
                     <tbody>
 
-                   
+                        <?php if(!empty($result1)){?>
                         <tr>
                           <th scope="row" style="color: #7196FF"><?php print($result1['NIVEAU_STAGE'])?></th>
                           <td style="color: #616161;"><?php print($result1['NOM_ETU'])?></td>
@@ -151,11 +173,12 @@
                                 <li><img src="icons/teacher.png" alt=""><a href="">Encadrant</a> </li>
                                 <li><img src="icons/jury.png" alt=""><a href="Jury_Resp.php?id_stage=<?php print($result1['ID_STAGE']);?>">Jury</a> </li>
                                 <li><img src="icons/certificate.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Notes</a> </li>
-                                <li><img src="icons/application.png" alt=""><a href="">Rapport</a> </li>
+                                <li><img src="icons/application.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">Rapport</a> </li>
                               </ul>
                             </div>
                           </td>
                         </tr>
+                        <?php }?>
                     </tbody>
                   </table>
               </div>
@@ -166,6 +189,8 @@
 
         </div>
         </div>
+        
+        <!-- Notes -->
 
         <form action="Encours_Resp.php?id_etu=<?php print($id_etu);?>" method="post">
           <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -181,8 +206,10 @@
                     <tr style="height: 50px;">
                       <?php if(!empty($result2)){?>
                       <td><?php print($result2['NOM_ENS']);?></td>
-                      <td><?php print($result2['PRENOM_ENS']);}?></td>
-
+                      <td><?php print($result2['PRENOM_ENS']);}else{?></td>
+                      <td>NOM</td>
+                      <td>PRENOM</td>
+                      <?php }?>
                       <td style="text-align: end;">Note <input type="number" step="0.01" min="0" max="20" value="<?php print($result2['NOTENCAD']);?>" name="note_encad" style="width: 60px; margin-left: 5px; border: 1px solid #B3B3B3;"></td>
                     </tr>
                     <tr style="height: 50px;">
@@ -215,6 +242,35 @@
             </div>
           </div>
         </form>
+        <!-- RAPPORT -->
+        <div class="modal fade"  id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"  style="width: 400px;" >
+              <div class="modal-content" >
+                <div class="modal-header">
+                  <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Rapport</h3>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="max-height: 300px;">
+                    
+                    <label class="file">
+                        <input type="file" class="form-control" id="cv" name="cv" >
+                      </label>
+                      <div style="display: flex;">
+                        <h5 style="border-bottom: 1px solid #717171; color: #717171; font-weight: 600; margin-top: 25px; border-bottom: none; text-decoration: underline;">Mots clés :</h5>
+                        <div id="inp" style="margin-top: 20px; margin-left: 20px;">
+                            <input type="text" class="inp"><br>
+                            <input type="text" class="inp"><button id="bt" class="todo-app-btn" onclick="add()"><i class="bi bi-plus-lg"></i> Add </button><br>
+                        </div>
+                    </div>
+              </div>
+                
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Enregistrer</button>
+                </div>
+              </div>
+            </div>
+          </div>
           
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
@@ -227,6 +283,29 @@
         function menuToggle(){
             const toggleMenu = document.querySelector(".menu");
             toggleMenu.classList.toggle('active');
+        }
+        
+        function add()
+        {
+            const inpt = document.createElement("input");
+            const butt = document.createElement("button");
+            const icn = document.createElement("i");
+            const textnode = document.createTextNode("Add");
+            const line = document.createElement("br");
+            document.getElementById("bt").remove();
+            butt.classList.add("todo-app-btn");
+            butt.setAttribute("id", "bt");
+            inpt.classList.add("inp");
+            icn.classList.add("bi");
+            icn.classList.add("bi-plus-lg");
+            butt.appendChild(icn);
+            butt.appendChild(textnode);
+            butt.onclick = ()=>{
+              add();
+            }
+            document.getElementById("inp").appendChild(inpt);
+            document.getElementById("inp").appendChild(butt);
+            document.getElementById("inp").appendChild(line);
         }
       </script>
     

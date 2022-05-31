@@ -15,7 +15,7 @@
       {
         ///Stage encours
         $id_stage = $_GET['id_stage'];
-        $sql1 = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU  AND s.ID_STAGE='$id_stage'";
+        $sql1 = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP,NOTENCAD_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU  AND s.ID_STAGE='$id_stage'";
         $req1 =$bdd->query($sql1);
         $result1 = $req1->fetch(PDO::FETCH_ASSOC);
 
@@ -32,6 +32,47 @@
       
         $req3 =$bdd->query($sql3);
         $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
+
+
+        ///L'Encadrant
+        $sql4= "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS,s.NOTENCAD FROM enseignant e,stage s WHERE s.ID_ENS = e.ID_ENS AND s.ID_STAGE = '$id_stage' ";
+        $req4 =$bdd->query($sql4);
+        $result4 = $req4->fetch(PDO::FETCH_ASSOC);
+
+        ///Jury
+        $sql5 = "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS,j.NOTE FROM enseignant e,juri j WHERE j.ID_ENS = e.ID_ENS AND j.ID_STAGE = '$id_stage' ";
+        $req5 =$bdd->query($sql5);
+        $result5 = $req5->fetchAll(PDO::FETCH_ASSOC);
+
+        ///Insertion des notes
+      
+        if(!empty($_POST['notes_jury']) || !empty($_POST['note_encad']) || !empty($_POST['note_entrep']) ){
+          /// ***Insertion des notes des jury
+          if(!empty($_POST['notes_jury'])  ){
+
+            $notes_jury = $_POST['notes_jury'];
+            $i = 0;
+            foreach($result5 as $Jury){
+              
+                $Smt = $bdd->prepare("UPDATE juri SET NOTE =? WHERE ID_ENS=? AND ID_STAGE=? ");
+                $Smt -> execute(array($notes_jury[$i],$Jury['ID_ENS'],$id_stage));
+                $i++;
+            }
+        }
+
+        if(!empty($_POST['note_encad'])){
+          
+          $Smt = $bdd->prepare("UPDATE stage SET NOTENCAD =? WHERE ID_STAGE=? ");
+          $Smt -> execute(array($_POST['note_encad'],$id_stage));
+        }
+        if(!empty($_POST['note_entrep'])){
+          
+          $Smt = $bdd->prepare("UPDATE stage SET NOTENCAD_ENTREP =? WHERE ID_STAGE=? ");
+          $Smt -> execute(array($_POST['note_entrep'],$id_stage));
+        }
+        
+        header('refresh:0');
+      }
     
     
 
@@ -55,7 +96,7 @@
 </head>
 <body>
       
-      <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;background: #F3F5F8 !important;">
         <div class="container-fluid">
           <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -142,7 +183,7 @@
                                 <li><img src="icons/loupe.png" alt=""><a href="">Details</a> </li>
                                 <li><img src="icons/teacher.png" alt=""><a href="">Encadrant</a> </li>
                                 <li><img src="icons/jury.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Jury</a> </li>
-                                <li><img src="icons/certificate.png" alt=""><a href="">Notes</a> </li>
+                                <li><img src="icons/certificate.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Notes</a> </li>
                                 <li><img src="icons/application.png" alt=""><a href="">Rapport</a> </li>
                               </ul>
                             </div>
@@ -194,32 +235,83 @@
           </div>
 
           <form action="back_end/Jury_Ens_Resp.php?id_stage=<?php print($id_stage);?>" method="post">
-           <div class="modal fade"  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
-              <div class="modal-content" >
+            <div class="modal fade"  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Enseignants</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body" style="max-height: 300px;">
+                    <table class="hovtr">
+                      <?php
+                          if(!empty($result3)){
+                              foreach($result3 as $Ens):
+                          
+                      ?>
+                      <tr style="height: 50px;">
+                        <td><?php print($Ens['NOM_ENS'])?></td>
+                        <td><?php print($Ens['PRENOM_ENS'])?></td>
+                        <td style="text-align: end;">
+                          <input class="form-check-input" type="checkbox" name='jury_add[<?php print($Ens['ID_ENS']);?>]' id="flexCheckDefault">
+                        </td>
+                      </tr>
+                      <?php endforeach;}?>
+                      
+                    </table>
+                </div>
+                  
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+
+        <form action="Jury_Resp.php?id_stage=<?php print($id_stage);?>" method="post">
+          <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
                 <div class="modal-header">
-                  <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Enseignants</h3>
+                  <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Notes</h3>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" style="max-height: 300px;">
-                  <table class="hovtr">
-                    <?php
-                        if(!empty($result3)){
-                            foreach($result3 as $Ens):
-                        
-                    ?>
+                <div style="padding: 16px;  ">
+                  <h5 style="border-bottom: 1px solid #717171; color: #717171; font-weight: 600;">Encadrants</h5>
+                  <table style="width: 100%; color: #616161;">
                     <tr style="height: 50px;">
-                      <td><?php print($Ens['NOM_ENS'])?></td>
-                      <td><?php print($Ens['PRENOM_ENS'])?></td>
-                      <td style="text-align: end;">
-                        <input class="form-check-input" type="checkbox" name='jury_add[<?php print($Ens['ID_ENS']);?>]' id="flexCheckDefault">
-                      </td>
+                      <?php if(!empty($result4)){?>
+                      <td><?php print($result4['NOM_ENS']);?></td>
+                      <td><?php print($result4['PRENOM_ENS']);}else{?></td>
+                      <td>NOM</td>
+                      <td>PRENOM</td>
+                      <?php }?>
+                      <td style="text-align: end;">Note <input type="number" step="0.01" min="0" max="20" value="<?php print($result4['NOTENCAD']);?>" name="note_encad" style="width: 60px; margin-left: 5px; border: 1px solid #B3B3B3;"></td>
                     </tr>
-                    <?php endforeach;}?>
-                    
+                    <tr style="height: 50px;">
+                      <td colspan="2">Entreprise</td>
+                  <td style="text-align: end;">Note <input type="number" step="0.01" min="0" max="20" value="<?php print($result1['NOTENCAD_ENTREP']);?>" name="note_entrep" style="width: 60px; margin-left: 5px; border: 1px solid #B3B3B3;"></td>
+                    </tr>
                   </table>
-              </div>
+                </div>
                 
+                <div style="padding: 16px;  ">
+                  <h5 style="border-bottom: 1px solid #717171; color: #717171; font-weight: 600;">Jury</h5>
+                  <table style="width: 100%; color: #616161;">
+                      
+                      <?php if(!empty($result5)){
+                          foreach($result5 as $Jury):
+                      ?>
+                      <tr style="height: 50px;">
+                        <td><?php print($Jury['NOM_ENS']);?></td>
+                        <td><?php print($Jury['PRENOM_ENS']);?></td>
+                        <td style="text-align: end;">Note <input type="number" step="0.01" min="0" max="20"  value ="<?php print($Jury['NOTE']);?>" name="notes_jury[]" style="width: 60px; margin-left: 5px; border: 1px solid #B3B3B3;"></td>
+                      </tr>
+                      <?php endforeach;}?>
+                  </table>
+                </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary">Enregistrer</button>
@@ -227,7 +319,7 @@
               </div>
             </div>
           </div>
-          </form>
+        </form>
 
           
           

@@ -31,7 +31,7 @@
 
   
     
-<nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;background: #F3F5F8 !important;">
         <div class="container-fluid">
           <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,13 +40,13 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="Find_Offre_Resp.php">Find offers</a><span class="active_link_line"></span>
+                <a class="nav-link navlink " href="Find_Offre_Resp.php">Find offers</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Liste_Etudiant_Resp.php">Etudiants</a>
+                <a class="nav-link navlink active_link_color" href="Liste_Etudiant_Resp.php">Etudiants</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Enseignants</a>
@@ -141,24 +141,24 @@
       $Resp = $_SESSION['user_id'];
       $id_etu = $_GET['id_etu'];
 
-      $sql2 ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP  AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' ";
+      $sql ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP  AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' ";
       
       ///***Search bar
       if(isset($_POST['Filter']) && !empty( $_POST['Filter'] )){
 
           $Filter_search = $_POST['Filter'];
-          $sql2=$sql2." AND( (e.VILLE = '$Filter_search' ) OR (o.POSTE = '$Filter_search' ) OR (o.DESCRIP LIKE '%$Filter_search%' ) OR (e.NOM_ENTREP LIKE '$Filter_search' ) OR (p.STATU LIKE '$Filter_search' ) )";
+          $sql=$sql." AND( (e.VILLE = '$Filter_search' ) OR (o.POSTE = '$Filter_search' ) OR (o.DESCRIP LIKE '%$Filter_search%' ) OR (e.NOM_ENTREP LIKE '$Filter_search' ) OR (p.STATU LIKE '$Filter_search' ) )";
         
       }
       /// ***Order by
-      $sql2=$sql2." ORDER BY o.ID_OFFRE DESC";
-      $req2 =$bdd->query($sql2);
-      $result2 = $req2->fetchAll(PDO::FETCH_ASSOC);
+      $sql=$sql." ORDER BY o.ID_OFFRE DESC";
+      $req =$bdd->query($sql);
+      $result = $req->fetchAll(PDO::FETCH_ASSOC);
       
 
-     if(!empty($result2)){
+     if(!empty($result)){
             
-            foreach($result2 as $Offre):                  
+            foreach($result as $Offre):                  
             ?>
           
             <div class="brd">
@@ -193,6 +193,7 @@
               <div class="butt_align">
                 <div style="text-align:end;">
                     <?php
+                        
                         $of_id = $Offre['ID_OFFRE'];
                         $sql_statu = "SELECT STATU FROM postuler WHERE ID_OFFRE ='$of_id' AND ID_ETU='$id_etu' ";
                         $req_statu =$bdd->query($sql_statu);
@@ -201,9 +202,9 @@
                           
                           $Statu_etu =  $result_statu['STATU'];
                           if($Statu_etu == 'Postulée'){
-                              echo '<a href="back_end/Statu_Post_Resp.php?Post_Non_Retenue='.$of_id.'&id_etu='.$id_etu.'"><button class="butt_style" style="background:lightgrey;">NON RETENUE</button></a>';
+                              echo '<a href="back_end/Statu_Post_Resp.php?Post_Non_Retenue='.$of_id.'&id_etu='.$id_etu.'"><button class="butt_style" style="background:lightgrey;" onClick="LastScroll()">NON RETENUE</button></a>';
                               echo"  ";
-                              echo '<a href="back_end/Statu_Post_Resp.php?Post_Retenue='.$of_id.'&id_etu='.$id_etu.'"><button class="butt_style" style="background:7096FF;">RETENUE</button></a>';
+                              echo '<a href="back_end/Statu_Post_Resp.php?Post_Retenue='.$of_id.'&id_etu='.$id_etu.'"><button class="butt_style" style="background:7096FF;" onClick="LastScroll()">RETENUE</button></a>';
                           }else{
                               echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">'.$Statu_etu.'</label>';
                           }
@@ -234,6 +235,7 @@
     crossorigin="anonymous"></script>
     <script>
       var scrollpos = localStorage.getItem('scrollpos_Soumis_Resp');
+      
       if (scrollpos){
             window.scrollTo({left:0,top:scrollpos,behavior:'instant',});
             localStorage.removeItem('scrollpos_Soumis_Resp');
