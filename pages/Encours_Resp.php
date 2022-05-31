@@ -149,7 +149,7 @@
                               <ul>
                                 <li><img src="icons/loupe.png" alt=""><a href="">Details</a> </li>
                                 <li><img src="icons/teacher.png" alt=""><a href="">Encadrant</a> </li>
-                                <li><img src="icons/jury.png" alt=""><a href="Jury_Resp?id_stage=<?php print($result1['ID_STAGE']);?>">Jury</a> </li>
+                                <li><img src="icons/jury.png" alt=""><a href="Jury_Resp.php?id_stage=<?php print($result1['ID_STAGE']);?>">Jury</a> </li>
                                 <li><img src="icons/certificate.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Notes</a> </li>
                                 <li><img src="icons/application.png" alt=""><a href="">Rapport</a> </li>
                               </ul>
@@ -167,7 +167,7 @@
         </div>
         </div>
 
-        <form action="Encours_Resp?id_etu=<?php print($id_etu);?>" method="post">
+        <form action="Encours_Resp.php?id_etu=<?php print($id_etu);?>" method="post">
           <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">

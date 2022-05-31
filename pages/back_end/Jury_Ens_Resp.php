@@ -19,9 +19,10 @@
                 if(!empty($_GET['jury_supp'])){
                     
                     $JURY_ID = $_GET['jury_supp'] ;  
-                    
-                    $sql1="DELETE FROM juri WHERE ID_ENS='$JURY_ID' AND ID_STAGE ='$id_stage' ";
-                    $bdd->exec($sql1);
+                    $Smt = $bdd->prepare("DELETE FROM juri WHERE ID_ENS=? AND ID_STAGE =? ");
+                    $Smt -> execute(array($JURY_ID,$id_stage));
+
+
                 
                 }else if(!empty($_POST['jury_add'])){
                     ///Indexes of array represent the IDS of ENSEIGNANTS,"on" means est checkée
