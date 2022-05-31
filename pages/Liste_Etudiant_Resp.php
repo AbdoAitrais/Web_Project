@@ -65,7 +65,7 @@
                 <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="ListeEtudiants.php">Etudiants</a><span class="active_link_line"></span>
+                <a class="nav-link navlink active_link_color" href="Liste_Etudiant_Resp.php">Etudiants</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Enseignants</a>
@@ -96,7 +96,7 @@
     <div class="container-fluid ">
       <div class="" style="margin-top: 100px; background-color:  #E5E5E5 !important;">
         <div class="row">
-        <form action="ListeEtudiants.php" method="post" id="form" >
+        <form action="Liste_Etudiant_Resp.php" method="post" id="form" >
             <div class="col-md-6 col-sm-12 elm pub_col" style="background: #E5E5E5 !important; display: flex; justify-content: center;">
               
               

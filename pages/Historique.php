@@ -72,7 +72,7 @@
                 <a class="nav-link navlink active_link_color" href="Historique.php">Historique</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="ListeEtudiants.php">Etudiants</a>
+                <a class="nav-link navlink " href="Liste_Etudiant_Resp.php">Etudiants</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Enseignants</a>

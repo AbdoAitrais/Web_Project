@@ -70,7 +70,7 @@
                 <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="ListeEtudiants.php">Etudiants</a><span class="active_link_line"></span>
+                <a class="nav-link navlink active_link_color" href="Liste_Etudiant_Resp.php">Etudiants</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Enseignants</a>
@@ -106,7 +106,7 @@
         <div class="row" style="background-color: #FFFEFB;">
             <div class="col-md-8 elm pub_col">
 
-                <form action="ListeEtudiants.php" method="post" id="form" >
+                <form action="Liste_Etudiant_Resp.php" method="post" id="form" >
                   <div class="tableHead" >
                         <h4>Stage en cours</h4>
                   </div>
@@ -157,7 +157,7 @@
           <div class="row" style="background-color: #FFFEFB; margin-top: 30px;">
             <div class="col-md-4 elm pub_col">
 
-                <form action="ListeEtudiants.php" method="post" id="form" >
+                <form action="Liste_Etudiant_Resp.php" method="post" id="form" >
                   <div class="tableHead" >
                         <h4>Jury</h4>
                         <i><img src="icons/add-user.png" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>

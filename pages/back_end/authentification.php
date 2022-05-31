@@ -42,7 +42,7 @@
 		else if ($type_user == "Responsable")
 		{
 			$result = get_user_id_type_mainPage('formation','ID_FORM',
-										'ListeEtudiants.php','Responsable',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
+										'Liste_Etudiant_Resp.php','Responsable',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
 		}
 		else if ($type_user == "Admin")
 		{

@@ -89,7 +89,7 @@ if ($uploadOk == 0) {
         NUMTEL_ETU=? , NIVEAU=? , PROMOTION=? , DATENAISS_ETU=? , CV=? WHERE ID_ETU=?");
         $Smt -> execute(array($nom_etu,$prenom_etu,$email_etu,$cin_etu,$cne,$adresse_etu,$numtel_etu,$niveau,$promotion,$datenaiss_etu,$cv,$id_etu));
         
-        header('location:ListeEtudiants.php');
+        header('location:Liste_Etudiant_Resp.php');
 
       }
 
@@ -126,7 +126,7 @@ if ($uploadOk == 0) {
                 <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="ListeEtudiants.php">Etudiants</a><span class="active_link_line"></span>
+                <a class="nav-link navlink active_link_color" href="Liste_Etudiant_Resp.php">Etudiants</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Enseignants</a>

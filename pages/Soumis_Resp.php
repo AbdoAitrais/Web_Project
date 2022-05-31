@@ -46,7 +46,7 @@
                 <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="ListeEtudiants.php">Etudiants</a>
+                <a class="nav-link navlink " href="Liste_Etudiant_Resp.php">Etudiants</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Enseignants</a>
