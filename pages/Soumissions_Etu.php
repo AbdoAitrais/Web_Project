@@ -135,12 +135,13 @@
          
             <?php 
 
-            function Create_Offres($result2 ,$Etat_Offre){
+            function Create_Offres($Offres ,$Etat_Offre){
+                
                 require('back_end/connexion.php');
                 
-                if(!empty($result2))
+                if(!empty($Offres))
                   {
-                    foreach($result2 as $Offre):
+                    foreach($Offres as $Offre):
                                                
             ?>
           
@@ -212,11 +213,11 @@
             $Etu=$_SESSION['user_id'];
                     
             ///Niveau et Formation de l'etudiant
-            $sql1 ="SELECT NIVEAU,ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
-            $req1 =$bdd->query($sql1);
-            $result1 = $req1->fetch(PDO::FETCH_ASSOC);
-            $NIVEAU=$result1['NIVEAU'];
-            $FORMATION=$result1['ID_FORM'];
+            $sql ="SELECT NIVEAU,ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
+            $req =$bdd->query($sql);
+            $result = $req->fetch(PDO::FETCH_ASSOC);
+            $NIVEAU=$result['NIVEAU'];
+            $FORMATION=$result['ID_FORM'];
             
             /// ***
             $Filter_sql = "";
@@ -231,35 +232,35 @@
             $select_join = "SELECT * FROM offre O,entreprise E,postuler P WHERE E.ID_ENTREP=O.ID_ENTREP AND O.ID_OFFRE = P.ID_OFFRE AND P.ID_ETU='$Etu' ";
 
             /// *** Retenue
-            $sql9 =$select_join." AND P.STATU='Retenue'".$Filter_sql;            
-            $req9 =$bdd->query($sql9);
-            $result9 = $req9->fetchAll(PDO::FETCH_ASSOC);
-            Create_Offres($result9 , 3);
+            $sql3 =$select_join." AND P.STATU='Retenue'".$Filter_sql;            
+            $req3 =$bdd->query($sql3);
+            $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
+            Create_Offres($result3 , 3);
             
             /// *** Acceptée
-            $sql6 =$select_join." AND P.STATU='Acceptée'".$Filter_sql;             
-            $req6 =$bdd->query($sql6);
-            $result6 = $req6->fetchAll(PDO::FETCH_ASSOC);
-            Create_Offres($result6 , 1);
+            $sql1 =$select_join." AND P.STATU='Acceptée'".$Filter_sql;             
+            $req1 =$bdd->query($sql1);
+            $result1 = $req1->fetchAll(PDO::FETCH_ASSOC);
+            Create_Offres($result1 , 1);
             
             /// *** Postulée
-            $sql10 =$select_join." AND P.STATU='Postulée'".$Filter_sql;            
-            $req10=$bdd->query($sql10);
-            $result10 = $req10->fetchAll(PDO::FETCH_ASSOC);
-            Create_Offres($result10 , 4);
+            $sql4 =$select_join." AND P.STATU='Postulée'".$Filter_sql;            
+            $req4=$bdd->query($sql4);
+            $result4 = $req4->fetchAll(PDO::FETCH_ASSOC);
+            Create_Offres($result4 , 4);
             
             /// *** Non Acceptée
-            $sql8 =$select_join." AND P.STATU='Non Acceptée'".$Filter_sql;             
-            $req8 =$bdd->query($sql8);
-            $result8 = $req8->fetchAll(PDO::FETCH_ASSOC);
-            Create_Offres($result8 , 2);
+            $sql2 =$select_join." AND P.STATU='Non Acceptée'".$Filter_sql;             
+            $req2 =$bdd->query($sql2);
+            $result2 = $req2->fetchAll(PDO::FETCH_ASSOC);
+            Create_Offres($result2 , 2);
             
             
             /// *** Non retenue
-            $sql11 =$select_join." AND P.STATU='Non Retenue'".$Filter_sql;             
-            $req11 =$bdd->query($sql11);
-            $result11 = $req11->fetchAll(PDO::FETCH_ASSOC);
-            Create_Offres($result11 , 5);
+            $sql5 =$select_join." AND P.STATU='Non Retenue'".$Filter_sql;             
+            $req5 =$bdd->query($sql5);
+            $result5= $req5->fetchAll(PDO::FETCH_ASSOC);
+            Create_Offres($result5 , 5);
 
             ;?>            
           </div>

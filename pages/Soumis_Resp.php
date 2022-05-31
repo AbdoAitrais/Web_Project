@@ -141,24 +141,24 @@
       $Resp = $_SESSION['user_id'];
       $id_etu = $_GET['id_etu'];
 
-      $sql2 ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP  AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' ";
+      $sql ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP  AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' ";
       
       ///***Search bar
       if(isset($_POST['Filter']) && !empty( $_POST['Filter'] )){
 
           $Filter_search = $_POST['Filter'];
-          $sql2=$sql2." AND( (e.VILLE = '$Filter_search' ) OR (o.POSTE = '$Filter_search' ) OR (o.DESCRIP LIKE '%$Filter_search%' ) OR (e.NOM_ENTREP LIKE '$Filter_search' ) OR (p.STATU LIKE '$Filter_search' ) )";
+          $sql=$sql." AND( (e.VILLE = '$Filter_search' ) OR (o.POSTE = '$Filter_search' ) OR (o.DESCRIP LIKE '%$Filter_search%' ) OR (e.NOM_ENTREP LIKE '$Filter_search' ) OR (p.STATU LIKE '$Filter_search' ) )";
         
       }
       /// ***Order by
-      $sql2=$sql2." ORDER BY o.ID_OFFRE DESC";
-      $req2 =$bdd->query($sql2);
-      $result2 = $req2->fetchAll(PDO::FETCH_ASSOC);
+      $sql=$sql." ORDER BY o.ID_OFFRE DESC";
+      $req =$bdd->query($sql);
+      $result = $req->fetchAll(PDO::FETCH_ASSOC);
       
 
-     if(!empty($result2)){
+     if(!empty($result)){
             
-            foreach($result2 as $Offre):                  
+            foreach($result as $Offre):                  
             ?>
           
             <div class="brd">
@@ -193,6 +193,7 @@
               <div class="butt_align">
                 <div style="text-align:end;">
                     <?php
+                        
                         $of_id = $Offre['ID_OFFRE'];
                         $sql_statu = "SELECT STATU FROM postuler WHERE ID_OFFRE ='$of_id' AND ID_ETU='$id_etu' ";
                         $req_statu =$bdd->query($sql_statu);

@@ -164,7 +164,7 @@
                   
                     
                     ///Tous les offres de cette etudiant
-                    $sql2 ="SELECT * FROM offre O,entreprise E WHERE E.ID_ENTREP=O.ID_ENTREP AND O.NIVEAU_OFFRE='$NIVEAU' AND O.ID_FORM='$FORMATION' AND O.ID_OFFRE NOT IN(SELECT ID_OFFRE FROM postuler WHERE STATU!='Postulée')";
+                    $sql2 ="SELECT * FROM offre O,entreprise E WHERE E.ID_ENTREP=O.ID_ENTREP AND O.NIVEAU_OFFRE='$NIVEAU' AND O.ID_FORM='$FORMATION' AND O.ID_OFFRE NOT IN(SELECT ID_OFFRE FROM postuler WHERE STATU!='Postulée') AND O.SOURCE_OFFRE='1'";
                     ///***Search bar
                     if(isset($_POST['Filter']) && !empty( $_POST['Filter'] )){
 
