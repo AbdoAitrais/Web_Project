@@ -21,7 +21,7 @@
                     $JURY_ID = $_GET['jury_supp'] ;  
                     $Smt = $bdd->prepare("DELETE FROM juri WHERE ID_ENS=? AND ID_STAGE =? ");
                     $Smt -> execute(array($JURY_ID,$id_stage));
-
+                    
 
                 
                 }else if(!empty($_POST['jury_add'])){
@@ -29,12 +29,12 @@
                     $ENS_IDS = array_keys($_POST['jury_add'] , 'on');
                    
                     foreach($ENS_IDS as $ENS_ID){
-                        
-                        $sql2="INSERT INTO juri(ID_ENS,ID_STAGE) VALUES('$ENS_ID','$id_stage') ";
-                        $bdd->exec($sql2);
+                        $Smt = $bdd->prepare("INSERT INTO juri(ID_ENS,ID_STAGE) VALUES(?,?) ");
+                        $Smt -> execute(array($ENS_ID,$id_stage));
                     }
                     
                 }
+                $Smt->closeCursor();//vider le curseur (free)
                 
                 header('location:../Jury_Resp.php?id_stage='.$id_stage);
             }
