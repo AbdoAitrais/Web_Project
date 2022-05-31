@@ -10,30 +10,32 @@
 
         if( $_SESSION['user_type'] == "Responsable" )
         {
-            if((isset($_GET['jury_add']) || isset($_GET['jury_supp'])) && (isset($_GET['id_etu'])) )
+            if(((!empty($_POST['jury_add']) || !empty($_GET['jury_supp'])) && (!empty($_GET['id_stage'])) ))
             {
                 
-                $Etu=$_GET['id_etu'];    
-                
-                if(isset($_GET['jury_supp'])){
+                 
+                $id_stage = $_GET['id_stage'];
+
+                if(!empty($_GET['jury_supp'])){
                     
                     $JURY_ID = $_GET['jury_supp'] ;  
-                    $sql4="DELETE FROM juri WHERE ID_ENS='$JURY_ID' AND ID_STAGE = (SELECT ID_STAGE FROM stage WHERE ID_ETU ='$Etu' AND DATEDEBUT_STAGE = (SELECT max(DATEDEBUT_STAGE) FROM stage WHERE ID_ETU='$Etu') ) ";
-    
-                }else if(isset($_GET['jury_add'])){
                     
-                    $ENS_ID = $_GET['jury_add'] ;   
+                    $sql1="DELETE FROM juri WHERE ID_ENS='$JURY_ID' AND ID_STAGE ='$id_stage' ";
+                    $bdd->exec($sql1);
+                
+                }else if(!empty($_POST['jury_add'])){
+                    ///Indexes of array represent the IDS of ENSEIGNANTS,"on" means est checkée
+                    $ENS_IDS = array_keys($_POST['jury_add'] , 'on');
+                   
+                    foreach($ENS_IDS as $ENS_ID){
+                        
+                        $sql2="INSERT INTO juri(ID_ENS,ID_STAGE) VALUES('$ENS_ID','$id_stage') ";
+                        $bdd->exec($sql2);
+                    }
                     
-                    /// ***ID_STAGE encours de ce etudiant
-                    $sql6 ="SELECT ID_STAGE FROM stage WHERE ID_ETU='$Etu' AND DATEDEBUT_STAGE = (SELECT max(DATEDEBUT_STAGE) FROM stage WHERE ID_ETU='$Etu')";
-                    $req6 =$bdd->query($sql6);
-                    $result6 = $req6->fetch(PDO::FETCH_ASSOC);
-                    $STAGE_ENCOUR =$result6['ID_STAGE']; 
-                    /// *** 
-                    $sql4="INSERT INTO juri(ID_ENS,ID_STAGE) VALUES('$ENS_ID','$STAGE_ENCOUR') ";
                 }
-                $bdd->exec($sql4);
-                header('location:../Jury_Resp.php?id_etu='.$Etu);
+                
+                header('location:../Jury_Resp.php?id_stage='.$id_stage);
             }
         }
         else

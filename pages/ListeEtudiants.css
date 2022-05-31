@@ -420,3 +420,17 @@ i img:hover{
   opacity: 1;
  
 }
+
+/* jury modale*/
+.hovtr
+{
+  width: 100%; color: #616161;
+}
+
+.hovtr tr:hover{
+  background-color: #d8d7d7 !important;
+}
+
+.form-check-input{
+  margin-right: 5px;
+}
