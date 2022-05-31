@@ -28,6 +28,9 @@
       
       $Smt = $bdd->query($req);
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+
+
+      
       
     
   
@@ -193,7 +196,7 @@
                             <a href="Encours_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary">En cours</button></a>
                             <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
                             <a href="Modifier_Etudiant_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
-                            <button type="button" class="btn btn-outline-primary">Desactiver</button>
+                            <a href="back_end/Desactiver_account.php?id_etu=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >Desactiver</button></a>
                           </td>
                         </tr>
                     <?php endforeach; ?>
