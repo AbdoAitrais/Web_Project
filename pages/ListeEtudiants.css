@@ -248,7 +248,7 @@ body,nav {
 /** Search bar CSS **/
   .search{
     width: 80%;
-    background-color: #e9ecef;
+    background-color: #f3f5f8 !important;
     border-radius: 0.25em;
   }
 
@@ -257,8 +257,8 @@ body,nav {
   }
 
   .input-group .rounded{
-    background-color: #e9ecef !important;
-    border: 1px solid #e9ecef;
+    background-color: #f3f5f8 !important;
+    border: 1px solid #f3f5f8;
     
   }
 /********************/
@@ -287,7 +287,7 @@ thead{
 /** Select **/
 
 .form-select{
-  background-color: #f0f2fa  !important;
+  background-color: #f3f5f8  !important;
 }
 
 .select{
