@@ -33,11 +33,25 @@
                     $Offre_ID = $_GET['offre_non_accepte'] ;  
 
                     /// *** Mettre non acceptée dans cet offre
-                    $sql1="UPDATE postuler SET STATU='Non Acceptée' WHERE ID_ETU='$Etu' AND ID_OFFRE='$Offre_ID' ";
-                    $bdd->exec($sql1);
-                    /// *** Augmenter le nombre de candidat
-                    $sql2="UPDATE offre SET NBRCANDIDAT=NBRCANDIDAT+1,STATUOFFRE='Nouveau' WHERE ID_OFFRE='$Offre_ID' ";
-                    $bdd->exec($sql2);
+                    $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=? ");
+                    $Smt->execute(array('Non Acceptée',$Etu,$Offre_ID));               
+                    
+                    /// ***
+                    $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE  AND p.ID_OFFRE=? AND o.STATUOFFRE=? AND (STATU=? OR STATU=?)");
+                    $Smt1->execute(array($Offre_ID,'Completée','Retenue','Acceptée'));
+                    $row1 = $Smt1->fetch(PDO::FETCH_ASSOC);
+                    
+                    if(!empty($row1))
+                    {
+                        
+                        $NbrReste = $row1['NbrReste'];   
+                        if($NbrReste > 0)
+                        {
+                            $Smt2=$bdd->prepare("UPDATE offre SET STATUOFFRE=? WHERE ID_OFFRE=? ");
+                            $Smt2->execute(array('Nouveau',$Offre_ID) );
+                        }
+                    }
+                    
 
                     header('location:../Soumissions_Etu.php');
                 
@@ -46,25 +60,24 @@
                     $Offre_ID = $_GET['offre_accepte'] ;  
                     
                     ///*** Acceptation
-                    $sql1="UPDATE postuler SET STATU='Acceptée' WHERE ID_ETU='$Etu' AND ID_OFFRE='$Offre_ID' ";
-                    $bdd->exec($sql1);
+                    $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=? ");
+                    $Smt->execute(array('Acceptée',$Etu,$Offre_ID));  
                     /// *** Mettre non acceptée dans tous les offres retenues
-                    $sql2="UPDATE postuler SET STATU='Non Acceptée' WHERE ID_ETU='$Etu' AND STATU='Retenue' ";
-                    $bdd->exec($sql2);
+                    $Smt1=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND STATU=? ");
+                    $Smt1->execute(array('Non Acceptée',$Etu,'Retenue'));  
                     /// *** Annuler postulation d'autres offres
-                    $sql3="DELETE FROM postuler WHERE ID_ETU='$Etu' AND STATU='Postulée' ";
-                    $bdd->exec($sql3);
+                    $Smt2=$bdd->prepare("DELETE FROM postuler WHERE ID_ETU=? AND STATU=? ");
+                    $Smt2->execute(array($Etu,'Postulée'));
                     
                     /// ***ID DE NIVEAU DE L'ETUDIANT
-                    $sql_niveau = "SELECT NIVEAU FROM etudiant WHERE ID_ETU='$Etu' ";
-                    $req_niveau = $bdd->query($sql_niveau);
-                    $result_niveau = $req_niveau->fetch(PDO::FETCH_ASSOC);
+                    $sql_niveau = $bdd->prepare("SELECT NIVEAU FROM etudiant WHERE ID_ETU=? ");
+                    $sql_niveau->execute(array($Etu));
+                    $result_niveau = $sql_niveau->fetch(PDO::FETCH_ASSOC);
                     $NIVEAU = $result_niveau['NIVEAU'];
                     
-                    
                     /// *** Inserer stage 
-                    $sql_stage = "INSERT INTO stage(ID_OFFRE,ID_ETU,DATEDEBUT_STAGE,NIVEAU_STAGE) VALUES('$Offre_ID','$Etu','$curdate' ,$NIVEAU)  ";
-                    $bdd->exec($sql_stage);
+                    $sql_stage = $bdd->prepare("INSERT INTO stage(ID_OFFRE,ID_ETU,DATEDEBUT_STAGE,NIVEAU_STAGE) VALUES(?,?,?,?)  ");
+                    $sql_stage->execute(array($Offre_ID,$Etu,$curdate,$NIVEAU));
 
                     header('location:../Soumissions_Etu.php');
                 }

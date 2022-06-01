@@ -19,30 +19,38 @@
                 if(isset($_GET['Post_Non_Retenue'])){
                     
                     $Offre_ID = $_GET['Post_Non_Retenue'] ;  
-                    $sql4="UPDATE postuler SET STATU='Non Retenue',DATEREPONS='$curdate' WHERE ID_ETU='$Etu' AND ID_OFFRE='$Offre_ID' ";
-    
+                    $Smt=$bdd->prepare("UPDATE postuler SET STATU=?,DATEREPONS=? WHERE ID_ETU=? AND ID_OFFRE=? ");
+                    $Smt->execute(array('Non Retenue',$curdate,$Etu,$Offre_ID));
+
                 }else if(isset($_GET['Post_Retenue'])){
                     
                     $Offre_ID = $_GET['Post_Retenue'] ;      
-                    $sql4="UPDATE postuler SET STATU='Retenue',DATEREPONS='$curdate' WHERE ID_ETU='$Etu' AND ID_OFFRE='$Offre_ID' ";
-    
-                    /// ***Nbr Candidats
-                    $sql6 ="SELECT NBRCANDIDAT FROM offre WHERE ID_OFFRE='$Offre_ID' ";
-                    $req6 =$bdd->query($sql6);
-                    $result6 = $req6->fetch(PDO::FETCH_ASSOC);
                     
-                    $NbrCandid=$result6['NBRCANDIDAT'];
+                    /// ***Nbr de Contamination
+                    $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE AND o.ID_OFFRE=? AND o.STATUOFFRE=?  AND (p.STATU=? OR p.STATU=?)");
+                    $Smt1->execute(array($Offre_ID,'Nouveau','Retenue','Acceptée'));
+                    $row1 = $Smt1->fetch(PDO::FETCH_ASSOC);
                     
-                    if($NbrCandid>1)
-                        $sql5="UPDATE offre SET NBRCANDIDAT=NBRCANDIDAT-1 WHERE ID_OFFRE='$Offre_ID' ";
-                    else
-                        $sql5="UPDATE offre SET NBRCANDIDAT=NBRCANDIDAT-1,STATUOFFRE='Completée' WHERE ID_OFFRE='$Offre_ID' ";
-                    
-                    
-                    
-                    $bdd->exec($sql5);
+                    if(!empty($row1))
+                    {
+                        
+                        $NbrReste = $row1['NbrReste'];
+
+                        if($NbrReste == 1)
+                        {
+                            $Smt2=$bdd->prepare("UPDATE offre SET STATUOFFRE=? WHERE ID_OFFRE=? ");
+                            $Smt2->execute(array('Completée',$Offre_ID) );
+                        }
+                    }
+
+
+                    $Smt=$bdd->prepare("UPDATE postuler SET STATU=?,DATEREPONS=? WHERE ID_ETU=? AND ID_OFFRE=? ");
+                    $Smt->execute(array('Retenue',$curdate,$Etu,$Offre_ID));
+
+                
                 }
-                $bdd->exec($sql4);
+                
+                
                 header('location:../Soumis_Resp.php?id_etu='.$Etu);
             }
         }
