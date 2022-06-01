@@ -83,7 +83,7 @@
                 <a class="nav-link navlink " href="Liste_Etudiant_Resp.php">Etudiants</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Enseignants</a>
+                <a class="nav-link navlink" href="Liste_Enseignant_Resp.php">Enseignants</a>
               </li>
               <?php 
                     }else if($_SESSION['user_type'] == "Etudiant")
