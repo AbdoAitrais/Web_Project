@@ -56,6 +56,9 @@
     rel="stylesheet" 
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
     crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+	<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <title>Historique</title>
 </head>
 <body>
@@ -148,7 +151,7 @@
 
 
         <div class="row">
-            <div class="col-md-10 elm pub_col" style=" background: #FFFFFF !important;
+            <div class="col-md-11 elm pub_col" style=" background: #FFFFFF !important;
                         border-radius: 35px !important; padding: 5%;">
 
                   <div class="tableHead" >
@@ -202,7 +205,7 @@
                 </form>
                   
 
-                <table class="table">
+                <table class="table" id="Table_Histo">
                     <thead>
                       <tr>
                         <th scope="col">N</th>
@@ -234,6 +237,14 @@
                     <?php endforeach; ?>
 
                     </tbody>
+                    <tfoot>
+                        <th scope="col">N</th>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">Poste</th>
+                        <th scope="col">Entreprise</th>
+                        <th scope="col"></th>
+                    </tfoot>
                   </table>
               </div>
           </div>
@@ -255,10 +266,30 @@
 
 <script>
   
-  function changeFunc() 
-  {
-    document.getElementById("form").submit();
-  }
+  $(document).ready( function () {
+    var dataTable = $('#Table_Histo').DataTable();
+
+
+
+    $('#Table_Histo tfoot tr th').each(function () {
+    var title = $('#Table_Histo thead tr th').eq($(this).index()).text();
+    if(title != "")
+    {
+      $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+    }
+    
+    });
+
+    dataTable.columns().every(function () {
+        var dataTableColumn = this;
+
+        $(this.footer()).find('input').on('keyup change', function () {
+            dataTableColumn.search(this.value).draw();
+        });
+    });
+    
+    }
+    )
 
 
 </script>

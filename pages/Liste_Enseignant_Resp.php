@@ -186,7 +186,7 @@
     var title = $('#Table_Ens thead tr th').eq($(this).index()).text();
     if(title != "")
     {
-      $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+      $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
     }
     
     });
