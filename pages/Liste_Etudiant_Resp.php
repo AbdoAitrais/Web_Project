@@ -12,7 +12,7 @@
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
     
-      $req = "SELECT * FROM etudiant WHERE ID_FORM='$id_form'";
+      $req = "SELECT * FROM etudiant e,users u WHERE e.ID_USER=u.ID_USER AND e.ID_FORM='$id_form'";
       if(isset($_POST['niveau_user']) ){
         $Niveau_user =$_POST['niveau_user'] ;
         if($Niveau_user)
@@ -26,6 +26,8 @@
         $req=$req." AND( (NOM_ETU = '$Filter_search' ) OR (PRENOM_ETU = '$Filter_search' ) OR (CNE = '$Filter_search' ))";
       }
       
+      ///*** oOrder
+      $req=$req.' ORDER BY u.ACTIVE DESC';
       $Smt = $bdd->query($req);
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -199,7 +201,11 @@
                             <a href="Encours_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary">En cours</button></a>
                             <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
                             <a href="Modifier_Etudiant_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
-                            <a href="back_end/Desactiver_account.php?id_etu=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >Desactiver</button></a>
+                            <?php if($row['ACTIVE'] == 1){ ?>
+                            <a href="back_end/Desactiver_account.php?id_etu_disac=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >Desactiver</button></a>
+                            <?php }else{?>
+                            <a href="back_end/Desactiver_account.php?id_etu_ac=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Activer&nbsp;&nbsp;&nbsp;</button></a>
+                            <?php }?>
                           </td>
                         </tr>
                     <?php endforeach; ?>

@@ -141,7 +141,7 @@
       $Resp = $_SESSION['user_id'];
       $id_etu = $_GET['id_etu'];
 
-      $sql ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP  AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' ";
+      $sql ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP  AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' AND o.STATUOFFRE!='Completée'";
       
       ///***Search bar
       if(isset($_POST['Filter']) && !empty( $_POST['Filter'] )){
@@ -198,6 +198,7 @@
                         $sql_statu = "SELECT STATU FROM postuler WHERE ID_OFFRE ='$of_id' AND ID_ETU='$id_etu' ";
                         $req_statu =$bdd->query($sql_statu);
                         $result_statu = $req_statu->fetch(PDO::FETCH_ASSOC);
+
                         if(!empty($result_statu)){
                           
                           $Statu_etu =  $result_statu['STATU'];
