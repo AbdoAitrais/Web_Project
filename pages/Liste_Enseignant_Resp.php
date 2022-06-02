@@ -57,10 +57,10 @@
                 <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="Liste_Etudiant_Resp.php">Etudiants</a><span class="active_link_line"></span>
+                <a class="nav-link navlink" href="Liste_Etudiant_Resp.php">Etudiants</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="Liste_Enseignant_Resp.php">Enseignants</a>
+                <a class="nav-link navlink active_link_color" href="Liste_Enseignant_Resp.php">Enseignants</a><span class="active_link_line"></span>
               </li>
             </ul>
             
@@ -116,7 +116,7 @@
                 </form>
                   
 
-                <table class="table" id="MaTab">
+                <table class="table" id="Table_Ens">
                     <thead>
                       <tr>
                         <th scope="col">Nom</th>
@@ -144,6 +144,12 @@
                     <?php endforeach; ?>
 
                     </tbody>
+                    <tfoot>
+                        <th scope="col">Nom</th>
+                        <th scope="col">Prénom</th>
+                        <th scope="col">CIN</th>
+                        <th scope="col"></th>
+                    </tfoot>
                   </table>
               </div>
           </div>
@@ -172,8 +178,29 @@
 <script>
   
   $(document).ready( function () {
-    $('#MaTab').DataTable();
-} );
+    var dataTable = $('#Table_Ens').DataTable();
+
+
+
+    $('#Table_Ens tfoot tr th').each(function () {
+    var title = $('#Table_Ens thead tr th').eq($(this).index()).text();
+    if(title != "")
+    {
+      $(this).html('<input type="text" placeholder="Search ' + title + '" />');
+    }
+    
+    });
+
+    dataTable.columns().every(function () {
+        var dataTableColumn = this;
+
+        $(this.footer()).find('input').on('keyup change', function () {
+            dataTableColumn.search(this.value).draw();
+        });
+    });
+    
+    }
+    )
 
 
 </script>
