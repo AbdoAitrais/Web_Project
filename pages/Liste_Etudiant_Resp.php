@@ -171,11 +171,6 @@
 ?>
 <script>
   
-  function changeFunc() 
-  {
-    document.getElementById("form").submit();
-  }
-
   $(document).ready( function () {
     var dataTable = $('#Table_Etu').DataTable();
 
