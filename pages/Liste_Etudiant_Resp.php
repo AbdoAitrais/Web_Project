@@ -12,22 +12,7 @@
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
     
-      $req = "SELECT * FROM etudiant e,users u WHERE e.ID_USER=u.ID_USER AND e.ID_FORM='$id_form'";
-      if(isset($_POST['niveau_user']) ){
-        $Niveau_user =$_POST['niveau_user'] ;
-        if($Niveau_user)
-          $req =$req." AND NIVEAU='$Niveau_user'"; 
-        
-        $_SESSION['last_niveau_user'] = $Niveau_user;
-      }
-      
-      if(isset($_POST['Filter']) && !empty($_POST['Filter'])){
-        $Filter_search = $_POST['Filter'];
-        $req=$req." AND( (NOM_ETU = '$Filter_search' ) OR (PRENOM_ETU = '$Filter_search' ) OR (CNE = '$Filter_search' ))";
-      }
-      
-      ///*** oOrder
-      $req=$req.' ORDER BY u.ACTIVE DESC';
+      $req = "SELECT * FROM etudiant e,users u WHERE e.ID_USER=u.ID_USER AND e.ID_FORM='$id_form' ORDER BY u.ACTIVE DESC";
       $Smt = $bdd->query($req);
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -103,22 +88,7 @@
 
     <div class="container-fluid ">
       <div class="" style="margin-top: 100px; background-color:  #E5E5E5 !important;">
-        <div class="row">
-        <form action="Liste_Etudiant_Resp.php" method="post" id="form" >
-            <div class="col-md-6 col-sm-12 elm pub_col" style="background: #E5E5E5 !important; display: flex; justify-content: center;">
-              
-              
-              <div class="search">
-                <div class="input-group rounded">
-                  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="Filter"/>
-                  <span class="input-group-text border-0" id="search-addon">
-                  <button type='submit' style="border:none;background:none;"><i class="fas fa-search"><img src="icons/search.png"></i></button>
-                  </span>
-                </div>
-              </div>
-              
-            </div>
-        </div>
+        
 
 
         <div class="row" >
@@ -126,54 +96,8 @@
                         border-radius: 35px !important; padding: 5%;">
 
                   <div class="tableHead" >
-                        <h4>Liste des etudiants</h4>
-                        <!-- <div class="select" style="display:flex; width:auto;">
-                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="niveau_user" >
-                              <//?php 
-                              
-                              if(isset($_SESSION['last_niveau_user'] )){
-                                switch($_SESSION['last_niveau_user'] ){
-                                  case 0:
-                                    echo'<option value=0 selected>Tout</option>
-                                        <option value=1  >1ere</option>
-                                        <option value=2 >2eme</option>
-                                        <option value=3>3eme</option>';
-                                    break;
-                                  case 1:
-                                    echo '<option value=0 >Tout</option>
-                                          <option value=1 selected >1ere</option>
-                                          <option value=2>2eme</option>
-                                          <option value=3>3eme</option>';
-                                    break;
-                                  case 2:
-                                    echo '<option value=0 >Tout</option>
-                                          <option value=1  >1ere</option>
-                                          <option value=2 selected>2eme</option>
-                                          <option value=3>3eme</option>';
-                                    break;
-                                  case 3:
-                                          echo
-                                              '<option value=0 >Tout</option>
-                                              <option value=1  >1ere</option>
-                                              <option value=2 >2eme</option>
-                                              <option value=3 selected>3eme</option>';
-                                    break;
-                                
-                                }
-                                   unset($_SESSION['last_niveau_user']);
-                              }else{
-                              
-                              ?>
-                              <option value=0 selected >Tout</option>
-                              <option value=1  >1ere</option>
-                              <option value=2 >2eme</option>
-                              <option value=3>3eme</option><//?php } ?>
-                                      
-                            </select>
-                            <button type="submit" class="submit"></button>
-                        </div> -->
+                        <h4>Liste des etudiants</h4>   
                   </div>
-                </form>
                   
 
                 <table class="table" id="Table_Etu">
