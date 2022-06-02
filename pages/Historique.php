@@ -18,24 +18,7 @@
         $result = $req->fetch(PDO::FETCH_ASSOC);
         $id_form = $result['ID_FORM'] ;
       }
-      $req = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,POSTE,NOM_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND o.ID_FORM='$id_form' ";
-      
-      if(isset($_POST['niveau_user']) ){
-        
-        $Niveau_user =$_POST['niveau_user'] ;
-        if($Niveau_user)
-          $req =$req." AND NIVEAU_STAGE='$Niveau_user' "; 
-        
-        $_SESSION['last_niveau_stage'] = $Niveau_user;
-      }
-
-      if(isset($_POST['Filter']) && !empty($_POST['Filter'])){
-        
-        $Filter_search = $_POST['Filter'];
-        
-        $req=$req." AND( (etu.NOM_ETU LIKE '$Filter_search' ) OR (etu.PRENOM_ETU LIKE '$Filter_search' ) OR (o.POSTE LIKE '$Filter_search' ) OR (ent.NOM_ENTREP LIKE '$Filter_search' ) )";
-      }
-      
+      $req = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,POSTE,NOM_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND o.ID_FORM='$id_form' ";    
       $Smt = $bdd->query($req);
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
       
@@ -128,82 +111,14 @@
   
 
     <div class="container-fluid " >
-      <div class="" style="margin-top: 100px; background-color:  #E5E5E5 !important;">
-        <div class="row">
-
-        <form action="Historique.php" method="post" id="form" >
-                <div class="col-md-6 col-sm-12 elm pub_col" style="background: #E5E5E5 !important; display: flex; justify-content: center;">
-                
-                
-                <div class="search">
-                    <div class="input-group rounded">
-                    <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="Filter"/>
-                    <span class="input-group-text border-0" id="search-addon">
-                    <button type='submit' style="border:none;background:none;"><i class="fas fa-search"><img src="icons/search.png"></i></button>
-                    </span>
-                    </div>
-                </div>
-                
-                </div>
-            
-        </div>
-
-
-
+      <div class="" style="margin-top: 100px; background-color:  #E5E5E5 !important;">        
         <div class="row">
             <div class="col-md-11 elm pub_col" style=" background: #FFFFFF !important;
                         border-radius: 35px !important; padding: 5%;">
 
                   <div class="tableHead" >
                         <h4>Liste des stages</h4>
-                        <div class="select" style="display:flex; width:auto;">
-                            <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="niveau_user" >
-                              <?php 
-                              
-                              if(isset($_SESSION['last_niveau_stage'] )){
-                                switch($_SESSION['last_niveau_stage'] ){
-                                  case 0:
-                                    echo'<option value=0 selected>Tout</option>
-                                        <option value=1  >1ere</option>
-                                        <option value=2 >2eme</option>
-                                        <option value=3>3eme</option>';
-                                    break;
-                                  case 1:
-                                    echo '<option value=0 >Tout</option>
-                                          <option value=1 selected >1ere</option>
-                                          <option value=2>2eme</option>
-                                          <option value=3>3eme</option>';
-                                    break;
-                                  case 2:
-                                    echo '<option value=0 >Tout</option>
-                                          <option value=1  >1ere</option>
-                                          <option value=2 selected>2eme</option>
-                                          <option value=3>3eme</option>';
-                                    break;
-                                  case 3:
-                                          echo
-                                              '<option value=0 >Tout</option>
-                                              <option value=1  >1ere</option>
-                                              <option value=2 >2eme</option>
-                                              <option value=3 selected>3eme</option>';
-                                    break;
-                                
-                                }
-                                   unset($_SESSION['last_niveau_stage']);
-                              }else{
-                              
-                              ?>
-                              <option value=0 selected >Tout</option>
-                              <option value=1  >1ere</option>
-                              <option value=2 >2eme</option>
-                              <option value=3>3eme</option><?php } ?>
-                                      
-                            </select>
-                            <button type="submit" class="submit"></button>
-                        </div>
-                  </div>
-                </form>
-                  
+                  </div>                  
 
                 <table class="table" id="Table_Histo">
                     <thead>

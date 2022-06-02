@@ -13,13 +13,10 @@
       $id_form = $_SESSION['user_id'];
     
       $req = "SELECT * FROM enseignant WHERE ID_DEPART IN (SELECT ID_DEPART FROM enseignant e, formation f WHERE f.ID_ENS = e.ID_ENS AND ID_FORM=?)";
-      
-      
-      
-
+    
       $Smt = $bdd->prepare($req);
       $Smt -> execute(array($id_form));
-	  $rows = $Smt -> fetchAll(PDO::FETCH_ASSOC);
+	    $rows = $Smt -> fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 <!DOCTYPE html>
@@ -87,35 +84,15 @@
 
     <div class="container-fluid ">
       <div class="" style="margin-top: 100px; background-color:  #E5E5E5 !important;">
-        <div class="row">
-        <form action="Liste_Etudiant_Resp.php" method="post" id="Form_Ens" >
-            <div class="col-md-6 col-sm-12 elm pub_col" style="background: #E5E5E5 !important; display: flex; justify-content: center;">
-              
-              
-              <div class="search">
-                <div class="input-group rounded">
-                  <input type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" name="Filter"/>
-                  <span class="input-group-text border-0" id="search-addon">
-                  <button type='submit' style="border:none;background:none;"><i class="fas fa-search"><img src="icons/search.png"></i></button>
-                  </span>
-                </div>
-              </div>
-              
-            </div>
-        </div>
-
-
         <div class="row" >
-            <div class="col-md-10 elm pub_col" style=" background: #FFFFFF !important;
+            <div class="col-md-11 elm pub_col" style=" background: #FFFFFF !important;
                         border-radius: 35px !important; padding: 5%;">
 
                   <div class="tableHead" >
                         <h4>Liste des enseignants</h4>
 
                   </div>
-                </form>
-                  
-
+            
                 <table class="table" id="Table_Ens">
                     <thead>
                       <tr>
