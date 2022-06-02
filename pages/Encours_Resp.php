@@ -34,7 +34,7 @@
       $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
 
       ///Insertion des notes
-      
+
       if(!empty($_POST['notes_jury']) || !empty($_POST['note_encad']) || !empty($_POST['note_entrep']) ){
           /// ***Insertion des notes des jury
           if(!empty($_POST['notes_jury'])  ){
@@ -104,7 +104,7 @@
                 <a class="nav-link navlink active_link_color" href="Liste_Etudiant_Resp.php">Etudiants</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="Liste_Enseignant_Resp.php">Enseignants</a>
+                <a class="nav-link navlink" href="#">Enseignants</a>
               </li>
             </ul>
             
