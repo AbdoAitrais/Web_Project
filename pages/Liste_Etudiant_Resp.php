@@ -127,9 +127,9 @@
 
                   <div class="tableHead" >
                         <h4>Liste des etudiants</h4>
-                        <div class="select" style="display:flex; width:auto;">
+                        <!-- <div class="select" style="display:flex; width:auto;">
                             <select class="form-select form-select-sm" aria-label=".form-select-sm example" name="niveau_user" >
-                              <?php 
+                              <//?php 
                               
                               if(isset($_SESSION['last_niveau_user'] )){
                                 switch($_SESSION['last_niveau_user'] ){
@@ -167,11 +167,11 @@
                               <option value=0 selected >Tout</option>
                               <option value=1  >1ere</option>
                               <option value=2 >2eme</option>
-                              <option value=3>3eme</option><?php } ?>
+                              <option value=3>3eme</option><//?php } ?>
                                       
                             </select>
                             <button type="submit" class="submit"></button>
-                        </div>
+                        </div> -->
                   </div>
                 </form>
                   
