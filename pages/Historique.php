@@ -182,29 +182,37 @@
 <script>
   
   $(document).ready( function () {
-    var dataTable = $('#Table_Histo').DataTable();
+      var dataTable = $('#Table_Histo').DataTable();
 
 
 
-    $('#Table_Histo tfoot tr th').each(function () {
-    var title = $('#Table_Histo thead tr th').eq($(this).index()).text();
-    if(title != "")
-    {
-      $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
-    }
+      $('#Table_Histo tfoot tr th').each(function () {
+      var title = $('#Table_Histo thead tr th').eq($(this).index()).text();
+      if(title != "")
+      {
+        $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+      }
+      
+      });
+
+      dataTable.columns().every(function () {
+          var dataTableColumn = this;
+
+          $(this.footer()).find('input').on('keyup change', function () {
+              dataTableColumn.search(this.value).draw();
+          });
+      });
+      
+
+
+    })
+
     
-    });
+ 
 
-    dataTable.columns().every(function () {
-        var dataTableColumn = this;
 
-        $(this.footer()).find('input').on('keyup change', function () {
-            dataTableColumn.search(this.value).draw();
-        });
-    });
-    
-    }
-    )
+
+
 
 
 </script>
