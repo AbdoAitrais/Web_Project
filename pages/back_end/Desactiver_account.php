@@ -19,7 +19,7 @@
                 
                 $Smt->closeCursor();//vider le curseur (free)
                 
-                header('location:../Liste_Etudiant_Resp.php?id_etu='.$id_etu);
+                header('location:../Liste_Etudiant_Resp.php');
             }else if(!empty($_GET['id_etu_ac'])){
                
                 $id_etu = $_GET['id_etu_ac'];
@@ -29,7 +29,7 @@
                 
                 $Smt->closeCursor();//vider le curseur (free)
                 
-                header('location:../Liste_Etudiant_Resp.php?id_etu='.$id_etu);
+                header('location:../Liste_Etudiant_Resp.php');
 
             }
         }
