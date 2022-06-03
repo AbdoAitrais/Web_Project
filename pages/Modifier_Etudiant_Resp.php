@@ -72,7 +72,7 @@
           }
         }
        
-        $id_etu = htmlspecialchars($_GET['id_etu']);
+        $id_etu = htmlspecialchars($_POST['id_etu']);
         $nom_etu = htmlspecialchars($_POST['nom_etu']);
         $prenom_etu = htmlspecialchars($_POST['prenom_etu']);
         $email_etu = htmlspecialchars($_POST['email_etu']);
@@ -85,8 +85,9 @@
         $datenaiss_etu = htmlspecialchars($_POST['datenaiss_etu']);
         
 
-        $Smt = $bdd->prepare("UPDATE etudiant SET NOM_ETU=? , PRENOM_ETU=? , EMAIL_ETU=?,CIN_ETU=? , CNE=? , ADRESSE_ETU=? ,NIVEAU=?,DATENAISS_ETU=?,NUMTEL_ETU=?,PROMOTION=?,CV=? WHERE ID_ETU=?");
-        $Smt -> execute(array($nom_etu,$prenom_etu,$email_etu,$cin_etu,$cne,$adresse_etu,$niveau,$datenaiss_etu,$numtel_etu,$promotion,$cv,$id_etu));
+        $Smt = $bdd->prepare("UPDATE etudiant SET NOM_ETU=? , PRENOM_ETU=? , EMAIL_ETU=? , CIN_ETU=? , CNE=? , ADRESSE_ETU=? ,
+        NUMTEL_ETU=? , NIVEAU=? , PROMOTION=? , DATENAISS_ETU=? , CV=? WHERE ID_ETU=?");
+        $Smt -> execute(array($nom_etu,$prenom_etu,$email_etu,$cin_etu,$cne,$adresse_etu,$numtel_etu,$niveau,$promotion,$datenaiss_etu,$cv,$id_etu));
         
         header('location:Liste_Etudiant_Resp.php');
 
@@ -166,45 +167,45 @@
                           
                     </div>
 
-                    <form action="Modifier_Etudiant_Resp.php?id_etu=<?php print($id_etu);?>" method="post" enctype="multipart/form-data" style="display:flex; justify-content:space-around;">
+                    <form action="Modifier_Etudiant_Resp.php" method="post" enctype="multipart/form-data" style="display:flex; justify-content:space-around;">
                         <div class="form-row"  >
                           
                         <div>
                           <div class="form-group col-md-20">
                               <label for="Nom">Nom</label>
-                              <input type="text" class="form-control" id="Nom" placeholder="Nom" value="<?php echo $rows['NOM_ETU']; ?>" name="nom_etu" required>
+                              <input type="text" class="form-control" id="Nom" placeholder="Nom" value="<?php echo $rows['NOM_ETU']; ?>" name="nom_etu" >
                             </div>
                           </div>
                           <div class="form-group col-md-20">
                             <label for="inputPrenom">Prenom</label>
-                            <input type="text" class="form-control" id="inputPrenom" placeholder="Prenom" value="<?php echo $rows['PRENOM_ETU']; ?>" name="prenom_etu" required>
+                            <input type="text" class="form-control" id="inputPrenom" placeholder="Prenom" value="<?php echo $rows['PRENOM_ETU']; ?>" name="prenom_etu">
                           </div>
                           <div class="form-group col-md-20">
                               <label for="inputEmail4">Email</label>
-                              <input type="email" class="form-control" id="inputEmail4" placeholder="Email" value="<?php echo $rows['EMAIL_ETU']; ?>" name="email_etu" required>
+                              <input type="email" class="form-control" id="inputEmail4" placeholder="Email" value="<?php echo $rows['EMAIL_ETU']; ?>" name="email_etu" >
                             </div>
                             <div class="form-group col-md-20">
                               <label for="Cin">Cin</label>
-                              <input type="text" class="form-control" id="Cin" placeholder="Cin" value="<?php echo $rows['CIN_ETU']; ?>" name="cin_etu" required>
+                              <input type="text" class="form-control" id="Cin" placeholder="Cin" value="<?php echo $rows['CIN_ETU']; ?>" name="cin_etu">
                             </div>
                             <div class="form-group col-md-20">
                               <label for="Cne">Cne</label>
-                              <input type="text" class="form-control" id="Cne" placeholder="Cne" value="<?php echo $rows['CNE']; ?>" name="cne" required>
+                              <input type="text" class="form-control" id="Cne" placeholder="Cne" value="<?php echo $rows['CNE']; ?>" name="cne">
                             </div>
                           <div class="form-group col-md-20">
                             <label for="Address">Address</label>
-                            <input type="text" class="form-control" id="Address" placeholder="Apartment, studio, or floor" value="<?php echo $rows['ADRESSE_ETU']; ?>" name="adresse_etu" required>
+                            <input type="text" class="form-control" id="Address" placeholder="Apartment, studio, or floor" value="<?php echo $rows['ADRESSE_ETU']; ?>" name="adresse_etu">
                           </div>
                         </div>
                         <div>
                           <div class="form-row">
                             <div class="form-group col-md-20">
                               <label for="tel">Telephone</label>
-                              <input type="number" class="form-control" id="tel" placeholder="+212 7********" value="<?php echo $rows['NUMTEL_ETU']; ?>" name="numtel_etu" required>
+                              <input type="text" class="form-control" id="tel" placeholder="+212 7********" value="<?php echo $rows['NUMTEL_ETU']; ?>" name="numtel_etu">
                             </div>
                             <div class="form-group col-md-20">
                               <label for="inputState">Niveau</label>
-                              <select id="inputState" class="form-control" name="niveau" required>
+                              <select id="inputState" class="form-control" name="niveau">
                                 <?php
                                   switch( $rows['NIVEAU'] ){
                                     case 1:
@@ -233,11 +234,12 @@
                             </div>
                             <div class="form-group col-md-20">
                               <label for="Promotion">Promotion</label>
-                              <input type="text" class="form-control" id="Promotion" value="<?php echo $rows['PROMOTION']; ?>" name="promotion" required>
+                              <input type="text" class="form-control" id="Promotion" value="<?php echo $rows['PROMOTION']; ?>" name="promotion">
                               <label for="date">Date de naissance</label>
-                              <input type="date" class="form-control" id="date" value="<?php echo $rows['DATENAISS_ETU']; ?>" name="datenaiss_etu" required>
+                              <input type="date" class="form-control" id="date" value="<?php echo $rows['DATENAISS_ETU']; ?>" name="datenaiss_etu">
                               <label for="cv">CV</label>
                               <input type="file" class="form-control" id="cv" name="cv" >
+                              <input type="hidden" value="<?php echo $rows['ID_ETU']; ?>" name="id_etu"/>
                             </div>
                           </div><br>
                           <button type="submit" class="btn btn-outline-primary">Submit</button></a>

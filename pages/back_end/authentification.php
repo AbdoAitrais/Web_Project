@@ -25,7 +25,7 @@
 		return $results;
 	}
 
-
+	
 	
 	if( !empty($_POST['username']) && !empty($_POST['password']) && !empty($_POST['type_user']) )
 	{
@@ -73,8 +73,8 @@
 		 		header('location:'.$_SESSION['page']);
 				
 		}
-		 else
-		 {
+		else
+		{
 		 	$_SESSION['error'] = 'Incorrect login !';
 		 	header('location: ../login.php');
 		 	echo "alo";
