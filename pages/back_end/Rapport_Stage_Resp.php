@@ -97,7 +97,7 @@
             
                     }
                   }              
-                 header('location:../Encours_Resp.php?id_etu='.$id_etu);
+                  header('location:'.$_SESSION['Last_visite']);
             }
         }
         else
