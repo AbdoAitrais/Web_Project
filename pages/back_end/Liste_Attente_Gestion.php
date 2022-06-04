@@ -10,14 +10,14 @@
 
         if( $_SESSION['user_type'] == "Responsable" )
         {
-            if(!empty($_GET['id_offre']) && (!empty($_GET['etu_add']) || !empty($_GET['etu_supp'])) )
+            if(!empty($_POST['id_offre']) && (!empty($_POST['etu_add']) || !empty($_POST['etu_supp'])) )
             {
                 /// ***
-                $id_offre = $_GET['id_offre'];
+                $id_offre = $_POST['id_offre'];
                 
-                if(!empty($_GET['etu_add']))
+                if(!empty($_POST['etu_add']))
                 {
-                    $id_etu = $_GET['etu_add'];
+                    $id_etu = $_POST['etu_add'];
 
                     /// *** Insertion en liste d'attante
                     $Smt = $bdd->prepare("INSERT INTO attente(ID_ETU,ID_OFFRE) VALUES(?,?) ");
@@ -30,9 +30,9 @@
                     $Smt->closeCursor();//vider le curseur (free)
                 }
 
-                if(!empty($_GET['etu_supp']))
+                if(!empty($_POST['etu_supp']))
                 {
-                    $id_etu = $_GET['etu_supp'];
+                    $id_etu = $_POST['etu_supp'];
 
                     /// *** Suppression de la liste d'attante
                     $Smt = $bdd->prepare("DELETE FROM attente WHERE ID_ETU=? AND ID_OFFRE=? ");
@@ -46,6 +46,8 @@
                 }
 
                 header("location:../Liste_Attente_Resp.php?id_offre=".$id_offre);
+            }else{
+                echo "NO NO ENTER HH ";            
             }
             
         }
