@@ -150,18 +150,18 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ">
+          <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="#">Find offers</a><span class="active_link_line"></span>
+                <a class="nav-link navlink active_link_color" href="Find_Offre_Resp.php">Find offers</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Historique</a>
+                <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Soumissions</a>
+                <a class="nav-link navlink " href="Liste_Etudiant_Resp.php">Etudiants</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Mes stages</a>
+                <a class="nav-link navlink" href="Liste_Enseignant_Resp.php">Enseignants</a>
               </li>
             </ul>
             <div class="" style="position: fixed; margin-left: 47%;">
