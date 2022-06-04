@@ -32,7 +32,7 @@
         $datefin = htmlspecialchars($_POST['datefin'] );
         $duree = (htmlspecialchars( $_POST['duree'] ) * 30);// * 30 (month -> days)
         $nbrcandidat = htmlspecialchars( $_POST['nbrcandidat'] );
-        $source_offre = (htmlspecialchars( $_POST['source_offre'] ) - 1);// 0 interne 1 externe
+        $source_offre = (htmlspecialchars( $_POST['source_offre'] ));// 0 interne 1 externe
         $descrip = htmlspecialchars( $_POST['descrip'] );
         $datedebut = date('y-m-d');
         
@@ -299,13 +299,13 @@
                               case 1:
                                 echo "<select class='form-select' aria-label='Default select example' style='margin-top: 23px; ' onchange='ext();' id='type' name='source_offre'>
                                         <option value='1' selected>Interne</option>
-                                        <option value='2' >Externe</option>
+                                        <option value='0' >Externe</option>
                                       </select>";
                                 break;
                               case 2:
                                 echo "<select class='form-select' aria-label='Default select example' style='margin-top: 23px; ' onchange='ext();' id='type' name='source_offre'>
                                         <option value='1' >Interne</option>
-                                        <option value='2' selected>Externe</option>
+                                        <option value='0' selected>Externe</option>
                                       </select>";
                                 break;
                               }
