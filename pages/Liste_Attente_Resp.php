@@ -1,3 +1,70 @@
+<?php 
+  session_start();
+  if(empty($_SESSION['user_id']) || empty($_SESSION['user_type']))
+  {
+    $_SESSION['page'] = $_SERVER['REQUEST_URI'];
+    header('location:login.php');
+  }  
+
+  if($_SESSION['user_type'] == "Responsable")
+  {
+      require("back_end/connexion.php");
+      if(!empty($_POST['id_offre']) )
+      {
+          setcookie('id_offre',$_POST['id_offre'],time() + (86400*30),'/');
+
+      }
+      if(isset($_COOKIE['id_offre']) )
+      {
+        $id_offre=$_COOKIE['id_offre'];
+
+        /// *** Liste attentes
+        $Smt = $bdd->prepare("SELECT e.ID_ETU,e.NOM_ETU,e.PRENOM_ETU,e.CNE FROM etudiant e,attente a WHERE e.ID_ETU=a.ID_ETU AND a.ID_OFFRE =? ORDER BY a.PRIORITE");
+        $Smt->execute(array($id_offre));
+        $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+        $Smt->closeCursor();//vider le curseur (free)
+
+        /// *** Liste d'etudiants postulées
+        $Smt1 = $bdd->prepare("SELECT e.ID_ETU,e.NOM_ETU,e.PRENOM_ETU,e.CNE FROM etudiant e,postuler p WHERE e.ID_ETU=p.ID_ETU AND p.ID_OFFRE =? AND p.STATU=? ");
+        $Smt1->execute(array($id_offre ,'Postulée'));
+        $rows1 = $Smt1->fetchAll(PDO::FETCH_ASSOC);
+        $Smt1->closeCursor();//vider le curseur (free)
+
+        if(!empty($_POST['etu_add']))
+        {
+            $id_etu = $_POST['etu_add'];
+
+            /// *** Insertion en liste d'attante
+            $Smt = $bdd->prepare("INSERT INTO attente(ID_ETU,ID_OFFRE) VALUES(?,?) ");
+            $Smt->execute(array($id_etu,$id_offre));
+            $Smt->closeCursor();//vider le curseur (free)
+
+            /// *** Update statu to Retenue en attente
+            $Smt = $bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=?");
+            $Smt->execute(array('Retenue en attente',$id_etu,$id_offre));
+            $Smt->closeCursor();//vider le curseur (free)
+            header("location:Liste_Attente_Resp.php");
+          }
+
+          if(!empty($_POST['etu_supp']))
+          {
+            $id_etu = $_POST['etu_supp'];
+
+            /// *** Suppression de la liste d'attante
+            $Smt = $bdd->prepare("DELETE FROM attente WHERE ID_ETU=? AND ID_OFFRE=? ");
+            $Smt->execute(array($id_etu,$id_offre));
+            $Smt->closeCursor();//vider le curseur (free)
+
+            /// *** Update statu to Retenue en attente
+            $Smt = $bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=?");
+            $Smt->execute(array('Postulée',$id_etu,$id_offre));
+            $Smt->closeCursor();//vider le curseur (free)
+            header("location:Liste_Attente_Resp.php");
+          }
+
+
+  
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,13 +81,13 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 	<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <title>Jury</title>
+    <title>Liste d'attente</title>
     
     
 </head>
 <body>
       
-    <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;background: #F3F5F8 !important;">
         <div class="container-fluid">
           <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -29,21 +96,22 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="#">Find offers</a><span class="active_link_line"></span>
+                <a class="nav-link navlink active_link_color" href="Find_Offre_Resp.php">Find offers</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Historique</a>
+                <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Soumissions</a>
+                <a class="nav-link navlink " href="Liste_Etudiant_Resp.php">Etudiants</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Mes stages</a>
+                <a class="nav-link navlink" href="Liste_Enseignant_Resp.php">Enseignants</a>
               </li>
             </ul>
+            
             <div class="" style="position: fixed; margin-left: 47%;">
-            <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
-          </div>
+                  <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
+            </div>
             <ul class="navbar-nav ms-auto margin ">
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
@@ -52,7 +120,7 @@
                 <a class="nav-link navlink blue" href="#">Contact Us</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink blue " href="#">Log out</a>
+                <a class="nav-link navlink blue " href="back_end/logout.php">Log out</a>
               </li>
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
@@ -70,15 +138,9 @@
         
           <div class="row" style="background-color: #FFFEFB; margin-top: 30px;">
             <div class="col-md-5 elm pub_col">
-
-                <form action="ListeEtudiants.php" method="post" id="form" >
                   <div class="tableHead" >
                         <h4>Liste d'attente</h4>
-                        
                   </div>
-                </form>
-                  
-
                 <table  id="table" class="table draggable-table">
                     <thead>
                       <tr>
@@ -89,32 +151,22 @@
                       </tr>
                     </thead>
                     <tbody id="tbdy">
-
-                   
+                        <?php
+                          if(!empty($rows))
+                          {
+                            foreach($rows as $attente_etu):
+                         ?>
                         <tr>
-                          <td style="color: #616161;">Musk</td>
-                          <td style="color: #616161;">Elon</td>
-                          <td style="color: #7196FF;">R130073890</td>
+                          <td style="color: #616161;"><?php print($attente_etu['NOM_ETU']);?></td>
+                          <td style="color: #616161;"><?php print($attente_etu['PRENOM_ETU']);?></td>
+                          <td style="color: #7196FF;"><?php print($attente_etu['CNE']);?></td>
                           <td style="text-align: end;">
-                            <i><img src="icons/rubbish-bin.png" alt=""></i>
+                            <form action="Liste_Attente_Resp.php" method="post">
+                              <button type="submit" name="etu_supp" value="<?php print($attente_etu['ID_ETU']);?>"><i><img src="icons/rubbish-bin.png" alt=""></i></button>
+                            </form>
                           </td>
                         </tr>
-                        <tr>
-                            <td style="color: #616161;">test</td>
-                            <td style="color: #616161;">Elon</td>
-                            <td style="color: #7196FF;">R130073890</td>
-                            <td style="text-align: end;">
-                              <i><img src="icons/rubbish-bin.png" alt=""></i>
-                            </td>
-                          </tr>
-                          <tr>
-                            <td style="color: #616161;">benz</td>
-                            <td style="color: #616161;">Elon</td>
-                            <td style="color: #7196FF;">R130073890</td>
-                            <td style="text-align: end;">
-                              <i><img src="icons/rubbish-bin.png" alt=""></i>
-                            </td>
-                          </tr>
+                        <?php endforeach;}?>
                     </tbody>
                   </table>
               </div>
@@ -122,15 +174,12 @@
 
 
           <div class="row" style="margin-top: 30px;">
-            <div class="col-md-5 elm pub_col"
-                        border-radius: 35px !important; padding: 5%;">
-
+            <div class="col-md-5 elm pub_col">
                   <div class="tableHead" style="margin-bottom: 10px;">
-                        <h4>Liste des etudiants</h4>   
+                        <h4>Liste des etudiants postulée</h4>   
                   </div>
                   
-
-                <table class="table" id="Table_Etu">
+                  <table class="table" id="Table_Etu">
                     <thead>
                       <tr>
                         
@@ -141,33 +190,22 @@
                       </tr>
                     </thead>
                     <tbody>
-
-                   
-                    
-                    
-                      
-                        <tr>
-                         
-                          <td>Ssadiss</td>
-                          <td>Mohammed</td>
-                          <td style="color: #7096FF;">R13003030</td>
+                      <?php
+                          if(!empty($rows1))
+                          {
+                            foreach($rows1 as $postule_etu):
+                      ?>
+                        <tr> 
+                          <td><?php print($postule_etu['NOM_ETU']);?></td>
+                          <td><?php print($postule_etu['PRENOM_ETU']);?></td>
+                          <td style="color: #7096FF;"><?php print($postule_etu['CNE']);?></td>
                           <td style="text-align: end;">
-                            
-                            <i><img src="icons/add-user.png" alt=""></i>
+                            <form action="Liste_Attente_Resp.php" method="post">
+                              <button type="submit" name="etu_add" value="<?php print($postule_etu['ID_ETU']);?>"><i><img src="icons/add-user.png" alt=""></i></button>
+                            </form>
                           </td>
                         </tr>
-                        <tr>
-                         
-                          <td>5amiss</td>
-                          <td>Mohammed</td>
-                          <td style="color: #7096FF;">R13003030</td>
-                          <td style="text-align: end;">
-                            
-                            <i><img src="icons/add-user.png" alt=""></i>
-                          </td>
-                        </tr>
-                    
-
+                        <?php endforeach;}?>
                     </tbody>
                     
                   </table>
@@ -232,4 +270,16 @@
     
 </body>
 </html>
+<?php
+      
+    }else{
+      echo "<h1>ERROR</h1><p>POST ID_OFFRE FAILED !</p>";
+    }
+  }
+  else
+  {
+    echo "<h1>ERROR 301</h1> <p>Unauthorized Access !</p>";
+  }
+
+?>
 
