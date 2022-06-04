@@ -87,6 +87,7 @@
             $error_msgCne = "CNE introuvable !!";
             echo "<br><br><br><br>";
             var_dump($row);
+            
           }else{
             $id_private_etu = $row[0];
             // publier et postuler
@@ -103,7 +104,7 @@
             $id_offre = $row[0];
             // postuler a l'offre
             $Smt = $bdd->prepare("INSERT INTO postuler (ID_ETU,ID_OFFRE,STATU,DATEREPONS,DATEPOST) VALUES (?,?,?,?,?)");
-            $Smt -> execute(array($id_private_etu,$id_offre,'Retenu',$datedebut,$datedebut));
+            $Smt -> execute(array($id_private_etu,$id_offre,'Retenue',$datedebut,$datedebut));
             $Smt->closeCursor();//vider le curseur (free)
 
             header('location:Find_Offre_Resp.php');
