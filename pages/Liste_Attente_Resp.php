@@ -9,54 +9,58 @@
   if($_SESSION['user_type'] == "Responsable")
   {
       require("back_end/connexion.php");
-      
-      if(!empty($_POST['id_offre']))
+      if(!empty($_POST['id_offre']) )
       {
-      //$id_offre = $_POST['id_offre'];
-      $id_offre=$_POST['id_offre'];
-      /// *** Liste attentes
-      $Smt = $bdd->prepare("SELECT e.ID_ETU,e.NOM_ETU,e.PRENOM_ETU,e.CNE FROM etudiant e,attente a WHERE e.ID_ETU=a.ID_ETU AND a.ID_OFFRE =? ");
-      $Smt->execute(array($id_offre));
-      $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
-      $Smt->closeCursor();//vider le curseur (free)
+          setcookie('id_offre',$_POST['id_offre'],time() + (86400*30),'/');
 
-      /// *** Liste d'etudiants postulées
-      $Smt1 = $bdd->prepare("SELECT e.ID_ETU,e.NOM_ETU,e.PRENOM_ETU,e.CNE FROM etudiant e,postuler p WHERE e.ID_ETU=p.ID_ETU AND p.ID_OFFRE =? AND p.STATU=? ");
-      $Smt1->execute(array($id_offre ,'Postulée'));
-      $rows1 = $Smt1->fetchAll(PDO::FETCH_ASSOC);
-      $Smt1->closeCursor();//vider le curseur (free)
-
-      if(!empty($_POST['etu_add']))
+      }
+      if(isset($_COOKIE['id_offre']) )
       {
-          $id_etu = $_POST['etu_add'];
+        $id_offre=$_COOKIE['id_offre'];
 
-          /// *** Insertion en liste d'attante
-          $Smt = $bdd->prepare("INSERT INTO attente(ID_ETU,ID_OFFRE) VALUES(?,?) ");
-          $Smt->execute(array($id_etu,$id_offre));
-          $Smt->closeCursor();//vider le curseur (free)
+        /// *** Liste attentes
+        $Smt = $bdd->prepare("SELECT e.ID_ETU,e.NOM_ETU,e.PRENOM_ETU,e.CNE FROM etudiant e,attente a WHERE e.ID_ETU=a.ID_ETU AND a.ID_OFFRE =? ORDER BY a.PRIORITE");
+        $Smt->execute(array($id_offre));
+        $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+        $Smt->closeCursor();//vider le curseur (free)
 
-          /// *** Update statu to Retenue en attente
-          $Smt = $bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=?");
-          $Smt->execute(array('Retenue en attente',$id_etu,$id_offre));
-          $Smt->closeCursor();//vider le curseur (free)
-          header('location:Liste_Attente_Resp.php');
-        }
+        /// *** Liste d'etudiants postulées
+        $Smt1 = $bdd->prepare("SELECT e.ID_ETU,e.NOM_ETU,e.PRENOM_ETU,e.CNE FROM etudiant e,postuler p WHERE e.ID_ETU=p.ID_ETU AND p.ID_OFFRE =? AND p.STATU=? ");
+        $Smt1->execute(array($id_offre ,'Postulée'));
+        $rows1 = $Smt1->fetchAll(PDO::FETCH_ASSOC);
+        $Smt1->closeCursor();//vider le curseur (free)
 
-        if(!empty($_POST['etu_supp']))
+        if(!empty($_POST['etu_add']))
         {
-          $id_etu = $_POST['etu_supp'];
+            $id_etu = $_POST['etu_add'];
 
-          /// *** Suppression de la liste d'attante
-          $Smt = $bdd->prepare("DELETE FROM attente WHERE ID_ETU=? AND ID_OFFRE=? ");
-          $Smt->execute(array($id_etu,$id_offre));
-          $Smt->closeCursor();//vider le curseur (free)
+            /// *** Insertion en liste d'attante
+            $Smt = $bdd->prepare("INSERT INTO attente(ID_ETU,ID_OFFRE) VALUES(?,?) ");
+            $Smt->execute(array($id_etu,$id_offre));
+            $Smt->closeCursor();//vider le curseur (free)
 
-          /// *** Update statu to Retenue en attente
-          $Smt = $bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=?");
-          $Smt->execute(array('Postulée',$id_etu,$id_offre));
-          $Smt->closeCursor();//vider le curseur (free)
-          header('location:Liste_Attente_Resp.php');
-        }
+            /// *** Update statu to Retenue en attente
+            $Smt = $bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=?");
+            $Smt->execute(array('Retenue en attente',$id_etu,$id_offre));
+            $Smt->closeCursor();//vider le curseur (free)
+            header("location:Liste_Attente_Resp.php");
+          }
+
+          if(!empty($_POST['etu_supp']))
+          {
+            $id_etu = $_POST['etu_supp'];
+
+            /// *** Suppression de la liste d'attante
+            $Smt = $bdd->prepare("DELETE FROM attente WHERE ID_ETU=? AND ID_OFFRE=? ");
+            $Smt->execute(array($id_etu,$id_offre));
+            $Smt->closeCursor();//vider le curseur (free)
+
+            /// *** Update statu to Retenue en attente
+            $Smt = $bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=?");
+            $Smt->execute(array('Postulée',$id_etu,$id_offre));
+            $Smt->closeCursor();//vider le curseur (free)
+            header("location:Liste_Attente_Resp.php");
+          }
 
 
   
@@ -83,7 +87,7 @@
 </head>
 <body>
       
-    <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
+      <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;background: #F3F5F8 !important;">
         <div class="container-fluid">
           <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -92,21 +96,22 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="#">Find offers</a><span class="active_link_line"></span>
+                <a class="nav-link navlink active_link_color" href="Find_Offre_Resp.php">Find offers</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Historique</a>
+                <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Soumissions</a>
+                <a class="nav-link navlink " href="Liste_Etudiant_Resp.php">Etudiants</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Mes stages</a>
+                <a class="nav-link navlink" href="Liste_Enseignant_Resp.php">Enseignants</a>
               </li>
             </ul>
+            
             <div class="" style="position: fixed; margin-left: 47%;">
-            <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
-          </div>
+                  <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
+            </div>
             <ul class="navbar-nav ms-auto margin ">
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
@@ -115,7 +120,7 @@
                 <a class="nav-link navlink blue" href="#">Contact Us</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink blue " href="#">Log out</a>
+                <a class="nav-link navlink blue " href="back_end/logout.php">Log out</a>
               </li>
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
@@ -267,9 +272,9 @@
 </html>
 <?php
       
-  }else{
-    echo "<h1>ERROR 301</h1><p>POST ID_OFFRE FAILED !</p>";
-  }
+    }else{
+      echo "<h1>ERROR</h1><p>POST ID_OFFRE FAILED !</p>";
+    }
   }
   else
   {

@@ -36,7 +36,7 @@
                     $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=? ");
                     $Smt->execute(array('Non Acceptée',$Etu,$Offre_ID));               
                     
-                    /// ***
+                    /// *** Nombre condidat
                     $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE  AND p.ID_OFFRE=? AND o.STATUOFFRE=? AND (STATU=? OR STATU=?)");
                     $Smt1->execute(array($Offre_ID,'Completée','Retenue','Acceptée'));
                     $row1 = $Smt1->fetch(PDO::FETCH_ASSOC);
@@ -50,6 +50,26 @@
                             $Smt2=$bdd->prepare("UPDATE offre SET STATUOFFRE=? WHERE ID_OFFRE=? ");
                             $Smt2->execute(array('Nouveau',$Offre_ID) );
                         }
+                    }
+                    
+
+                    /// *** Prendre du liste d'attente
+                    $Smt2=$bdd->prepare("SELECT ID_ETU FROM attente WHERE ID_OFFRE= ? AND PRIORITE=(SELECT min(PRIORITE) FROM attente WHERE ID_OFFRE=?)");
+                    $Smt2->execute(array($Offre_ID,$Offre_ID)); 
+                    $row2 = $Smt2->fetch(PDO::FETCH_ASSOC);
+                    if(!empty($row2))
+                    {
+                       $id_etu_att = $row2['ID_ETU'];
+                       
+                       ///Update in postuler with Retenue
+                       $Smt = $bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=?");
+                       $Smt->execute(array('Retenue',$id_etu_att,$Offre_ID));
+                       $Smt->closeCursor();//vider le curseur (free)
+                       
+                        ///Delete from liste attente 
+                        $Smt = $bdd->prepare("DELETE FROM attente WHERE ID_ETU=? AND ID_OFFRE=? ");
+                        $Smt->execute(array($id_etu_att,$Offre_ID));
+                        $Smt->closeCursor();//vider le curseur (free)
                     }
                     
 
