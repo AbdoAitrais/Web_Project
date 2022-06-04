@@ -172,7 +172,6 @@
               <div class="edit" ><i  onclick="menuToggle(<?php print($indice);?>)" ><img src="icons/edt.png" alt=""></i></div>
               <div style="display: flex; justify-content: end; margin-right: -0px;">
                 <div class="menu" id="mn">
-            
                   <ul>
                     <li><img src="icons/edit.png" alt=""><a href="#">Modifier</a> </li>
                     <li><img src="icons/file.png" alt=""><a href="#">File d'attente</a> </li>
