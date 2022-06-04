@@ -582,12 +582,13 @@
             const elem = document.getElementById("cne");
             const candidat = document.getElementById("nbrcandidat");
             elem.classList.toggle("cne");
+            
             if(!candidat.disabled)
             {
-              candidat.setAttribute("value","1");
+              candidat.value = '1';
               candidat.disabled = true;
             } else {
-              candidat.setAttribute("value","");
+              candidat.value = '';
               candidat.disabled = false;
             }
             
