@@ -126,7 +126,7 @@
                           <td style="color: #616161;"><?php print($attente_etu['PRENOM_ETU']);?></td>
                           <td style="color: #7196FF;"><?php print($attente_etu['CNE']);?></td>
                           <td style="text-align: end;">
-                          <a href="Liste_Attente_Gestion.php?id_offre=<?php print($id_offre);?>&etu_supp=<?php print($attente_etu['ID_ETU']);?>"><i><img src="icons/rubbish-bin.png" alt=""></i></a>
+                          <a href="back_end/Liste_Attente_Gestion.php?id_offre=<?php print($id_offre);?>&etu_supp=<?php print($attente_etu['ID_ETU']);?>"><i><img src="icons/rubbish-bin.png" alt=""></i></a>
                           </td>
                         </tr>
                         <?php endforeach;}?>
@@ -163,7 +163,7 @@
                           <td><?php print($postule_etu['PRENOM_ETU']);?></td>
                           <td style="color: #7096FF;"><?php print($postule_etu['CNE']);?></td>
                           <td style="text-align: end;">  
-                              <a href="Liste_Attente_Gestion.php?id_offre=<?php print($id_offre);?>&etu_add=<?php print($postule_etu['ID_ETU']);?> "><i><img src="icons/add-user.png" alt=""></i></a>
+                              <a href="back_end/Liste_Attente_Gestion.php?id_offre=<?php print($id_offre);?>&etu_add=<?php print($postule_etu['ID_ETU']);?> "><i><img src="icons/add-user.png" alt=""></i></a>
                           </td>
                         </tr>
                         <?php endforeach;}?>

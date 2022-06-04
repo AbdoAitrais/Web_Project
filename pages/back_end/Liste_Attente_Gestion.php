@@ -10,9 +10,11 @@
 
         if( $_SESSION['user_type'] == "Responsable" )
         {
-            if( !empty($_GET['id_offre']) && !empty($_GET['etu_add']) && !empty($_GET['etu_supp']) )
+            if(!empty($_GET['id_offre']) && (!empty($_GET['etu_add']) || !empty($_GET['etu_supp'])) )
             {
                 /// ***
+                $id_offre = $_GET['id_offre'];
+                
                 if(!empty($_GET['etu_add']))
                 {
                     $id_etu = $_GET['etu_add'];
@@ -43,7 +45,7 @@
                     $Smt->closeCursor();//vider le curseur (free)
                 }
 
-                header("location:Liste_Attente_Resp.php?id_offre=".$id_offre);
+                header("location:../Liste_Attente_Resp.php?id_offre=".$id_offre);
             }
             
         }
