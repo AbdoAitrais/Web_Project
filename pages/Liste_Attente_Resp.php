@@ -9,14 +9,10 @@
   if($_SESSION['user_type'] == "Responsable")
   {
       require("back_end/connexion.php");
-      if(!empty($_POST['id_offre']) )
-      {
-          setcookie('id_offre',$_POST['id_offre'],time() + (86400*30),'/');
 
-      }
-      if(isset($_COOKIE['id_offre']) )
+      if(isset($_GET['id_offre']) )
       {
-        $id_offre=$_COOKIE['id_offre'];
+        $id_offre=$_GET['id_offre'];
 
         /// *** Liste attentes
         $Smt = $bdd->prepare("SELECT e.ID_ETU,e.NOM_ETU,e.PRENOM_ETU,e.CNE FROM etudiant e,attente a WHERE e.ID_ETU=a.ID_ETU AND a.ID_OFFRE =? ORDER BY a.PRIORITE");
@@ -29,38 +25,7 @@
         $Smt1->execute(array($id_offre ,'Postulée'));
         $rows1 = $Smt1->fetchAll(PDO::FETCH_ASSOC);
         $Smt1->closeCursor();//vider le curseur (free)
-
-        if(!empty($_POST['etu_add']))
-        {
-            $id_etu = $_POST['etu_add'];
-
-            /// *** Insertion en liste d'attante
-            $Smt = $bdd->prepare("INSERT INTO attente(ID_ETU,ID_OFFRE) VALUES(?,?) ");
-            $Smt->execute(array($id_etu,$id_offre));
-            $Smt->closeCursor();//vider le curseur (free)
-
-            /// *** Update statu to Retenue en attente
-            $Smt = $bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=?");
-            $Smt->execute(array('Retenue en attente',$id_etu,$id_offre));
-            $Smt->closeCursor();//vider le curseur (free)
-            header("location:Liste_Attente_Resp.php");
-          }
-
-          if(!empty($_POST['etu_supp']))
-          {
-            $id_etu = $_POST['etu_supp'];
-
-            /// *** Suppression de la liste d'attante
-            $Smt = $bdd->prepare("DELETE FROM attente WHERE ID_ETU=? AND ID_OFFRE=? ");
-            $Smt->execute(array($id_etu,$id_offre));
-            $Smt->closeCursor();//vider le curseur (free)
-
-            /// *** Update statu to Retenue en attente
-            $Smt = $bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=?");
-            $Smt->execute(array('Postulée',$id_etu,$id_offre));
-            $Smt->closeCursor();//vider le curseur (free)
-            header("location:Liste_Attente_Resp.php");
-          }
+        
 
 
   
@@ -161,9 +126,7 @@
                           <td style="color: #616161;"><?php print($attente_etu['PRENOM_ETU']);?></td>
                           <td style="color: #7196FF;"><?php print($attente_etu['CNE']);?></td>
                           <td style="text-align: end;">
-                            <form action="Liste_Attente_Resp.php" method="post">
-                              <button type="submit" name="etu_supp" value="<?php print($attente_etu['ID_ETU']);?>"><i><img src="icons/rubbish-bin.png" alt=""></i></button>
-                            </form>
+                          <a href="Liste_Attente_Gestion.php?id_offre=<?php print($id_offre);?>&etu_supp=<?php print($attente_etu['ID_ETU']);?>"><i><img src="icons/rubbish-bin.png" alt=""></i></a>
                           </td>
                         </tr>
                         <?php endforeach;}?>
@@ -199,10 +162,8 @@
                           <td><?php print($postule_etu['NOM_ETU']);?></td>
                           <td><?php print($postule_etu['PRENOM_ETU']);?></td>
                           <td style="color: #7096FF;"><?php print($postule_etu['CNE']);?></td>
-                          <td style="text-align: end;">
-                            <form action="Liste_Attente_Resp.php" method="post">
-                              <button type="submit" name="etu_add" value="<?php print($postule_etu['ID_ETU']);?>"><i><img src="icons/add-user.png" alt=""></i></button>
-                            </form>
+                          <td style="text-align: end;">  
+                              <a href="Liste_Attente_Gestion.php?id_offre=<?php print($id_offre);?>&etu_add=<?php print($postule_etu['ID_ETU']);?> "><i><img src="icons/add-user.png" alt=""></i></a>
                           </td>
                         </tr>
                         <?php endforeach;}?>
@@ -273,7 +234,7 @@
 <?php
       
     }else{
-      echo "<h1>ERROR</h1><p>POST ID_OFFRE FAILED !</p>";
+      echo "<h1>ERROR</h1><p>GET ID_OFFRE FAILED !</p>";
     }
   }
   else
