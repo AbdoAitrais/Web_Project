@@ -147,15 +147,9 @@
                           <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
                           <td style="text-align: end; ">
                             
-                          <button style="border:none; background:none;" ><i style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></button>
-                          <button style="border:none; background:none;" ><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></button>
-                          
-                          <form action="Liste_Attente_Resp.php" method="post" style="display:inline-block;">
-                            <input type="hidden" value="<?php echo $row['ID_OFFRE']; ?>" name="id_offre">
-                            <button type="submit" style="border:none; background:none;" ><i style="margin-right: 15px;"><img src="icons/file.png" alt=""></i></button>
-                          </form>
-                            
-                            
+                            <i type="submit" style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i>
+                            <i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i>
+                            <i><img src="icons/file.png" alt=""></i>
                           </td>
                         </tr>
                       
