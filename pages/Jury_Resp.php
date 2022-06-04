@@ -23,6 +23,7 @@
         $sql2 = "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS FROM juri j,enseignant e,stage s WHERE j.ID_STAGE = s.ID_STAGE AND j.ID_ENS = e.ID_ENS AND s.ID_STAGE = '$id_stage' ORDER BY e.NOM_ENS ";
         $req2 =$bdd->query($sql2);
         $result2 = $req2->fetchAll(PDO::FETCH_ASSOC);
+        
         ///Enseignants dans la modale
         $id_form = $_SESSION['user_id'];
         $sql3 ="SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS
@@ -44,35 +45,9 @@
         $req5 =$bdd->query($sql5);
         $result5 = $req5->fetchAll(PDO::FETCH_ASSOC);
 
-        ///Insertion des notes
-      
-        if(!empty($_POST['notes_jury']) || !empty($_POST['note_encad']) || !empty($_POST['note_entrep']) ){
-          /// ***Insertion des notes des jury
-          if(!empty($_POST['notes_jury'])  ){
-
-            $notes_jury = $_POST['notes_jury'];
-            $i = 0;
-            foreach($result5 as $Jury){
-              
-                $Smt = $bdd->prepare("UPDATE juri SET NOTE =? WHERE ID_ENS=? AND ID_STAGE=? ");
-                $Smt -> execute(array($notes_jury[$i],$Jury['ID_ENS'],$id_stage));
-                $i++;
-            }
-        }
-
-        if(!empty($_POST['note_encad'])){
-          
-          $Smt = $bdd->prepare("UPDATE stage SET NOTENCAD =? WHERE ID_STAGE=? ");
-          $Smt -> execute(array($_POST['note_encad'],$id_stage));
-        }
-        if(!empty($_POST['note_entrep'])){
-          
-          $Smt = $bdd->prepare("UPDATE stage SET NOTENCAD_ENTREP =? WHERE ID_STAGE=? ");
-          $Smt -> execute(array($_POST['note_entrep'],$id_stage));
-        }
         
-        header('refresh:0');
-      }
+        /// Last visited page 
+        $_SESSION['Last_visite'] =$_SERVER['REQUEST_URI']; 
     
     
 
@@ -270,7 +245,7 @@
             </div>
           </form>
 
-        <form action="Jury_Resp.php?id_stage=<?php print($id_stage);?>" method="post">
+        <form action="back_end/Notes_Stage_Resp.php?id_stage=<?php print($id_stage);?>" method="post">
           <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
@@ -284,11 +259,9 @@
                     <tr style="height: 50px;">
                       <?php if(!empty($result4)){?>
                       <td><?php print($result4['NOM_ENS']);?></td>
-                      <td><?php print($result4['PRENOM_ENS']);}else{?></td>
-                      <td>NOM</td>
-                      <td>PRENOM</td>
-                      <?php }?>
+                      <td><?php print($result4['PRENOM_ENS']);?></td>
                       <td style="text-align: end;">Note <input type="number" step="0.01" min="0" max="20" value="<?php print($result4['NOTENCAD']);?>" name="note_encad" style="width: 60px; margin-left: 5px; border: 1px solid #B3B3B3;"></td>
+                      <?php }?>
                     </tr>
                     <tr style="height: 50px;">
                       <td colspan="2">Entreprise</td>
@@ -312,6 +285,8 @@
                       <?php endforeach;}?>
                   </table>
                 </div>
+                 <!-- Jury array -->
+                 <input type='hidden' name='jury_array' value="<?php echo htmlentities(serialize($result5)); ?>" />
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary">Enregistrer</button>

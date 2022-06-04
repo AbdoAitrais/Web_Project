@@ -34,37 +34,8 @@
       $req3 =$bdd->query($sql3);
       $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
 
-      ///Insertion des notes
-      if(!empty($_POST['notes_jury']) || !empty($_POST['note_encad']) || !empty($_POST['note_entrep']) ){
-          /// ***Insertion des notes des jury
-          if(!empty($_POST['notes_jury'])  ){
-
-            $notes_jury = $_POST['notes_jury'];
-            $i = 0;
-            foreach($result3 as $Jury){
-              
-                $Smt = $bdd->prepare("UPDATE juri SET NOTE =? WHERE ID_ENS=? AND ID_STAGE=? ");
-                $Smt -> execute(array($notes_jury[$i],$Jury['ID_ENS'],$id_stage));
-                $i++;
-            }
-        }
-
-        if(!empty($_POST['note_encad'])){
-          
-          $Smt = $bdd->prepare("UPDATE stage SET NOTENCAD =? WHERE ID_STAGE=? ");
-          $Smt -> execute(array($_POST['note_encad'],$id_stage));
-        }
-        if(!empty($_POST['note_entrep'])){
-          
-          $Smt = $bdd->prepare("UPDATE stage SET NOTENCAD_ENTREP =? WHERE ID_STAGE=? ");
-          $Smt -> execute(array($_POST['note_entrep'],$id_stage));
-        }
-        
-        header('refresh:0');
-      }
-
-
-      ///Insertion de rapport de stage
+      ///Last visited page
+      $_SESSION['Last_visite'] =$_SERVER['REQUEST_URI']; 
 
     
 
@@ -196,7 +167,7 @@
         
         <!-- Notes -->
 
-        <form action="Encours_Resp.php?id_etu=<?php print($id_etu);?>" method="post">
+        <form action="back_end/Notes_Stage_Resp.php?id_stage=<?php print($id_stage);?>" method="post">
           <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
@@ -210,11 +181,9 @@
                     <tr style="height: 50px;">
                       <?php if(!empty($result2)){?>
                       <td><?php print($result2['NOM_ENS']);?></td>
-                      <td><?php print($result2['PRENOM_ENS']);}else{?></td>
-                      <td>NOM</td>
-                      <td>PRENOM</td>
-                      <?php }?>
+                      <td><?php print($result2['PRENOM_ENS']);?></td>
                       <td style="text-align: end;">Note <input type="number" step="0.01" min="0" max="20" value="<?php print($result2['NOTENCAD']);?>" name="note_encad" style="width: 60px; margin-left: 5px; border: 1px solid #B3B3B3;"></td>
+                      <?php }?>
                     </tr>
                     <tr style="height: 50px;">
                       <td colspan="2">Entreprise</td>
@@ -238,6 +207,8 @@
                       <?php endforeach;}?>
                   </table>
                 </div>
+                <!-- Jury array -->
+                <input type='hidden' name='jury_array' value="<?php echo htmlentities(serialize($result3)); ?>" />
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                   <button type="submit" class="btn btn-primary">Enregistrer</button>
