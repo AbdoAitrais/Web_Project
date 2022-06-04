@@ -147,9 +147,9 @@
                           <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
                           <td style="text-align: end; ">
                             
-                            <i type="submit" style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i>
-                            <i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i>
-                            <i><img src="icons/file.png" alt=""></i>
+                            <a href="#"><i type="submit" style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></a>
+                            <a href="#"><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></a>
+                            <a href="Liste_Attente_Resp.php<?php echo $row['ID_OFFRE']; ?>"><i><img src="icons/file.png" alt=""></i></a>
                           </td>
                         </tr>
                       
