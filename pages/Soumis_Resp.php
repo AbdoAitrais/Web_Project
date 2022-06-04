@@ -141,8 +141,19 @@
       $Resp = $_SESSION['user_id'];
       $id_etu = $_GET['id_etu'];
 
-      $sql ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP  AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' AND o.STATUOFFRE!='Completée'";
-      
+      //$sql ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP  AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' AND o.STATUOFFRE!='Completée'";
+      $sql = "SELECT * FROM
+              (
+                SELECT p.*  
+                FROM postuler p,offre o
+                WHERE p.ID_OFFRE = o.ID_OFFRE AND NOT EXISTS 
+                                                            (SELECT p1.*
+                                                             FROM postuler p1 ,offre o1
+                                                             WHERE p1.ID_OFFRE = o1.ID_OFFRE AND STATUOFFRE ='Completée' AND STATU='Postulée'
+                                                             AND o.ID_OFFRE=o1.ID_OFFRE AND p.ID_ETU=p1.ID_ETU	
+                                                            )
+                ) j,postuler p2,offre o2,entreprise e WHERE p2.ID_ETU = j.ID_ETU AND p2.ID_OFFRE = j.ID_OFFRE 
+                  AND p2.ID_OFFRE = o2.ID_OFFRE AND o2.ID_ENTREP =e.ID_ENTREP AND o2.ID_FORM='$Resp' AND p2.ID_ETU='$id_etu'";
       ///***Search bar
       if(isset($_POST['Filter']) && !empty( $_POST['Filter'] )){
 
@@ -151,7 +162,7 @@
         
       }
       /// ***Order by
-      $sql=$sql." ORDER BY o.ID_OFFRE DESC";
+      $sql=$sql." ORDER BY o2.ID_OFFRE DESC";
       $req =$bdd->query($sql);
       $result = $req->fetchAll(PDO::FETCH_ASSOC);
       
