@@ -71,20 +71,20 @@
         echo "<br><br><br><br>".$source_offre;
         
         // le type de stage (interne/externe)
-        if( $source_offre == 1 )
+        if( $source_offre == 0 )
         {
           // tester l'existance d'etudiant 
           $cne = htmlspecialchars( $_POST['cne'] );
           echo "<br><br><br><br>".$cne;
-          $Smt = $bdd->prepare("SELECT ID_ETU FROM etudiant WHERE CNE LIKE ?");
-          $Smt -> execute(array($cne));
+          $Smt = $bdd->prepare("SELECT ID_ETU FROM etudiant WHERE CNE LIKE ? AND NIVEAU=?");
+          $Smt -> execute(array($cne,$niveau));
           $row = $Smt->fetch();
           $Smt->closeCursor();//vider le curseur (free)
 
           if( empty($row) )
           {
             $existeCne = false;
-            $error_msgCne = "CNE introuvable !!";
+            $error_msgCne = "CNE introuvable dans le niveau saisit !!";
             echo "<br><br><br><br>";
             var_dump($row);
             
@@ -119,10 +119,6 @@
           header('location:Find_Offre_Resp.php');
         }
 
-
-        
-
-
       }
       
     
@@ -142,7 +138,7 @@
     crossorigin="anonymous">
     <title>Publier Offre</title>
 </head>
-<body>
+<body onbeforeunload = "reload();">
       
     <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
         <div class="container-fluid">
@@ -298,13 +294,13 @@
                           <?php
                             switch( $source_offre ){
                               case 1:
-                                echo "<select class='form-select' aria-label='Default select example' style='margin-top: 23px; ' onchange='ext();' id='type' name='source_offre'>
+                                echo "<select class='form-select' aria-label='Default select example' style='margin-top: 23px; ' onchange='ext();' id='cne' name='source_offre'>
                                         <option value='1' selected>Interne</option>
                                         <option value='0' >Externe</option>
                                       </select>";
                                 break;
-                              case 2:
-                                echo "<select class='form-select' aria-label='Default select example' style='margin-top: 23px; ' onchange='ext();' id='type' name='source_offre'>
+                              case 0:
+                                echo "<select class='form-select' aria-label='Default select example' style='margin-top: 23px; ' onchange='ext();' id='cne' name='source_offre'>
                                         <option value='1' >Interne</option>
                                         <option value='0' selected>Externe</option>
                                       </select>";
@@ -473,7 +469,7 @@
                         <div >
                         <select class="form-select" aria-label="Default select example" style="margin-top: 23px; " onchange="ext();" id="type" name='source_offre'>
                           <option value="1">Interne</option>
-                          <option value="2" >Externe</option>
+                          <option value="0" >Externe</option>
                         </select>
                         
                       </div>
