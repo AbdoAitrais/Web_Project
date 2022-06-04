@@ -184,12 +184,11 @@
                                 <li><img src="icons/teacher.png" alt=""><a href="">Encadrant</a> </li>
                                 <li><img src="icons/jury.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Jury</a> </li>
                                 <li><img src="icons/certificate.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Notes</a> </li>
-                                <li><img src="icons/application.png" alt=""><a href="">Rapport</a> </li>
+                                <li><img src="icons/application.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">Rapport</a> </li>
                               </ul>
                             </div>
                           </td>
                         </tr>
-                        <?php }?>
                     </tbody>
                   </table>
               </div>
@@ -229,6 +228,7 @@
                           </td>
                         </tr>
                         <?php endforeach;}?>
+                        <?php }?>
                     </tbody>
                   </table>
               </div>
@@ -319,6 +319,38 @@
               </div>
             </div>
           </div>
+        </form>
+
+        <!-- RAPPORT -->
+        <form action="back_end/Rapport_Stage_Resp.php?id_stage=<?php print($id_stage); ?>" method="post" enctype="multipart/form-data">
+          <div class="modal fade"  id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"  style="width: 400px;" >
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Rapport</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body" style="max-height: 300px;">
+                      
+                        <label class="file">
+                          <input type="file" class="form-control" id="rapport" name="rapport" >
+                        </label>
+                        <div style="display: flex;">
+                          <h5 style="border-bottom: 1px solid #717171; color: #717171; font-weight: 600; margin-top: 25px; border-bottom: none; text-decoration: underline;">Mots clés :</h5>
+                          <div id="inp" style="margin-top: 20px; margin-left: 20px;">
+                              <input type="text" name='motscle[]' class="inp"><br>
+                              <input type="text" name='motscle[]' class="inp"><button id="bt" class="todo-app-btn" onclick="add()"><i class="bi bi-plus-lg"></i> Add </button><br>
+                          </div>
+                      </div>
+                </div>
+                  
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                  </div>
+                </div>
+              </div>
+            </div>
         </form>
 
           
