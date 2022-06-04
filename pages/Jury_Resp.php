@@ -199,7 +199,7 @@
             <div class="col-md-4 elm pub_col">
 
                 <form action="Liste_Etudiant_Resp.php" method="post" id="form" >
-                  <div class="tableHead" >
+                  <div class="tableHead" style="display:flex;justify-content:space-between;">
                         <h4>Jury</h4>
                         <i><img src="icons/add-user.png" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
                   </div>

@@ -23,7 +23,7 @@
 
       if( !empty($_POST['nom_etu']) )
       { echo "<br><br><br><br>kakakaka";
-        $target_dir = "uploads/";
+        $target_dir = "uploads/cv/";
         $target_file = $target_dir . basename($_FILES["cv"]["name"]);
         $uploadOk = 1;
         $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
@@ -66,7 +66,7 @@
         } else {
           if (move_uploaded_file($_FILES["cv"]["tmp_name"], $target_file)) {
             echo "The file ". htmlspecialchars( basename( $_FILES["cv"]["name"])). " has been uploaded.";
-            $cv = "uploads/".htmlspecialchars( basename( $_FILES["cv"]["name"]));
+            $cv = "uploads/cv/".htmlspecialchars( basename( $_FILES["cv"]["name"]));
           } else {
             echo "Sorry, there was an error uploading your file.";
           }

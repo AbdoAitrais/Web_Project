@@ -12,7 +12,8 @@
 
     require("back_end/connexion.php");
 
-    if(isset($_GET['id_etu'])){
+    if(isset($_GET['id_etu']))
+    {
 
       $id_etu = $_GET['id_etu'];
 
@@ -34,7 +35,6 @@
       $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
 
       ///Insertion des notes
-
       if(!empty($_POST['notes_jury']) || !empty($_POST['note_encad']) || !empty($_POST['note_entrep']) ){
           /// ***Insertion des notes des jury
           if(!empty($_POST['notes_jury'])  ){
@@ -62,6 +62,10 @@
         
         header('refresh:0');
       }
+
+
+      ///Insertion de rapport de stage
+
     
 
       
@@ -242,35 +246,38 @@
             </div>
           </div>
         </form>
+
         <!-- RAPPORT -->
-        <div class="modal fade"  id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"  style="width: 400px;" >
-              <div class="modal-content" >
-                <div class="modal-header">
-                  <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Rapport</h3>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <form action="back_end/Rapport_Stage_Resp.php?id_stage=<?php print($id_stage); ?>" method="post" enctype="multipart/form-data">
+          <div class="modal fade"  id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"  style="width: 400px;" >
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Rapport</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body" style="max-height: 300px;">
+                      
+                        <label class="file">
+                          <input type="file" class="form-control" id="rapport" name="rapport" >
+                        </label>
+                        <div style="display: flex;">
+                          <h5 style="border-bottom: 1px solid #717171; color: #717171; font-weight: 600; margin-top: 25px; border-bottom: none; text-decoration: underline;">Mots clés :</h5>
+                          <div id="inp" style="margin-top: 20px; margin-left: 20px;">
+                              <input type="text" name='motscle[]' class="inp"><br>
+                              <input type="text" name='motscle[]' class="inp"><button id="bt" class="todo-app-btn" onclick="add()"><i class="bi bi-plus-lg"></i> Add </button><br>
+                          </div>
+                      </div>
                 </div>
-                <div class="modal-body" style="max-height: 300px;">
-                    
-                    <label class="file">
-                        <input type="file" class="form-control" id="cv" name="cv" >
-                      </label>
-                      <div style="display: flex;">
-                        <h5 style="border-bottom: 1px solid #717171; color: #717171; font-weight: 600; margin-top: 25px; border-bottom: none; text-decoration: underline;">Mots clés :</h5>
-                        <div id="inp" style="margin-top: 20px; margin-left: 20px;">
-                            <input type="text" class="inp"><br>
-                            <input type="text" class="inp"><button id="bt" class="todo-app-btn" onclick="add()"><i class="bi bi-plus-lg"></i> Add </button><br>
-                        </div>
-                    </div>
-              </div>
-                
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="button" class="btn btn-primary">Enregistrer</button>
+                  
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+        </form>
           
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
@@ -295,6 +302,7 @@
             document.getElementById("bt").remove();
             butt.classList.add("todo-app-btn");
             butt.setAttribute("id", "bt");
+            inpt.setAttribute('name','motscle[]');
             inpt.classList.add("inp");
             icn.classList.add("bi");
             icn.classList.add("bi-plus-lg");
