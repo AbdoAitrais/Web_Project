@@ -10,19 +10,34 @@
     if($_SESSION['user_type'] == "Responsable")
     {
       require('back_end/connexion.php');
+
+      $id_form = $_SESSION['user_id'];
     
       if( !empty($_GET['id_etu']) )
       {
+       
+        // fetch current Etudiant data
         $id_etu = htmlspecialchars($_GET['id_etu']);
         $Smt = $bdd->prepare("SELECT * FROM etudiant WHERE ID_ETU=?");
         $Smt -> execute(array($id_etu));
+        
         $rows = $Smt -> fetch();
+        $Smt->closeCursor();//vider le curseur (free)
+
+
+        
+        // get type Formation
+        $Smt = $bdd->prepare("SELECT TYPE_FORM FROM formation WHERE ID_FORM=?");
+        $Smt -> execute(array($id_form));
+        $formation = $Smt -> fetch();
+        $Smt->closeCursor();//vider le curseur (free)
+
       }
 
       
 
       if( !empty($_POST['nom_etu']) )
-      { echo "<br><br><br><br>kakakaka";
+      { echo "<br><br><br><br>hahaha";
         $target_dir = "uploads/cv/";
         $target_file = $target_dir . basename($_FILES["cv"]["name"]);
         $uploadOk = 1;
@@ -100,7 +115,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="ListeEtudiants.css">
+    <link rel="stylesheet" href="Publier_Offre_Resp.css">
     <link href='https://fonts.googleapis.com/css?family=Poppins' rel='stylesheet'>
     <link href='https://fonts.googleapis.com/css?family=Inter' rel='stylesheet'>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" 
@@ -110,15 +125,14 @@
     <title>Listes des Etudiants</title>
 </head>
 <body>
-      
-    <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;background: #F3F5F8 !important;">
+<nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
         <div class="container-fluid">
           <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ">
+          <ul class="navbar-nav ">
               <li class="nav-item underline">
                 <a class="nav-link navlink " href="Find_Offre_Resp.php">Find offers</a>
               </li>
@@ -132,10 +146,9 @@
                 <a class="nav-link navlink" href="Liste_Enseignant_Resp.php">Enseignants</a>
               </li>
             </ul>
-            
             <div class="" style="position: fixed; margin-left: 47%;">
-                  <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
-            </div>
+            <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
+          </div>
             <ul class="navbar-nav ms-auto margin ">
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
@@ -144,7 +157,7 @@
                 <a class="nav-link navlink blue" href="#">Contact Us</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink blue " href="back_end/logout.php">Log out</a>
+                <a class="nav-link navlink blue " href="#">Log out</a>
               </li>
               <li class="nav-item back">
                 <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
@@ -154,102 +167,282 @@
         </div>
       </nav>
 
-        <div class="container-fluid ">
-          <div class="" style="margin-top: 60px;">
+    <div class="container-fluid ">
+      <div class="" style="margin-top: 140px;">
+        <?php     
+          if(!empty($rows))
+          {
+          ?>
 
+      <form action="Modifier_Etudiant_Resp.php" method="post" enctype="multipart/form-data" id="form" >
+    
+         <div class="row" style="background-color: #FFFEFB;">
+            <div class="col-md-8 elm pub_col">
 
+                
+                  <div class="tableHead" >
+                        <h4>Modifier Etudiant</h4>
+                  </div>
+                
+                
 
-            <div class="row" style="margin-top:8%;" >
-              <div class="col-md-10 elm pub_col">
+                <div class="row" style="background-color: #FFFEFB; margin-top: 40px;">
 
-                    <div class="tableHead" >
-                          <h4>Modifier Etudiant</h4>
+                  <div class="col-4 col-md-2 elm " > 
+                    <label for="nom"><span>Nom</span></label><br>
+                    <label for="entrep" style="margin-top: 55px;"><span>Prenom</span></label><br>
+                    <label for="email" style="margin-top: 55px;"><span>Email Etudiant</span></label><br>
+                    <label for="cin" style="margin-top: 55px;"><span>Cin</span></label><br>
+                    <label for="cne" style="margin-top: 55px;"><span>Cne</span></label><br>
+                  </div>
+
+                  <div class="col-8 col-md-4 elm " >
+                    <input class="inpstyl" type="text" id="nom" value="<?php echo $rows['NOM_ETU']; ?>" name="nom_etu"><br>
+                    <input class="inpstyl" type="text" style="margin-top: 45px;" id="entrep" value="<?php echo $rows['PRENOM_ETU']; ?>" name="prenom_etu"><br>
+                    <input class="inpstyl" type="email" style="margin-top: 45px;" id="email" value="<?php echo $rows['EMAIL_ETU']; ?>" name="email_etu"><br>
+                    <input class="inpstyl" type="text" style="margin-top: 45px;" id="cin" value="<?php echo $rows['CIN_ETU']; ?>" name="cin_etu"><br>
+                    <input class="inpstyl" type="text" style="margin-top: 45px;" id="cne" value="<?php echo $rows['CNE']; ?>" name="cne"><br>
+                  </div>
+
+                
+
+                    
+                      <div class="col-4 col-md-2 elm "> 
+                        <label for="address"><span>Adresse</span></label><br>
+                        <label for="tel" style="margin-top: 55px;"><span>Tel</span></label><br>
+                        <label for="niveau" style="margin-top: 55px;"><span>Niveau</span></label><br>
+                        <label for="promo" style="margin-top: 55px;"><span>Promotion</span></label><br>
+                        <label for="naiss" style="margin-top: 55px;"><span>Date Naissance</span></label><br>
+                      </div>
+                      <div class="col-8 col-md-4 elm" >
+                        
+                        <input class="inpstyl" type="text" id="address" value="<?php echo $rows['ADRESSE_ETU']; ?>" name="adresse_etu"><br>
+                        <input class="inpstyl" type="tel" id="tel" style="margin-top: 45px;" value="<?php echo $rows['NUMTEL_ETU']; ?>" name="numtel_etu"><br>
+                        
+
+                        
+
+                        <?php
+                        if( $formation[0] == 1 )
+                        {
+                          switch( $rows['NIVEAU'] ){
+                            case 1:
+                              echo '
+                                  <div >
+                                    <select class="form-select" aria-label="Default select example" style="margin-top: 45px; width:10rem;" " onchange="ext();" id="type" name="niveau">
+                                      <option value=1 selected >1ere</option>
+                                      <option value=2>2eme</option>
+                                      <option value=3>3eme</option>
+                                    </select>
+                                  </div>
+                                    ';
+                              break;
+                            case 2:
+                              echo '
+                                  <div >
+                                    <select class="form-select" aria-label="Default select example" style="margin-top: 45px; width:10rem;" " onchange="ext();" id="type" name="niveau">
+                                      <option value=1 >1ere</option>
+                                      <option value=2 selected >2eme</option>
+                                      <option value=3 >3eme</option>
+                                    </select>
+                                  </div>
+                                    ';
+                              break;
+                            case 3:
+                              echo '
+                              <div >
+                                <select class="form-select" aria-label="Default select example" style="margin-top: 45px; width:10rem;" " onchange="ext();" id="type" name="niveau">
+                                  <option value=1 >1ere</option>
+                                  <option value=2 >2eme</option>
+                                  <option value=3 selected >3eme</option>
+                                </select>
+                              </div>
+                                ';
+                              break;
                           
-                    </div>
-
-                    <form action="Modifier_Etudiant_Resp.php" method="post" enctype="multipart/form-data" style="display:flex; justify-content:space-around;">
-                        <div class="form-row"  >
+                          }
                           
-                        <div>
-                          <div class="form-group col-md-20">
-                              <label for="Nom">Nom</label>
-                              <input type="text" class="form-control" id="Nom" placeholder="Nom" value="<?php echo $rows['NOM_ETU']; ?>" name="nom_etu" >
-                            </div>
-                          </div>
-                          <div class="form-group col-md-20">
-                            <label for="inputPrenom">Prenom</label>
-                            <input type="text" class="form-control" id="inputPrenom" placeholder="Prenom" value="<?php echo $rows['PRENOM_ETU']; ?>" name="prenom_etu">
-                          </div>
-                          <div class="form-group col-md-20">
-                              <label for="inputEmail4">Email</label>
-                              <input type="email" class="form-control" id="inputEmail4" placeholder="Email" value="<?php echo $rows['EMAIL_ETU']; ?>" name="email_etu" >
-                            </div>
-                            <div class="form-group col-md-20">
-                              <label for="Cin">Cin</label>
-                              <input type="text" class="form-control" id="Cin" placeholder="Cin" value="<?php echo $rows['CIN_ETU']; ?>" name="cin_etu">
-                            </div>
-                            <div class="form-group col-md-20">
-                              <label for="Cne">Cne</label>
-                              <input type="text" class="form-control" id="Cne" placeholder="Cne" value="<?php echo $rows['CNE']; ?>" name="cne">
-                            </div>
-                          <div class="form-group col-md-20">
-                            <label for="Address">Address</label>
-                            <input type="text" class="form-control" id="Address" placeholder="Apartment, studio, or floor" value="<?php echo $rows['ADRESSE_ETU']; ?>" name="adresse_etu">
-                          </div>
-                        </div>
-                        <div>
-                          <div class="form-row">
-                            <div class="form-group col-md-20">
-                              <label for="tel">Telephone</label>
-                              <input type="text" class="form-control" id="tel" placeholder="+212 7********" value="<?php echo $rows['NUMTEL_ETU']; ?>" name="numtel_etu">
-                            </div>
-                            <div class="form-group col-md-20">
-                              <label for="inputState">Niveau</label>
-                              <select id="inputState" class="form-control" name="niveau">
-                                <?php
-                                  switch( $rows['NIVEAU'] ){
-                                    case 1:
-                                      echo '
-                                            <option value=1 selected >1ere</option>
-                                            <option value=2>2eme</option>
-                                            <option value=3>3eme</option>';
-                                      break;
-                                    case 2:
-                                      echo '
-                                            <option value=1  >1ere</option>
-                                            <option value=2 selected>2eme</option>
-                                            <option value=3>3eme</option>';
-                                      break;
-                                    case 3:
-                                            echo
-                                                '
-                                                <option value=1  >1ere</option>
-                                                <option value=2 >2eme</option>
-                                                <option value=3 selected>3eme</option>';
-                                      break;
+                        }else if( $formation[0] == 2 ){
+                          switch( $rows['NIVEAU'] ){
+                            case 1:
+                              echo '
+                                  <div >
+                                    <select class="form-select" aria-label="Default select example" style="margin-top: 45px; width:10rem;" " onchange="ext();" id="type" name="niveau">
+                                      <option value=1 selected >1ere</option>
+                                      <option value=2>2eme</option>
+                                    </select>
+                                  </div>
+                                    ';
+                              break;
+                            case 2:
+                              echo '
+                                  <div >
+                                    <select class="form-select" aria-label="Default select example" style="margin-top: 45px; width:10rem;" " onchange="ext();" id="type" name="niveau">
+                                      <option value=1 >1ere</option>
+                                      <option value=2 selected >2eme</option>
+                                    </select>
+                                  </div>
+                                    ';
+                              break;
+                          
+                          }
+                        
+                        }
                                   
-                                  }
                                 ?>
-                              </select>
-                            </div>
-                            <div class="form-group col-md-20">
-                              <label for="Promotion">Promotion</label>
-                              <input type="text" class="form-control" id="Promotion" value="<?php echo $rows['PROMOTION']; ?>" name="promotion">
-                              <label for="date">Date de naissance</label>
-                              <input type="date" class="form-control" id="date" value="<?php echo $rows['DATENAISS_ETU']; ?>" name="datenaiss_etu">
-                              <label for="cv">CV</label>
-                              <input type="file" class="form-control" id="cv" name="cv" >
-                              <input type="hidden" value="<?php echo $rows['ID_ETU']; ?>" name="id_etu"/>
-                            </div>
-                          </div><br>
-                          <button type="submit" class="btn btn-outline-primary">Submit</button></a>
-                        </div>
-                      </form>
-            
-              </div>
-            </div>
+                        
+                        <input class="inpstyl" type="hidden" style="margin-top: 45px;" id="promo" value="<?php echo $rows['ID_ETU']; ?>" name="id_etu"><br>
 
+                        <input class="inpstyl" type="number" style="margin-top: 28px;" id="promo" value="<?php echo $rows['PROMOTION']; ?>" name="promotion"><br>
+                        <input class="inpstyl" type="date" style="margin-top: 45px;" id="naiss" value="<?php echo $rows['DATENAISS_ETU']; ?>" name="datenaiss_etu"><br>
+                    
+                    
+                    
+                    
+                  
+                </div>
+
+                
+                
+              </div>
+                          
+                    
+              <div class="row" style="background-color: #FFFEFB; margin-top: 30px;">
+                <div class="col-4 col-md-2 elm ">  
+                  <label for="exampleFormControlTextarea5" ><span>CV</span></label>
+                </div>
+                  <div class="col-8 col-md-8 elm ">  
+                    <div class="form-group green-border-focus">
+                      
+                    <input class="inpstyl" type="file" style="margin-top: 28px;" id="cv" value="<?php echo $rows['CV']; ?>" name="cv">
+                    </div>
+                  </div>
+                  <div class="col-4 col-md-2 elm ">
+                    <button class="save" >Enregistrer</button>
+                    <button class="cancel">Annuler</button>
+                    
+                  </div>
+              </div>
+
+        
           </div>
+        </div>           
+      </form>
+        <?php
+            }else{  
+        ?>
+      <form action="Modifier_Etudiant_Resp.php" method="post" enctype="multipart/form-data" id="form" >
+    
+          <div class="row" style="background-color: #FFFEFB;">
+            <div class="col-md-8 elm pub_col">
+
+                
+                  <div class="tableHead" >
+                        <h4>Modifier Etudiant</h4>
+                  </div>
+                
+                
+
+                <div class="row" style="background-color: #FFFEFB; margin-top: 40px;">
+
+                  <div class="col-4 col-md-2 elm " > 
+                    <label for="nom"><span>Nom</span></label><br>
+                    <label for="entrep" style="margin-top: 55px;"><span>Prenom</span></label><br>
+                    <label for="email" style="margin-top: 55px;"><span>Email Etudiant</span></label><br>
+                    <label for="cin" style="margin-top: 55px;"><span>Cin</span></label><br>
+                    <label for="cne" style="margin-top: 55px;"><span>Cne</span></label><br>
+                  </div>
+
+                  <div class="col-8 col-md-4 elm " >
+                    <input class="inpstyl" type="text" id="nom" name="nom_etu"><br>
+                    <input class="inpstyl" type="text" style="margin-top: 45px;" id="entrep" name="prenom_etu"><br>
+                    <input class="inpstyl" type="email" style="margin-top: 45px;" id="email" name="email_etu"><br>
+                    <input class="inpstyl" type="text" style="margin-top: 45px;" id="cin" name="cin_etu"><br>
+                    <input class="inpstyl" type="text" style="margin-top: 45px;" id="cne" name="cne"><br>
+                  </div>
+
+                
+
+                    
+                      <div class="col-4 col-md-2 elm "> 
+                        <label for="address"><span>Adresse</span></label><br>
+                        <label for="tel" style="margin-top: 55px;"><span>Tel</span></label><br>
+                        <label for="niveau" style="margin-top: 55px;"><span>Niveau</span></label><br>
+                        <label for="promo" style="margin-top: 55px;"><span>Promotion</span></label><br>
+                        <label for="naiss" style="margin-top: 55px;"><span>Date Naissance</span></label><br>
+                      </div>
+                      <div class="col-8 col-md-2 elm" >
+                        
+                        <input class="inpstyl" type="text" id="address" name="adresse_etu"><br>
+                        <input class="inpstyl" type="tel" id="tel" style="margin-top: 45px;" name="numtel_etu"><br>
+                        
+                        <?php
+                          if( $formation[0] == 1 )
+                          {
+                        ?>
+                        <div >
+                              <select class="form-select" aria-label="Default select example" style="margin-top: 45px; width:10rem;" onchange="ext();" id="type" name="niveau">
+                                <option value=1 selected >1ere</option>
+                                <option value=2>2eme</option>
+                                <option value=3>3eme</option>
+                              </select>
+                        </div>
+                        <?php
+                          }else if( $formation[0] == 2 ){
+                        ?>
+                        <div >
+                              <select class="form-select" aria-label="Default select example" style="margin-top: 45px; width:10rem;" onchange="ext();" id="type" name="niveau">
+                                <option value=1 selected >1ere</option>
+                                <option value=2>2eme</option>
+                              </select>
+                        </div>
+                        <?php
+                          }
+                        ?>
+
+                        
+
+                        <input class="inpstyl" type="number" style="margin-top: 28px;" id="promo" name="promotion"><br>
+                        <input class="inpstyl" type="date" style="margin-top: 45px;" id="naiss" name="datenaiss_etu"><br>
+                    
+                    
+                    
+                    
+                  
+                </div>
+
+                
+                
+              </div>
+
+
+              <div class="row" style="background-color: #FFFEFB; margin-top: 30px;">
+                <div class="col-4 col-md-2 elm ">  
+                  <label for="exampleFormControlTextarea5" ><span>CV</span></label>
+                </div>
+                  <div class="col-8 col-md-8 elm ">  
+                    <div class="form-group green-border-focus">
+                      
+                    <input class="inpstyl" type="file" style="margin-top: 28px;" id="cv" value="<?php echo $rows['CV']; ?>" name="cv">
+                    </div>
+                  </div>
+                  <div class="col-4 col-md-2 elm ">
+                    <button class="save" >Enregistrer</button>
+                    <button class="cancel">Annuler</button>
+                    
+                  </div>
+              </div>
+        
+          </div>
+        </div> 
+       
+      </form>
+      <?php
+          }
+      ?>
+          </div>
+        
+  
         </div>
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
