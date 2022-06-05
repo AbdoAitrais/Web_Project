@@ -7,7 +7,6 @@
         header('location:../login.php');
 
     else{
-
         
         if(!empty($_GET['rapport']))
         {
