@@ -18,9 +18,10 @@
         $result = $req->fetch(PDO::FETCH_ASSOC);
         $id_form = $result['ID_FORM'] ;
       }
-      $req = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,POSTE,NOM_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND o.ID_FORM='$id_form' ";    
+      $req = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,POSTE,NOM_ENTREP,r.FICHIER FROM entreprise ent,offre o,stage s,etudiant etu,rapport r  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND r.ID_STAGE=s.ID_STAGE AND o.ID_FORM='$id_form' ";    
       $Smt = $bdd->query($req);
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+
       
     
   
@@ -145,7 +146,7 @@
                           <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
                           <td style="color: #7096FF;"><?php echo $row['NOM_ENTREP']; ?></td>
                           <td style="text-align: end;">
-                            <button type="button" class="btn btn-outline-primary">Rapport</button>
+                            <a href="back_end/Rapport_Historique.php?rapport=<?php print($row['FICHIER']); ?>"><button type="button" class="btn btn-outline-primary">Rapport</button></a>
                             <button type="button" class="btn btn-outline-primary">Detail</button>
                           </td>
                         </tr>
