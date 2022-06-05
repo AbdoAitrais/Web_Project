@@ -303,7 +303,7 @@
         </form>
 
         <!-- RAPPORT -->
-        <form action="back_end/Rapport_Stage_Resp.php?id_stage=<?php print($id_stage); ?>" method="post" enctype="multipart/form-data">
+        <form action="back_end/Rapport_Stage_Resp.php" method="post" enctype="multipart/form-data">
           <div class="modal fade"  id="staticBackdrop3" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"  style="width: 400px;" >
                 <div class="modal-content" >
@@ -326,6 +326,7 @@
                 </div>
                   
                   <div class="modal-footer">
+                    <input type="hidden" name="id_stage" value="<?php print($id_stage); ?>">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                   </div>
