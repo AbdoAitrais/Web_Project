@@ -10,15 +10,15 @@
 
         if( $_SESSION['user_type'] == "Responsable" )
         {
-            if(((!empty($_POST['jury_add']) || !empty($_GET['jury_supp'])) && (!empty($_GET['id_stage'])) ))
+            if(((!empty($_POST['jury_add']) || !empty($_POST['jury_supp'])) && (!empty($_POST['id_stage'])) ))
             {
                 
                  
-                $id_stage = $_GET['id_stage'];
+                $id_stage = $_POST['id_stage'];
 
-                if(!empty($_GET['jury_supp'])){
+                if(!empty($_POST['jury_supp'])){
                     
-                    $JURY_ID = $_GET['jury_supp'] ;  
+                    $JURY_ID = $_POST['jury_supp'] ;  
                     $Smt = $bdd->prepare("DELETE FROM juri WHERE ID_ENS=? AND ID_STAGE =? ");
                     $Smt -> execute(array($JURY_ID,$id_stage));
                     
@@ -41,7 +41,7 @@
         }
         else
         {
-            header('location:'.$_SESSION['main_page']);
+            header('location:../'.$_SESSION['main_page']);
         }
     }
 

@@ -10,21 +10,21 @@
 
         if( $_SESSION['user_type'] == "Responsable" )
         {
-            if((isset($_GET['Post_Retenue']) || isset($_GET['Post_Non_Retenue'])) && (isset($_GET['id_etu'])) )
+            if((isset($_POST['Post_Retenue']) || isset($_POST['Post_Non_Retenue'])) && (isset($_POST['id_etu'])) )
             {
                 
-                $Etu=$_GET['id_etu'];
+                $Etu=$_POST['id_etu'];
                 $curdate = date("Y-m-d");
     
-                if(isset($_GET['Post_Non_Retenue'])){
+                if(isset($_POST['Post_Non_Retenue'])){
                     
-                    $Offre_ID = $_GET['Post_Non_Retenue'] ;  
+                    $Offre_ID = $_POST['Post_Non_Retenue'] ;  
                     $Smt=$bdd->prepare("UPDATE postuler SET STATU=?,DATEREPONS=? WHERE ID_ETU=? AND ID_OFFRE=? ");
                     $Smt->execute(array('Non Retenue',$curdate,$Etu,$Offre_ID));
 
-                }else if(isset($_GET['Post_Retenue'])){
+                }else if(isset($_POST['Post_Retenue'])){
                     
-                    $Offre_ID = $_GET['Post_Retenue'] ;      
+                    $Offre_ID = $_POST['Post_Retenue'] ;      
                     
                     /// ***Nbr de Contamination
                     $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE AND o.ID_OFFRE=? AND o.STATUOFFRE=?  AND (p.STATU=? OR p.STATU=?)");
@@ -56,7 +56,7 @@
         }
         else
         {
-            header('location:'.$_SESSION['main_page']);
+            header('location:../'.$_SESSION['main_page']);
         }
     }
 

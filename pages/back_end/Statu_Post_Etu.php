@@ -11,14 +11,14 @@
         if( $_SESSION['user_type'] == "Etudiant" )
         {
             require('connexion.php');
-            if(isset($_GET['offre_post']) || isset($_GET['offre_non_accepte']) || isset($_GET['offre_accepte'])){
+            if(isset($_POST['offre_post']) || isset($_POST['offre_non_accepte']) || isset($_POST['offre_accepte'])){
             
                 $Etu=$_SESSION['user_id'];
                 $curdate = date("Y-m-d");
                 
-                if(isset($_GET['offre_post'])){
+                if(isset($_POST['offre_post'])){
 
-                    $Offre_ID = $_GET['offre_post'] ;  
+                    $Offre_ID = $_POST['offre_post'] ;  
                     
                     ///Postulation
                     $Smt = $bdd->prepare("INSERT INTO postuler(ID_ETU,ID_OFFRE,STATU,DATEPOST) values(?,?,?,?)");
@@ -28,9 +28,9 @@
                     /// ***
                     header('location:../Find_Offre_Etu.php');
                 
-                }else if(isset($_GET['offre_non_accepte'])){
+                }else if(isset($_POST['offre_non_accepte'])){
 
-                    $Offre_ID = $_GET['offre_non_accepte'] ;  
+                    $Offre_ID = $_POST['offre_non_accepte'] ;  
 
                     /// *** Mettre non acceptée dans cet offre
                     $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=? ");
@@ -75,9 +75,9 @@
 
                     header('location:../Soumissions_Etu.php');
                 
-                }else if(isset($_GET['offre_accepte'])){
+                }else if(isset($_POST['offre_accepte'])){
                     
-                    $Offre_ID = $_GET['offre_accepte'] ;  
+                    $Offre_ID = $_POST['offre_accepte'] ;  
                     
                     ///*** Acceptation
                     $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=? ");
@@ -108,7 +108,7 @@
         }
         else
         {
-            header('location:'.$_SESSION['main_page']);
+            header('location:../'.$_SESSION['main_page']);
         }
 
     }  

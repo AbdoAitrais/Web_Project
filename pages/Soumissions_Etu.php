@@ -189,9 +189,15 @@
                                 echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">Non Acceptée</label>';
                                 break;
                             case 3:
-                                echo'<a href="back_end/Statu_Post_Etu.php?offre_non_accepte='.$of_id.'"><button class="butt_style" style="background:lightgrey;" onClick="LastScroll()">REFUSER</button></a>';
+                                echo'<form action="back_end/Statu_Post_Etu.php" method="post" style="display: inline-block;">
+                                      <input type="hidden" name="offre_non_accepte" value="'.$of_id.'">
+                                      <button type="submit" class="butt_style"  style="background:lightgrey;" onClick="LastScroll()" >REFUSER</button>
+                                   </form>';
                                 echo"  ";
-                                echo'<a href="back_end/Statu_Post_Etu.php?offre_accepte='.$of_id.'"><button class="butt_style" style="background:7096FF;" onClick="LastScroll()">ACCEPTER</button></a>';
+                                echo'<form action="back_end/Statu_Post_Etu.php" method="post" style="display: inline-block;">
+                                      <input type="hidden" name="offre_accepte" value="'.$of_id.'">
+                                      <button type="submit" class="butt_style" onClick="LastScroll()" >ACCEPTER</button>
+                                    </form>';
                                 break;
                             case 4:
                                 echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">Postulée</label>';

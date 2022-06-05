@@ -12,7 +12,7 @@
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
     
-      $req = "SELECT * FROM etudiant e,users u WHERE e.ID_USER=u.ID_USER AND e.ID_FORM='$id_form' ORDER BY u.ACTIVE DESC";
+      $req = "SELECT * FROM etudiant e,users u WHERE e.ID_USER=u.ID_USER AND e.ID_FORM='$id_form'";
       $Smt = $bdd->query($req);
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -126,9 +126,17 @@
                             <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
                             <a href="Modifier_Etudiant_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
                             <?php if($row['ACTIVE'] == 1){ ?>
-                            <a href="back_end/Desactiver_account.php?id_etu_disac=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >Desactiver</button></a>
+                            <!-- <a href="back_end/Desactiver_account.php?id_etu_disac=<//?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >Desactiver</button></a> -->
+                            <form action="back_end/Desactiver_account.php" method="post" style="display: inline-block;" >
+                                <input type="hidden" name="id_etu_disac" value="<?php echo $row['ID_ETU']; ?>">
+                                <button type="submit" class="btn btn-outline-primary" >Desactiver</button>
+                            </form>
                             <?php }else{?>
-                            <a href="back_end/Desactiver_account.php?id_etu_ac=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Activer&nbsp;&nbsp;&nbsp;</button></a>
+                            <!-- <a href="back_end/Desactiver_account.php?id_etu_ac=<//?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Activer&nbsp;&nbsp;&nbsp;</button></a> -->
+                            <form action="back_end/Desactiver_account.php" method="post" style="display: inline-block;">
+                                <input type="hidden" name="id_etu_ac" value="<?php echo $row['ID_ETU']; ?>">
+                                <button type="submit" class="btn btn-outline-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Activer&nbsp;&nbsp;&nbsp;</button>
+                            </form>
                             <?php }?>
                           </td>
                         </tr>

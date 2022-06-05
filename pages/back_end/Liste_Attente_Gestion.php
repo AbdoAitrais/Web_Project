@@ -53,7 +53,7 @@
         }
         else
         {
-            header('location:'.$_SESSION['main_page']);
+            header('location:../'.$_SESSION['main_page']);
         }
     }
 

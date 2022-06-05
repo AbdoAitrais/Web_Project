@@ -231,8 +231,12 @@
                         else if(!empty($result3))
                               echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">Postulée</label>';
                         else 
-                              echo'<a href="back_end/Statu_Post_Etu.php?offre_post='.$of_id.'"><button class="butt_style" onClick="LastScroll()" >POSTULER</button></a>';
-                     
+                              //echo'<a href="back_end/Statu_Post_Etu.php?offre_post='.$of_id.'"><button class="butt_style" onClick="LastScroll()" >POSTULER</button></a>';
+                              echo'<form action="back_end/Statu_Post_Etu.php" method="post">
+                                      <input type="hidden" name="offre_post" value="'.$of_id.'">
+                                      <button type="submit" class="butt_style" onClick="LastScroll()" >POSTULER</button>
+                                   </form>';
+
                     ?>
                 </div>
               </div>

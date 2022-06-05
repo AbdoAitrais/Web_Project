@@ -41,7 +41,7 @@
         $result4 = $req4->fetch(PDO::FETCH_ASSOC);
 
         ///Jury
-        $sql5 = "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS,j.NOTE FROM enseignant e,juri j WHERE j.ID_ENS = e.ID_ENS AND j.ID_STAGE = '$id_stage' ";
+        $sql5 = "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS,j.NOTE FROM enseignant e,juri j WHERE j.ID_ENS = e.ID_ENS AND j.ID_STAGE = '$id_stage' ORDER BY e.ID_ENS ";
         $req5 =$bdd->query($sql5);
         $result5 = $req5->fetchAll(PDO::FETCH_ASSOC);
 
@@ -199,7 +199,12 @@
                           <td style="color: #616161;"><?php print($Jury['NOM_ENS']);?></td>
                           <td style="color: #616161;"><?php print($Jury['PRENOM_ENS']);?></td>
                           <td style="text-align: end;">
-                            <a href="back_end/Jury_Ens_Resp.php?jury_supp=<?php print($Jury['ID_ENS']);?>&id_stage=<?php print($id_stage);?>"><i><img src="icons/rubbish-bin.png" alt=""></i></a>
+                            <!-- <a href="back_end/Jury_Ens_Resp.php?jury_supp=<?php print($Jury['ID_ENS']);?>&id_stage=<?php print($id_stage);?>"> -->
+                            <form action="back_end/Jury_Ens_Resp.php" method="post" style="display: inline-block;" >
+                              <input type="hidden" name="id_stage" value="<?php print($id_stage);?>">
+                              <input type="hidden" name="jury_supp" value="<?php print($Jury['ID_ENS']);?>" >
+                              <button type="submit" style="background:none;border: none;"><i><img src="icons/rubbish-bin.png" alt=""></i></a></button>
+                            </form>
                           </td>
                         </tr>
                         <?php endforeach;}?>
@@ -209,7 +214,7 @@
               </div>
           </div>
 
-          <form action="back_end/Jury_Ens_Resp.php?id_stage=<?php print($id_stage);?>" method="post">
+          <form action="back_end/Jury_Ens_Resp.php" method="post">
             <div class="modal fade"  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
                 <div class="modal-content" >
@@ -228,6 +233,7 @@
                         <td><?php print($Ens['NOM_ENS'])?></td>
                         <td><?php print($Ens['PRENOM_ENS'])?></td>
                         <td style="text-align: end;">
+                          <input type="hidden" name="id_stage" value="<?php print($id_stage);?>">
                           <input class="form-check-input" type="checkbox" name='jury_add[<?php print($Ens['ID_ENS']);?>]' id="flexCheckDefault">
                         </td>
                       </tr>

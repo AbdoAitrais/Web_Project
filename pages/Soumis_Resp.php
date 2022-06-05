@@ -214,9 +214,17 @@
                           
                           $Statu_etu =  $result_statu['STATU'];
                           if($Statu_etu == 'Postulée'){
-                              echo '<a href="back_end/Statu_Post_Resp.php?Post_Non_Retenue='.$of_id.'&id_etu='.$id_etu.'"><button class="butt_style" style="background:lightgrey;" onClick="LastScroll()">NON RETENUE</button></a>';
+                              echo'<form action="back_end/Statu_Post_Resp.php" method="post" style="display: inline-block;">
+                                      <input type="hidden" name="Post_Non_Retenue" value="'.$of_id.'">
+                                      <input type="hidden" name="id_etu" value="'.$id_etu.'">
+                                      <button type="submit" class="butt_style" style="background:lightgrey;" onClick="LastScroll()">NON RETENUE</button>
+                                    </form>';
                               echo"  ";
-                              echo '<a href="back_end/Statu_Post_Resp.php?Post_Retenue='.$of_id.'&id_etu='.$id_etu.'"><button class="butt_style" style="background:7096FF;" onClick="LastScroll()">RETENUE</button></a>';
+                              echo'<form action="back_end/Statu_Post_Resp.php" method="post" style="display: inline-block;">
+                                      <input type="hidden" name="Post_Retenue" value="'.$of_id.'">
+                                      <input type="hidden" name="id_etu" value="'.$id_etu.'">
+                                      <button type="submit" class="butt_style" style="background:7096FF;" onClick="LastScroll()">RETENUE</button>
+                                    </form>';
                           }else{
                               echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">'.$Statu_etu.'</label>';
                           }

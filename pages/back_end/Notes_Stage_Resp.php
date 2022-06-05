@@ -40,12 +40,12 @@
                       }
                     }
           
-                  if(!empty($_POST['note_encad'])){
+                  if(isset($_POST['note_encad'])){
                     
                     $Smt = $bdd->prepare("UPDATE stage SET NOTENCAD =? WHERE ID_STAGE=? ");
                     $Smt -> execute(array($_POST['note_encad'],$id_stage));
                   }
-                  if(!empty($_POST['note_entrep'])){
+                  if(isset($_POST['note_entrep'])){
                     
                     $Smt = $bdd->prepare("UPDATE stage SET NOTENCAD_ENTREP =? WHERE ID_STAGE=? ");
                     $Smt -> execute(array($_POST['note_entrep'],$id_stage));
@@ -57,7 +57,7 @@
         }
         else
         {
-            header('location:'.$_SESSION['main_page']);
+          header('location:../'.$_SESSION['main_page']);
         }
     }
 
