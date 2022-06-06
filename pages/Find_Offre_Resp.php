@@ -119,7 +119,7 @@
                       </tr>
                     </thead>
                     <tbody>
-                  
+                    
                     <?php
                         foreach ($rows as $row): 
                     ?>
@@ -148,14 +148,12 @@
                           <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
                           <td style="text-align: end; ">
                             
-                            <button style="background:none;border:none;"  value="<?php print($row['ID_OFFRE']);?>" onclick="Offre_detail(this.value);"><a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i type="submit" style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></a></button>
+                            <button style="background:none;border:none;" data-bs-toggle="modal" data-bs-target="#offre<?php print($row['ID_OFFRE']); ?>"><i type="submit" style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></button>
                             <a href="#"><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></a>
                             <a href="Liste_Attente_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>"><i><img src="icons/file.png" alt=""></i></a>
                           </td>
                         </tr>
-                      
                         <?php endforeach; ?>
-  
                     </tbody>
                     <tfoot>
                         <tr>
@@ -172,7 +170,9 @@
           </div>
           
           <!-- Detail -->
-          <div class="modal fade"  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <?php foreach($rows as $Offre): ?>
+          
+            <div class="modal fade"  id="offre<?php print($Offre['ID_OFFRE']); ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"  style="max-width:800px !important;" >
                 <div class="modal-content" >
                   <div class="modal-header">
@@ -180,47 +180,50 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body" >
-                  <div class="col-12 elm pub_col">
-                         <div class="brd">
-                            
-                            <div class="greenc"></div> 
-                            <div class="content">
+                  <div class="col-md-12 elm pub_col">
+                      <div class="brd">
+                        <?php                  
+                            if($Offre['STATUOFFRE'] == 'Nouveau')
+                                  echo '<div class="greenc"> </div>'; 
+                            else if($Offre['STATUOFFRE'] == 'Completée')
+                                  echo '<div class="grayc"> </div>';
+                            else if($Offre['STATUOFFRE'] == 'Closed')
+                                  echo '<div class="redc"> </div>';  
+                        ?>
+                
+                        <div class="content">
 
-                              <span class="poste" >DATA ANALYST</span> <br><br>
+                          <span class="poste" ><?php print($Offre['POSTE'])?></span> <br><br>
 
-                              <span class="ville" >INWI - CASABLANCA</span> <br>
+                          <span class="ville" ><?php print($Offre['NOM_ENTREP'])?> - <?php print($Offre['VILLE'])?></span> <br>
 
-                              <span class="duree" >(Durée 3 months)</span> <br><br>
+                          <span class="duree" >(Durée <?php print($Offre['DUREE']/30);?> months)</span> <br><br>
 
-                              <div class="desc" >
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl </p>
-                              </div>
+                          <div class="desc" >
+                            <p><?php print($Offre['DESCRIP']);?></p>
+                          </div>
 
-                              <div>
-                                <span class="time"> <img src="icons/time.png" alt=""> 2023-01-01</span>
-                              </div>
-                              
-                             
-    
-                            </div>
-                          </div>        
+                          <div>
+                            <span class="time"> <img src="icons/time.png" alt=""> <?php print($Offre['DATEFIN']);?> </span>
+                          </div>
+
                         </div>
-                      </div>
+
+                      </div><br>
+                                 
+                    </div>
+                      
                   <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
                   </div>
                 </div>
               </div>
             </div>
-          
-
-          
-          
-
-
-
+    
         </div>
+        <?php endforeach;?>
         </div>
+        
           
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
@@ -259,8 +262,10 @@
         });
     });
     
+    
     }
     )
+
 
 
 
