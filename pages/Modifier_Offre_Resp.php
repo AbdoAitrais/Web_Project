@@ -124,10 +124,10 @@
                 <a class="nav-link navlink blue" href="#">Contact Us</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink blue " href="#">Log out</a>
+                <a class="nav-link navlink blue " href="back_end/logout.php" title="logout">Log out</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
+                <a class="nav-link navlink" href="#" title="profile"><img src="icons/account.png"></a>
               </li>
             </ul>
           </div>
