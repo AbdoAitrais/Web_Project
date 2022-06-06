@@ -106,7 +106,7 @@ body,nav {
   .brd{
     border: 2px solid #D6D6D6;
     width: fit-content;
-    width:100%;
+    width:100% !important;
     border-radius: 7px;
     padding: 12px;
     font-family: 'inter';
