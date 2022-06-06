@@ -15,7 +15,7 @@
     $id_form = $_SESSION['user_id'];
                                 
     ///Tous les offres de cette formation
-    $Smt = $bdd->prepare("SELECT * FROM offre O,entreprise E WHERE E.ID_ENTREP=O.ID_ENTREP AND O.ID_FORM=?");
+    $Smt = $bdd->prepare("SELECT * FROM offre O,entreprise E WHERE E.ID_ENTREP=O.ID_ENTREP AND O.ID_FORM=? ORDER BY O.ID_OFFRE DESC");
     $Smt -> execute(array($id_form));
 	  $rows = $Smt -> fetchAll(PDO::FETCH_ASSOC);
     $Smt->closeCursor();
@@ -101,7 +101,8 @@
                         border-radius: 35px !important; padding: 5%;">
 
                   <div class="tableHead" style="margin-bottom: 10px;">
-                        <h4>Liste des offres</h4>   
+                        <h4>Liste des offres</h4>
+                        <a href="Publier_Offre_Resp.php"><button>Publier Offre</button></a>   
                   </div>
                   
 
@@ -147,7 +148,7 @@
                           <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
                           <td style="text-align: end; ">
                             
-                            <a href="#"><i type="submit" style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></a>
+                            <button style="background:none;border:none;"  value="<?php print($row['ID_OFFRE']);?>" onclick="Offre_detail(this.value);"><a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i type="submit" style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></a></button>
                             <a href="#"><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></a>
                             <a href="Liste_Attente_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>"><i><img src="icons/file.png" alt=""></i></a>
                           </td>
@@ -169,7 +170,48 @@
                   </table>
               </div>
           </div>
+          
+          <!-- Detail -->
+          <div class="modal fade"  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"  style="max-width:800px !important;" >
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Offre </h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body" >
+                  <div class="col-12 elm pub_col">
+                         <div class="brd">
+                            
+                            <div class="greenc"></div> 
+                            <div class="content">
 
+                              <span class="poste" >DATA ANALYST</span> <br><br>
+
+                              <span class="ville" >INWI - CASABLANCA</span> <br>
+
+                              <span class="duree" >(Durée 3 months)</span> <br><br>
+
+                              <div class="desc" >
+                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl </p>
+                              </div>
+
+                              <div>
+                                <span class="time"> <img src="icons/time.png" alt=""> 2023-01-01</span>
+                              </div>
+                              
+                             
+    
+                            </div>
+                          </div>        
+                        </div>
+                      </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+                  </div>
+                </div>
+              </div>
+            </div>
           
 
           

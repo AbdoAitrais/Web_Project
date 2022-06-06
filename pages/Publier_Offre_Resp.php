@@ -578,6 +578,7 @@
         function ext(){
             const elem = document.getElementById("cne");
             const candidat = document.getElementById("nbrcandidat");
+            
             elem.classList.toggle("cne");
             
             if(!candidat.disabled)
