@@ -149,7 +149,7 @@
                           <td style="text-align: end; ">
                             
                             <button style="background:none;border:none;"  value="<?php print($row['ID_OFFRE']);?>" onclick="Offre_detail(this.value);"><a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i type="submit" style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></a></button>
-                            <a href="#"><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></a>
+                            <a href="Modifier_Offre_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>"><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></a>
                             <a href="Liste_Attente_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>"><i><img src="icons/file.png" alt=""></i></a>
                           </td>
                         </tr>
