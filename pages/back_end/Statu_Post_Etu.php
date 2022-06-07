@@ -20,12 +20,24 @@
 
                     $Offre_ID = $_POST['offre_post'] ;  
                     
-                    ///Postulation
-                    $Smt = $bdd->prepare("INSERT INTO postuler(ID_ETU,ID_OFFRE,STATU,DATEPOST) values(?,?,?,?)");
-                    $Smt -> execute(array($Etu,$Offre_ID,'Postulée',$curdate));               
-                    ///*** MAIL SENDING
-                    
-                    /// ***
+                    ///Test sur l'existence du CV
+                    $Smt =$bdd->prepare("SELECT CV FROM etudiant WHERE ID_ETU=?");
+                    $Smt->execute(array($Etu));
+                    $row = $Smt->fetch(PDO::FETCH_ASSOC);
+
+                    if($row['CV'] === NULL)
+                    {
+                        $_SESSION['CV_ERR'] = "Vous n'avez pas de CV!!!! ";
+                        //echo $_SESSION['CV_ERR'];
+                    }else{
+                        ///Postulation
+                        unset($_SESSION['CV_ERR']);
+                        $Smt = $bdd->prepare("INSERT INTO postuler(ID_ETU,ID_OFFRE,STATU,DATEPOST) values(?,?,?,?)");
+                        $Smt -> execute(array($Etu,$Offre_ID,'Postulée',$curdate));               
+                        ///*** MAIL SENDING
+                        
+                        /// ***
+                    }
                     header('location:../Find_Offre_Etu.php');
                 
                 }else if(isset($_POST['offre_non_accepte'])){

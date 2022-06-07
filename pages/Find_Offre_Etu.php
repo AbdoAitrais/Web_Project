@@ -133,6 +133,21 @@
           </div>
           
           <div class="col-md-6 col-sm-12 elm pub_col">
+          <?php
+            if(isset($_SESSION['CV_ERR']))
+            {
+              $CV_ERR = $_SESSION['CV_ERR'];
+              echo '<div class="alert alert-danger alert-dismissible fade show" role="alert">
+                      <strong>'.$CV_ERR.'
+                      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>';
+              unset($_SESSION['CV_ERR']);
+              
+
+            }
+        
+        
+          ?>
          
             <?php require("back_end/connexion.php");
                 ///*** Postulation Verification
@@ -249,7 +264,7 @@
         </div>
       </div>
     </div>
-
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
     integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
     crossorigin="anonymous"></script>
@@ -266,6 +281,7 @@
         localStorage.setItem('scrollpos_Find_Offre_Etu', window.scrollY);
       }
 
+     
     </script>
 
 </body>
