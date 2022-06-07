@@ -78,6 +78,11 @@
               <?php 
                     }else if($_SESSION['user_type'] == "Etudiant")
                     {
+                      $Etu=$_SESSION['user_id'];
+                      /// ***Nombre de soumissions
+                      $Smt =$bdd->prepare("SELECT count(e.ID_ETU) as Nbr_soums FROM etudiant e,postuler p WHERE e.ID_ETU = p.ID_ETU AND e.ID_ETU=? AND p.STATU=? ");
+                      $Smt->execute(array($Etu,'Retenue'));
+                      $row = $Smt->fetch(PDO::FETCH_ASSOC);
               ?>     
               <li class="nav-item underline">
                 <a class="nav-link navlink " href="Find_Offre_Etu.php">Find offers</a>
@@ -86,7 +91,7 @@
                 <a class="nav-link navlink active_link_color" href="Historique.php">Historique</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Soumissions_Etu.php">Soumissions</a>
+                <a class="nav-link navlink " href="Soumissions_Etu.php">Soumissions<label style="color:red">(<?php if(!empty($row)){$Nb_rtn =$row['Nbr_soums'];if($Nb_rtn)print($Nb_rtn);} ?>)</label></a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Stages</a>

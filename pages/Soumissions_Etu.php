@@ -9,6 +9,14 @@
   
   if( $_SESSION['user_type'] == "Etudiant")
   {
+    
+    require('back_end/connexion.php');
+    /// ***ID  etudiant
+    $Etu=$_SESSION['user_id'];
+    /// ***Nombre de soumissions
+    $Smt =$bdd->prepare("SELECT count(e.ID_ETU) as Nbr_soums FROM etudiant e,postuler p WHERE e.ID_ETU = p.ID_ETU AND e.ID_ETU=? AND p.STATU=? ");
+    $Smt->execute(array($Etu,'Retenue'));
+    $row = $Smt->fetch(PDO::FETCH_ASSOC);
 ?>
 
 <!DOCTYPE html>
@@ -45,7 +53,7 @@
                 <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="Soumissions_Etu.php">Soumissions</a><span class="active_link_line"></span>
+                <a class="nav-link navlink " href="Soumissions_Etu.php">Soumissions<label style="color:red">(<?php if(!empty($row)){$Nb_rtn =$row['Nbr_soums'];if($Nb_rtn)print($Nb_rtn);} ?>)</label></a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Stages</a>
@@ -214,10 +222,8 @@
             </div><br>
             <?php endforeach;} }
             
-            require('back_end/connexion.php');
-            /// ***ID  etudiant
-            $Etu=$_SESSION['user_id'];
-                    
+            
+              
             ///Niveau et Formation de l'etudiant
             $sql ="SELECT NIVEAU,ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
             $req =$bdd->query($sql);
