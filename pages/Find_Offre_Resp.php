@@ -72,20 +72,23 @@
             <div class="" style="position: fixed; margin-left: 47%;">
                   <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
             </div>
-            <ul class="navbar-nav ms-auto margin ">
-              <li class="nav-item back">
-                <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink blue" href="#">Contact Us</a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink blue " href="back_end/logout.php" title="logout">Log out</a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink" href="#" title="profile"><img src="icons/account.png"></a>
-              </li>
-            </ul>
+            <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
+              
+              <img class="profile" onclick="menuToggle()" src="popup/img.jpg" alt="">
+              
+              <div class="menu" style="margin:5px;">
+                  <h3>Someone Famous</h3>
+              
+                  <ul>
+                      <li><a href=""><img src="popup/user.png" alt=""><a href="">My profile</a> </li>
+                      <li><a href=""><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
+                      <li><a href=""><img src="popup/question.png" alt="">Help</a> </li>
+                      <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
+                  </ul>
+              
+               </div>
+
+              </div>
           </div>
         </div>
       </nav>
@@ -153,7 +156,7 @@
                             
                             <a href="#" data-bs-toggle="modal" data-bs-target="#offre<?php print($row['ID_OFFRE']);?>" title="detail" ><i style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></a>
                             <a href="Modifier_Offre_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>" title="modifier"><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></a>
-                            <a href="Liste_Attente_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>" title="attente"><i><img src="icons/file.png" alt=""></i></a>
+                            <a href="Liste_Attente_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>" title="attente"><i style="margin-right: 15px;"><img src="icons/file.png" alt=""></i></a>
                           </td>
                         </tr>
                         <?php endforeach; ?>
