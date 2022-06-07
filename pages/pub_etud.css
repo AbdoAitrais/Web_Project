@@ -455,5 +455,49 @@ body,nav {
     color: #ff5d94;
 }
 
+ 
+.icon-button__badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 19px;
+  height: 19px;
+  background: red;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-weight: 600;
+}
 
-  
+
+
+.btn-warnin{
+  position: relative;
+  padding: 11px 16px;
+  font-size: 15px;
+  line-height: 1.5;
+  border-radius: 3px;
+  color: #fff;
+  background-color: #7096FF;
+  border: 0;
+  transition: 0.2s;
+  overflow: hidden;
+  letter-spacing: 0.05em; 
+}
+
+.btn-warnin input[type = "file"]{
+  cursor: pointer;
+  position: absolute;
+  left: 0%;
+  top: 0%;
+  transform: scale(3);
+  opacity: 0;
+}
+
+.btn-warnin:hover{
+  background-color: #4675f8;
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 8px #4675f8;
+}

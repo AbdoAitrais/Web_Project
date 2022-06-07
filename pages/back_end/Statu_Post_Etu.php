@@ -19,25 +19,62 @@
                 if(isset($_POST['offre_post'])){
 
                     $Offre_ID = $_POST['offre_post'] ;  
-                    
-                    ///Test sur l'existence du CV
-                    $Smt =$bdd->prepare("SELECT CV FROM etudiant WHERE ID_ETU=?");
-                    $Smt->execute(array($Etu));
-                    $row = $Smt->fetch(PDO::FETCH_ASSOC);
-
-                    if($row['CV'] === NULL)
+                    ///Postulation
+                    if(isset($_POST['submit']))
                     {
-                        $_SESSION['CV_ERR'] = "Vous n'avez pas de CV!!!! ";
-                        //echo $_SESSION['CV_ERR'];
-                    }else{
-                        ///Postulation
-                        unset($_SESSION['CV_ERR']);
-                        $Smt = $bdd->prepare("INSERT INTO postuler(ID_ETU,ID_OFFRE,STATU,DATEPOST) values(?,?,?,?)");
-                        $Smt -> execute(array($Etu,$Offre_ID,'Postulée',$curdate));               
-                        ///*** MAIL SENDING
+                        /// Insert CV
+                        //echo $_FILES["CV"]["name"];
+                        $target_dir = "../uploads/cv/";
+                        $target_file = $target_dir . basename($_FILES["CV"]["name"]);
+                        $uploadOk = 1;
+                        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
+                        $cv = NULL;
                         
-                        /// ***
+
+                        // Check if file already exists
+                        if (file_exists($target_file)) {
+                        echo "Sorry, file already exists.";
+                        $uploadOk = 0;
+                        }
+
+                        // Check file size
+                        if ($_FILES["CV"]["size"] > 10000000) {
+                        echo "Sorry, your file is too large.";
+                        $uploadOk = 0;
+                        }
+
+                        // Allow certain file formats
+                        if($imageFileType != "pdf" && $imageFileType != "docx" && $imageFileType != "dotx"
+                        && $imageFileType != "doc" ) {
+                        echo "Sorry, only PDF, DOCX, DOC & DOTX files are allowed.";
+                        $uploadOk = 0;
+                        }
+
+                        // Check if $uploadOk is set to 0 by an error
+                        if ($uploadOk == 0) {
+                        echo "Sorry, your file was not uploaded.";
+                        // if everything is ok, try to upload file
+                        } else {
+                        if (move_uploaded_file($_FILES["CV"]["tmp_name"], $target_file)) {
+                            echo "The file ". htmlspecialchars( basename( $_FILES["CV"]["name"])). " has been uploaded.";
+                            $cv = "../uploads/cv/".htmlspecialchars( basename( $_FILES["CV"]["name"]));
+                        } else {
+                            echo "Sorry, there was an error uploading your file.";
+                        }
+                        }
+
+                        $Smt = $bdd->prepare("UPDATE etudiant SET CV=? WHERE ID_ETU=?");
+                        $Smt -> execute(array($cv,$Etu)); 
+                        $Smt->closeCursor();//vider le curseur (free)  
                     }
+                
+                    /// *** Postulation
+                    $Smt = $bdd->prepare("INSERT INTO postuler(ID_ETU,ID_OFFRE,STATU,DATEPOST) values(?,?,?,?)");
+                    $Smt -> execute(array($Etu,$Offre_ID,'Postulée',$curdate));               
+                    ///*** MAIL SENDING
+                        
+                    /// ***
+                   
                     header('location:../Find_Offre_Etu.php');
                 
                 }else if(isset($_POST['offre_non_accepte'])){
