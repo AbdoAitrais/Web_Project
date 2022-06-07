@@ -52,7 +52,8 @@
                 <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Soumissions_Etu.php">Soumissions<label style="color:red">(<?php if(!empty($row)){$Nb_rtn =$row['Nbr_soums'];if($Nb_rtn)print($Nb_rtn);} ?>)</label></a>
+                <a class="nav-link navlink " href="Soumissions_Etu.php">Soumissions</a>
+                <?php if(!empty($row)){ if($row['Nbr_soums']){ ?><span class="icon-button__badge"><?php $Nb_rtn =$row['Nbr_soums'];if($Nb_rtn)print($Nb_rtn);}} ?></span>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Stages</a>
@@ -173,6 +174,14 @@
                           }
                         }
                     }
+                    
+                    $Exist_CV = 1;
+                    ///Test sur l'existence du CV
+                    $Smt =$bdd->prepare("SELECT CV FROM etudiant WHERE ID_ETU=?");
+                    $Smt->execute(array($Etu));
+                    $row = $Smt->fetch(PDO::FETCH_ASSOC);
+                    if($row['CV'] == NULL)
+                        $Exist_CV = 0;
 
                     ///Niveau et Formation de l'etudiant
                     $sql1 ="SELECT NIVEAU,ID_FORM FROM etudiant WHERE ID_ETU='$Etu' ";
@@ -250,12 +259,17 @@
                               echo'';
                         else if(!empty($result3))
                               echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">Postulée</label>';
-                        else 
+                        else{
                               //echo'<a href="back_end/Statu_Post_Etu.php?offre_post='.$of_id.'"><button class="butt_style" onClick="LastScroll()" >POSTULER</button></a>';
-                              echo'<form action="back_end/Statu_Post_Etu.php" method="post">
-                                      <input type="hidden" name="offre_post" value="'.$of_id.'">
-                                      <button type="submit" class="butt_style" onClick="LastScroll()" >POSTULER</button>
-                                   </form>';
+                              if(!$Exist_CV){
+                                    echo'<button type="submit" class="butt_style" data-bs-toggle="modal" data-bs-target="#offre'.$of_id.'">POSTULER</button>';
+                              }else{
+                                    echo'<form action="back_end/Statu_Post_Etu.php" method="post">
+                                            <input type="hidden" name="offre_post" value="'.$of_id.'">
+                                            <button type="submit" class="butt_style" onClick="LastScroll()" >POSTULER</button>
+                                         </form>';
+                              }
+                            }
 
                     ?>
                 </div>
@@ -263,6 +277,34 @@
 
 
             </div><br>
+            <form action="back_end/Statu_Post_Etu.php" method="post"  enctype="multipart/form-data">
+              <div class="modal fade" id="offre<?php print($of_id); ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">CV Required</h3>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                      </div>
+                    <div style="text-align: center; margin-bottom: 10px;">
+                      <div class="alert alert-danger" role="alert">
+                          Vous pouvez pas postuler sans un CV—Clicker sur le button ci-dessous!
+                        </div>
+                        <div >
+                          <button type = "button" class = "btn-warnin">
+                            <i class = "fa fa-upload"></i> Upload File
+                              <input type="file" class="form-control" id="CV" name="CV" required >
+                          </button>
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                            <input type="hidden" name="offre_post" value="<?php print($of_id); ?>">
+                          <button type="submit" class="btn btn-primary"  name="submit" onClick="LastScroll()">Enregistrer</button>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+            </form>
             <?php endforeach;} ?>            
           </div>
           <div class="col-3 d-none d-md-block elm blank_col"></div>

@@ -26,7 +26,7 @@
                 $target_file = $target_dir . basename($_FILES["rapport"]["name"]);
                 $uploadOk = 1;
                 $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
-                $cv = NULL;
+                $rapport = NULL;
                 // Check if image file is a actual image or fake image
                 if(isset($_POST["submit"])) {
                 $check = getimagesize($_FILES["rapport"]["tmp_name"]);
@@ -71,7 +71,7 @@
                 }
                 }
 
-
+                /// *** Insert rapport
                 $Smt = $bdd->prepare("INSERT INTO rapport(fichier,id_stage) values(?,?)");
                 $Smt -> execute(array($rapport,$id_stage));
                 $Smt->closeCursor();//vider le curseur (free)
