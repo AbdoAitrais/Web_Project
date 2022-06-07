@@ -55,20 +55,24 @@
             <div class="" style="position: fixed; margin-left: 47%;">
                   <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
             </div>
-            <ul class="navbar-nav ms-auto margin ">
-              <li class="nav-item back">
-                <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink blue" href="#">Contact Us</a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink blue " href="back_end/logout.php">Log out</a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
-              </li>
-            </ul>
+            <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
+              
+              <img class="profile" onclick="menuToggle()" src="popup/img.jpg" alt="">
+              
+              <div class="menu" style="margin:5px;">
+                  <h3>Someone Famous</h3>
+              
+                  <ul>
+                      <li><img src="popup/user.png" alt=""><a href="">My profile</a> </li>
+                      <li><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
+                      <li><img src="popup/question.png" alt=""><a href="">Help</a> </li>
+                      <li><img src="popup/log-out.png" alt=""><a href="">Log out</a> </li>
+                  </ul>
+              
+               </div>
+
+              </div>
+
           </div>
         </div>
       </nav>
@@ -229,6 +233,13 @@
         
           
       };
+
+
+        function menuToggle(){
+            const toggleMenu = document.querySelector(".menu");
+            toggleMenu.classList.toggle('active');
+        }
+ 
 
     </script>
 
