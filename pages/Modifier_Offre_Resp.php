@@ -10,6 +10,7 @@
     if($_SESSION['user_type'] == "Responsable")
     {
       require('back_end/connexion.php');
+
       $id_form = $_SESSION['user_id'];
 
       $Smt = $bdd->prepare("SELECT TYPE_FORM FROM formation WHERE ID_FORM=?");
@@ -19,109 +20,61 @@
       $Smt->closeCursor();//vider le curseur (free)
 
       // cne tester
-      $existeCne = true;
+      $existeOffre = false;
       $error_msgCne = NULL;
-
-      if( !empty( $_POST['poste'] ) )
+    // Test Whether we show the Offre's data or not
+      if( !empty($_GET['id_offre']) )
       {
-        
+        $id_offre = htmlspecialchars($_GET['id_offre']);
+
+        $Smt = $bdd->prepare("SELECT * FROM offre o, entreprise e WHERE o.ID_ENTREP=e.ID_ENTREP AND ID_OFFRE=?");
+        $Smt -> execute(array($id_offre));
+        $Data = $Smt->fetch();
+        $Smt->closeCursor();//vider le curseur (free)
+        $existeOffre = true;
+      }
+
+      if( !empty( $_POST['poste'] ) && !empty($_POST['nom_entrep']) && !empty($_POST['email_entrep'] && !empty($_POST['ville'])) )
+      {
+        $id_offre = htmlspecialchars($_POST['id_offre']);
         $poste = htmlspecialchars( $_POST['poste'] );
+        $statuoffre = htmlspecialchars( $_POST['statuoffre'] );
         $nom_entrep = htmlspecialchars( $_POST['nom_entrep'] );
         $email_entrep = htmlspecialchars( $_POST['email_entrep'] );
         $ville = htmlspecialchars( $_POST['ville'] );
         $datefin = htmlspecialchars($_POST['datefin'] );
         $duree = (htmlspecialchars( $_POST['duree'] ) * 30);// * 30 (month -> days)
         $nbrcandidat = htmlspecialchars( $_POST['nbrcandidat'] );
-        $source_offre = (htmlspecialchars( $_POST['source_offre'] ));// 0 interne 1 externe
         $descrip = htmlspecialchars( $_POST['descrip'] );
-        $datedebut = date('y-m-d');
-        
+        $datedebut = htmlspecialchars( $_POST['datedebut'] );
+        $niveau = htmlspecialchars( $_POST['niveau'] );
+        $id_entrep = htmlspecialchars( $_POST['id_entrep'] );
 
-        // s'il s'agit d'une licence
-        if( empty($_POST['niveau']) )
+
+        // Update d'entreprise si elle existe
+        if( !empty($id_entrep) )
         {
-          $niveau = 0;
-        }else{
-          $niveau = htmlspecialchars( $_POST['niveau'] );
+            $id_entrep = $id_entrep;
+
+            $Smt = $bdd->prepare("UPDATE entreprise SET NOM_ENTREP=? ,EMAIL_ENTREP=? ,VILLE=? WHERE ID_ENTREP=?");
+            $Smt -> execute(array($nom_entrep,$email_entrep,$ville,$id_entrep));
+            $test = $Smt->fetch();
+            var_dump($test);
+            $Smt->closeCursor();//vider le curseur (free)
         }
 
-        // insertion d'entreprise
-        $Smt = $bdd->prepare("SELECT ID_ENTREP FROM entreprise WHERE NOM_ENTREP=? AND VILLE=?");
-        $Smt -> execute(array($nom_entrep,$ville));
-        $row = $Smt->fetch();
-        $Smt->closeCursor();//vider le curseur (free)
-
-        // isertion d'entreprise s'elle n'existe pas
-        if( empty($row) )
-        {
-          $Smt = $bdd->prepare("INSERT INTO entreprise (NOM_ENTREP,EMAIL_ENTREP,VILLE) VALUES (?,?,?)");
-          $Smt -> execute(array($nom_entrep,$email_entrep,$ville));
-          $Smt->closeCursor();//vider le curseur (free)
-
-
-          $Smt = $bdd->prepare("SELECT ID_ENTREP FROM entreprise WHERE NOM_ENTREP=? AND VILLE=?");
-          $Smt -> execute(array($nom_entrep,$ville));
-          $row = $Smt->fetch();
-          $Smt->closeCursor();//vider le curseur (free)
-        }
-
-        // select l'id d'entreprise
-        $id_entrep = $row[0];
-
-        echo "<br><br><br><br>".$source_offre;
+        //echo "<br><br><br><br>".$source_offre;
         
         // le type de stage (interne/externe)
-        if( $source_offre == 0 )
-        {
-          // tester l'existance d'etudiant 
-          $cne = htmlspecialchars( $_POST['cne'] );
-          echo "<br><br><br><br>".$cne;
-          $Smt = $bdd->prepare("SELECT ID_ETU FROM etudiant WHERE CNE LIKE ? AND NIVEAU=?");
-          $Smt -> execute(array($cne,$niveau));
-          $row = $Smt->fetch();
-          $Smt->closeCursor();//vider le curseur (free)
-
-          if( empty($row) )
-          {
-            $existeCne = false;
-            $error_msgCne = "CNE introuvable dans le niveau saisit !!";
-            echo "<br><br><br><br>";
-            var_dump($row);
-            
-          }else{
-            $id_private_etu = $row[0];
-            // publier et postuler
-            $Smt = $bdd->prepare("INSERT INTO offre (ID_FORM,ID_ENTREP,STATUOFFRE,NBRCANDIDAT,POSTE,DUREE,DATEDEBUT,DATEFIN,DESCRIP,NIVEAU_OFFRE,SOURCE_OFFRE) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-            $Smt -> execute(array($id_form,$id_entrep,'Completée',$nbrcandidat,$poste,$duree,$datedebut,$datefin,$descrip,$niveau,$source_offre));
-            $Smt->closeCursor();//vider le curseur (free)
-
-            // get offre id
-            $Smt = $bdd->prepare("SELECT MAX(ID_OFFRE) FROM offre");
-            $Smt -> execute(array());
-            $row = $Smt->fetch();
-            $Smt->closeCursor();//vider le curseur (free)
-
-            $id_offre = $row[0];
-            // postuler a l'offre
-            $Smt = $bdd->prepare("INSERT INTO postuler (ID_ETU,ID_OFFRE,STATU,DATEREPONS,DATEPOST) VALUES (?,?,?,?,?)");
-            $Smt -> execute(array($id_private_etu,$id_offre,'Retenue',$datedebut,$datedebut));
-            $Smt->closeCursor();//vider le curseur (free)
-
-            header('location:Find_Offre_Resp.php');
-          }
-
-          
-
-        }else{
-          $Smt = $bdd->prepare("INSERT INTO offre (ID_FORM,ID_ENTREP,STATUOFFRE,NBRCANDIDAT,POSTE,DUREE,DATEDEBUT,DATEFIN,DESCRIP,NIVEAU_OFFRE,SOURCE_OFFRE) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
-          $Smt -> execute(array($id_form,$id_entrep,'Nouveau',$nbrcandidat,$poste,$duree,$datedebut,$datefin,$descrip,$niveau,$source_offre));
+        
+          $Smt = $bdd->prepare("UPDATE offre SET STATUOFFRE=? ,NBRCANDIDAT=? ,POSTE=? ,DUREE=? ,DATEDEBUT=? ,DATEFIN=? ,DESCRIP=? ,NIVEAU_OFFRE=? WHERE ID_OFFRE=?");
+          $Smt -> execute(array($statuoffre,$nbrcandidat,$poste,$duree,$datedebut,$datefin,$descrip,$niveau,$id_offre));
           $Smt->closeCursor();//vider le curseur (free)
           header('location:Find_Offre_Resp.php');
-        }
+        
 
       }
       
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -136,12 +89,10 @@
     rel="stylesheet" 
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
     crossorigin="anonymous">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <title>Publier Offre</title>
+    <title>Listes des Etudiants</title>
 </head>
-<body onbeforeunload = "reload();">
-      
-    <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
         <div class="container-fluid">
           <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -173,10 +124,10 @@
                 <a class="nav-link navlink blue" href="#">Contact Us</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink blue " href="#">Log out</a>
+                <a class="nav-link navlink blue " href="back_end/logout.php" title="logout">Log out</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
+                <a class="nav-link navlink" href="#" title="profile"><img src="icons/account.png"></a>
               </li>
             </ul>
           </div>
@@ -185,11 +136,11 @@
 
     <div class="container-fluid ">
       <div class="" style="margin-top: 140px;">
-        
 
-      <form action="Publier_Offre_Resp.php" method="post" id="form" >
+
+<form action="Modifier_Offre_Resp.php" method="post" id="form" >
         <?php
-        if($existeCne == false)
+        if($existeOffre == true)
         {
         ?>
            
@@ -198,7 +149,7 @@
 
                 
                   <div class="tableHead" >
-                        <h4>Publier Offre</h4>
+                        <h4>Modifier Offre</h4>
                   </div>
                 
                 
@@ -213,11 +164,13 @@
                   </div>
 
                   <div class="col-8 col-md-4 elm " >
-                    <input class="inpstyl" type="text" id="poste" name="poste" value="<?php echo $poste ?>"><br>
-                    <input class="inpstyl" type="text" style="margin-top: 45px;" id="entrep" name="nom_entrep" value="<?php echo $nom_entrep ?>"><br>
-                    <input class="inpstyl" type="email" style="margin-top: 45px;" id="email" name="email_entrep" value="<?php echo $email_entrep ?>"><br>
-                    <input class="inpstyl" type="text" style="margin-top: 45px;" id="ville" name="ville" value="<?php echo $ville ?>"><br>
-                    <input class="inpstyl" type="date" style="margin-top: 45px;" id="dateExp" name="datefin" value="<?php echo $datefin ?>"><br>
+                    <input class="inpstyl" type="text" id="poste" name="poste" value="<?php echo $Data['POSTE'] ?>"><br>
+                    <input class="inpstyl" type="text" style="margin-top: 45px;" id="entrep" name="nom_entrep" value="<?php echo $Data['NOM_ENTREP'] ?>"><br>
+                    <input class="inpstyl" type="email" style="margin-top: 45px;" id="email" name="email_entrep" value="<?php echo $Data['EMAIL_ENTREP'] ?>"><br>
+                    <input class="inpstyl" type="text" style="margin-top: 45px;" id="ville" name="ville" value="<?php echo $Data['VILLE'] ?>"><br>
+                    <input class="inpstyl" type="date" style="margin-top: 45px;" id="dateExp" name="datefin" value="<?php echo $Data['DATEFIN'] ?>"><br>
+                    <input type="hidden" name="id_offre" id="id_offre" value="<?php echo $id_offre; ?>" >
+                    <input type="hidden" name="id_entrep" id="id_entrep" value="<?php echo $Data['ID_ENTREP']; ?>" >
                   </div>
 
                 
@@ -226,19 +179,21 @@
                       <div class="col-4 col-md-2 elm "> 
                         <label for="duree"><span>Durée (mois)</span></label><br>
                         <label for="nbrcandidat" style="margin-top: 55px;"><span>Nombre de Condidats</span></label><br>
+                        
                         <label for="niveau" style="margin-top: 28px;"><span>Niveau</span></label><br>
-                        <label for="type" style="margin-top: 55px;"><span>Type</span></label><br>
+                        <label for="datedebut" style="margin-top: 55px;"><span>Date Debut</span></label><br>
+                        <label for="statuoffre" style="margin-top: 55px;"><span>Statu d'offre</span></label><br>    
                       </div>
-                      <div class="col-8 col-md-2 elm" >
-                        <input class="inpstyl" type="number" step="1" min="0" id="duree" name="duree" value="<?php echo $duree ?>"><br>
-                        <input class="inpstyl" type="number" step="1" min="1" style="margin-top: 45px;" id="nbrcandidat" name="nbrcandidat" value="<?php echo $nbrcandidat ?>"><br>
+                      <div class="col-8 col-md-4 elm" >
+                        <input class="inpstyl" type="number" step="1" min="0" id="duree" name="duree" value="<?php echo $Data['DUREE'] ?>"><br>
+                        <input class="inpstyl" type="number" step="1" min="1" style="margin-top: 45px;" id="nbrcandidat" name="nbrcandidat" value="<?php echo $Data['NBRCANDIDAT'] ?>"><br>
                         <?php 
                           if($type_form == 1)
                           {
-                            switch( $niveau ){
+                            switch( $Data['NIVEAU_OFFRE'] ){
                               case 1:
                                 echo "<div >
-                                        <select class='form-select' aria-label='Default select example' style='margin-top: 40px;' id='niveau' name='niveau'>
+                                        <select class='form-select' aria-label='Default select example' style='margin-top: 40px; width:10rem;' id='niveau' name='niveau'>
                                           <option value='1' selected>1ere</option>
                                           <option value='2'>2ème</option>
                                           <option value='3'>3ème</option>
@@ -247,7 +202,7 @@
                                 break;
                               case 2:
                                 echo "<div >
-                                        <select class='form-select' aria-label='Default select example' style='margin-top: 40px;' id='niveau' name='niveau'>
+                                        <select class='form-select' aria-label='Default select example' style='margin-top: 40px; width:10rem;' id='niveau' name='niveau'>
                                           <option value='1'>1ere</option>
                                           <option value='2' selected>2ème</option>
                                           <option value='3'>3ème</option>
@@ -256,7 +211,7 @@
                                 break;
                               case 3:
                                 echo "<div >
-                                        <select class='form-select' aria-label='Default select example' style='margin-top: 40px;' id='niveau' name='niveau'>
+                                        <select class='form-select' aria-label='Default select example' style='margin-top: 40px; width:10rem;' id='niveau' name='niveau'>
                                           <option value='1'>1ere</option>
                                           <option value='2'>2ème</option>
                                           <option value='3' selected>3ème</option>
@@ -272,7 +227,7 @@
                             switch( $niveau ){
                               case 1:
                                 echo "<div >
-                                        <select class='form-select' aria-label='Default select example' style='margin-top: 40px;' id='niveau' name='niveau'>
+                                        <select class='form-select' aria-label='Default select example' style='margin-top: 40px; width:10rem;' id='niveau' name='niveau'>
                                           <option value='1' selected>1ere</option>
                                           <option value='2'>2ème</option>
                                         </select><br>
@@ -280,7 +235,7 @@
                                 break;
                               case 2:
                                 echo "<div >
-                                        <select class='form-select' aria-label='Default select example' style='margin-top: 40px;' id='niveau' name='niveau'>
+                                        <select class='form-select' aria-label='Default select example' style='margin-top: 40px; width:10rem;' id='niveau' name='niveau'>
                                           <option value='1'>1ere</option>
                                           <option value='2' selected>2ème</option>
                                         </select><br>
@@ -290,27 +245,9 @@
                         }
                           ?>
                         
-
-                        <div >
-                          <?php
-                            switch( $source_offre ){
-                              case 1:
-                                echo "<select class='form-select' aria-label='Default select example' style='margin-top: 23px; ' onchange='ext();' id='cne' name='source_offre'>
-                                        <option value='1' selected>Interne</option>
-                                        <option value='0' >Externe</option>
-                                      </select>";
-                                break;
-                              case 0:
-                                echo "<select class='form-select' aria-label='Default select example' style='margin-top: 23px; ' onchange='ext();' id='cne' name='source_offre'>
-                                        <option value='1' >Interne</option>
-                                        <option value='0' selected>Externe</option>
-                                      </select>";
-                                break;
-                              }
-                          ?>
+                        <input class="inpstyl" type="date" style="margin-top: 23px;" id="datedebut" name="datedebut" value="<?php echo $Data['DATEDEBUT'] ?>"><br>
+                        <input class="inpstyl" type="text" style="margin-top: 45px;" id="statuoffre" name="statuoffre" value="<?php echo $Data['STATUOFFRE'] ?>"><br>
                         
-                        
-                      </div>
                       
                     
                     
@@ -318,9 +255,7 @@
                     
                   
                 </div>
-                <div id="cne" class="col-8 col-md-2 elm" style="display: none;"><label for="cne" style="margin-top: 247px; margin-left: -20px;"><span>CNE</span></label><input class="inpstyl" type="text" style="margin-left: 10px;" name="cne" id="cne" value="<?php echo $cne ?>"> <?php
-                  echo $error_msgCne;
-                ?></div>
+                
                 
                 
               </div>
@@ -332,7 +267,7 @@
                   <div class="col-8 col-md-8 elm ">  
                     <div class="form-group green-border-focus">
                       
-                      <textarea class="form-control inpstyl" id="exampleFormControlTextarea5" rows="8" name="descrip"><?php echo $descrip ?></textarea>
+                      <textarea class="form-control inpstyl" id="exampleFormControlTextarea5" rows="8" name="descrip"><?php echo $Data['DESCRIP'] ?></textarea>
                     </div>
                   </div>
                   <div class="col-4 col-md-2 elm ">
@@ -410,7 +345,7 @@
 
                 
                   <div class="tableHead" >
-                        <h4>Publier Offre</h4>
+                        <h4>Modifier Offre</h4>
                   </div>
                 
                 
@@ -430,6 +365,7 @@
                     <input class="inpstyl" type="email" style="margin-top: 45px;" id="email" name="email_entrep"><br>
                     <input class="inpstyl" type="text" style="margin-top: 45px;" id="ville" name="ville"><br>
                     <input class="inpstyl" type="date" style="margin-top: 45px;" id="dateExp" name="datefin"><br>
+                    
                   </div>
 
                 
@@ -439,26 +375,27 @@
                         <label for="duree"><span>Durée (mois)</span></label><br>
                         <label for="nbrcandidat" style="margin-top: 55px;"><span>Nombre de Condidats</span></label><br>
                         <label for="niveau" style="margin-top: 28px;"><span>Niveau</span></label><br>
-                        <label for="type" style="margin-top: 55px;"><span>Type</span></label><br>
+                        <label for="datedebut" style="margin-top: 55px;"><span>Date Debut</span></label><br>
+                        <label for="statuoffre" style="margin-top: 55px;"><span>Statu d'offre</span></label><br>    
                       </div>
-                      <div class="col-8 col-md-2 elm" >
+                      <div class="col-8 col-md-4 elm" >
                         <input class="inpstyl" type="number" step="1" min="0" id="duree" name="duree"><br>
                         <input class="inpstyl" type="number" step="1" min="1" style="margin-top: 45px;" id="nbrcandidat" name="nbrcandidat"><br>
                         <?php 
-                          if($row[0] == 1)
+                          if($type_form == 1)
                           {
                             echo "<div >
-                            <select class='form-select' aria-label='Default select example' style='margin-top: 40px;' id='niveau' name='niveau'>
+                            <select class='form-select' aria-label='Default select example' style='margin-top: 40px; width:10rem;' id='niveau' name='niveau'>
                               <option value='1'>1ere</option>
                               <option value='2'>2ème</option>
                               <option value='3'>3ème</option>
                             </select><br>
                           </div>";
                           }
-                          else if( $row[0] == 2)
+                          else if( $type_form == 2)
                           {
                             echo "<div >
-                            <select class='form-select' aria-label='Default select example' style='margin-top: 40px;' id='niveau' name='niveau'>
+                            <select class='form-select' aria-label='Default select example' style='margin-top: 40px; width:10rem;' id='niveau' name='niveau'>
                               <option value='1'>1ere</option>
                               <option value='2'>2ème</option>
                             </select><br>
@@ -467,14 +404,8 @@
                           ?>
                         
 
-                        <div >
-                        <select class="form-select" aria-label="Default select example" style="margin-top: 23px; " id="type" name='source_offre'>
-                          <option value="1">Interne</option>
-                          <option value="0" >Externe</option>
-                        </select>
-                        
-                      </div>
-                      
+                        <input class="inpstyl" type="date" style="margin-top: 23px; " id="datedebut" name="datedebut" ><br>
+                        <input class="inpstyl" type="text" style="margin-top: 45px;" id="statuoffre" name="statuoffre"><br>
                     
                     
                     
@@ -567,58 +498,15 @@
         
 
       </form>
-        </div></div>
-          
+          </div>
+        
+  
+        </div>
+        
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
-        crossorigin="anonymous">
-      
-      
-      </script>
-      <script>
-        // function ext(){
-        //     const select = document.getElementById("type");
-        //     const elem = document.getElementById("cne");
-        //     const candidat = document.getElementById("nbrcandidat");
-            
-        //     //elem.classList.toggle("cne");
-        //     console.log(select.value);
-        //     if(select.value == '1')
-        //     {
-        //       elem.style.display = "none";
-        //       candidat.value = '1';
-        //       //candidat.disabled = true;
-        //     } else if(select.value == '0'){
-        //       elem.style.display = "block";
-        //       candidat.value = '';
-        //       //candidat.disabled = false;
-        //     }
-        // }
-
-
-            $('#type').on('load change', function () {
-              var cne =  $('#cne');
-              var candidat = $('#nbrcandidat');
-              console.log(candidat);
-
-              if(this.value == '1')
-              {
-                cne.hide();
-                candidat.val('');
-                candidat.prop( "disabled", false );
-              }
-              else if(this.value == '0')
-              {
-                cne.show();
-                candidat.val('1');
-                candidat.prop( "disabled", true );
-              }
-        });
-
-        
-
-        $
-      </script>
+        crossorigin="anonymous"></script>
+          
     
 </body>
 </html>
@@ -630,3 +518,12 @@
   }
 
 ?>
+<script>
+  
+  function changeFunc() 
+  {
+    document.getElementById("form").submit();
+  }
+
+
+</script>

@@ -77,10 +77,10 @@
                 <a class="nav-link navlink blue" href="#">Contact Us</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink blue " href="back_end/logout.php">Log out</a>
+                <a class="nav-link navlink blue " href="back_end/logout.php" title="logout">Log out</a>
               </li>
               <li class="nav-item back">
-                <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
+                <a class="nav-link navlink" href="#" title="profile"><img src="icons/account.png"></a>
               </li>
             </ul>
           </div>
@@ -148,9 +148,9 @@
                           <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
                           <td style="text-align: end; ">
                             
-                            <button style="background:none;border:none;" data-bs-toggle="modal" data-bs-target="#offre<?php print($row['ID_OFFRE']); ?>"><i type="submit" style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></button>
-                            <a href="#"><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></a>
-                            <a href="Liste_Attente_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>"><i><img src="icons/file.png" alt=""></i></a>
+                            <button style="background:none;border:none;"  value="<?php print($row['ID_OFFRE']);?>" onclick="Offre_detail(this.value);"><a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" title="detail" ><i type="submit" style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></a></button>
+                            <a href="Modifier_Offre_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>" title="modifier"><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></a>
+                            <a href="Liste_Attente_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>" title="attente"><i><img src="icons/file.png" alt=""></i></a>
                           </td>
                         </tr>
                         <?php endforeach; ?>
