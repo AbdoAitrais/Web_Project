@@ -148,7 +148,7 @@
                           <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
                           <td style="text-align: end; ">
                             
-                            <button style="background:none;border:none;"  value="<?php print($row['ID_OFFRE']);?>" onclick="Offre_detail(this.value);"><a href="#" data-bs-toggle="modal" data-bs-target="#staticBackdrop" title="detail" ><i type="submit" style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></a></button>
+                            <a href="#" data-bs-toggle="modal" data-bs-target="#offre<?php print($row['ID_OFFRE']);?>" title="detail" ><i style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></a>
                             <a href="Modifier_Offre_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>" title="modifier"><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></a>
                             <a href="Liste_Attente_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>" title="attente"><i><img src="icons/file.png" alt=""></i></a>
                           </td>
