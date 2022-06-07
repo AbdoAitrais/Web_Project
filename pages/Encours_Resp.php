@@ -81,6 +81,9 @@
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Enseignants</a>
               </li>
+              <li class="nav-item underline">
+                <a class="nav-link navlink " href="Verify_Etudiant_Resp.php">Verification</a>
+              </li>
             </ul>
             
             <div class="" style="position: fixed; margin-left: 47%;">

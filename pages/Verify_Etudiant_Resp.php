@@ -12,11 +12,16 @@
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
     
-      $req = "SELECT * FROM enseignant WHERE ID_DEPART IN (SELECT ID_DEPART FROM enseignant e, formation f WHERE f.ID_ENS = e.ID_ENS AND ID_FORM=?)";
-    
-      $Smt = $bdd->prepare($req);
+      
+      $Smt = $bdd->prepare("SELECT * FROM etudiant e,users u WHERE e.ID_USER=u.ID_USER AND e.ID_FORM=? ORDER BY VERIFIED");
       $Smt -> execute(array($id_form));
-	    $rows = $Smt -> fetchAll(PDO::FETCH_ASSOC);
+      $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+
+
+      
+      
+    
+  
 
 ?>
 <!DOCTYPE html>
@@ -35,7 +40,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 	<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <title>Listes des Enseignants</title>
+    <title>Verifier Etudiants</title>
 </head>
 <body>
       
@@ -54,13 +59,13 @@
                 <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="Liste_Etudiant_Resp.php">Etudiants</a>
+                <a class="nav-link navlink " href="Liste_Etudiant_Resp.php">Etudiants</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="Liste_Enseignant_Resp.php">Enseignants</a><span class="active_link_line"></span>
+                <a class="nav-link navlink" href="Liste_Enseignant_Resp.php">Enseignants</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Verify_Etudiant_Resp.php">Verification</a>
+                <a class="nav-link navlink active_link_color" href="Verify_Etudiant_Resp.php">Verification</a><span class="active_link_line"></span>
               </li>
             </ul>
             
@@ -87,21 +92,27 @@
 
     <div class="container-fluid ">
       <div class="" style="margin-top: 100px; background-color:  #E5E5E5 !important;">
+        
+
+
         <div class="row" >
             <div class="col-md-11 elm pub_col" style=" background: #FFFFFF !important;
                         border-radius: 35px !important; padding: 5%;">
 
                   <div class="tableHead" >
-                        <h4>Liste des enseignants</h4>
-
+                        <h4>Liste des etudiants à verifier</h4>   
                   </div>
-            
-                <table class="table" id="Table_Ens">
+                  
+
+                <table class="table" id="Table_Etu">
                     <thead>
                       <tr>
+                        <th scope="col">N</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
-                        <th scope="col">CIN</th>
+                        <th scope="col">CNE</th>
+                        <th scope="col">Date Naissance</th>
+                        <th scope="col">Promotion</th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
@@ -112,23 +123,44 @@
                     
                       ?>
                         <tr>
-                         
-                          <td><?php echo $row['NOM_ENS']; ?></td>
-                          <td><?php echo $row['PRENOM_ENS']; ?></td>
-                          <td style="color: #7096FF;"><?php echo $row['CIN_ENS']; ?></td>
+                          <th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU'] ; ?></th>
+                          <td><?php echo $row['NOM_ETU']; ?></td>
+                          <td><?php echo $row['PRENOM_ETU']; ?></td>
+                          <td style="color: #7096FF;"><?php echo $row['CNE']; ?></td>
+                          <td style="color: #7096FF;"><?php echo $row['DATENAISS_ETU']; ?></td>
+                          <td style="color: #7096FF;"><?php echo $row['PROMOTION']; ?></td>
                           <td style="text-align: end;">
-                            <a href="Modifier_Enseignant_Resp.php?id_etu=<?php echo $row['ID_ENS']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
                             
+                            <form action="back_end/Verifier_Account_Resp.php" method="post" style="display: inline-block;" >
+                                <input type="hidden" name="id_etu_verif" value="<?php echo $row['ID_ETU']; ?>">
+                                <?php 
+                                    if( $row['VERIFIED'] == 0 )
+                                    {
+                                        echo '<button type="submit" class="btn btn-outline-primary" id="verify" >Verifier</button>';
+                                    }
+                                    else if( $row['VERIFIED'] == 1 )
+                                    {
+                                        echo '<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">Verifié</label>
+                                        </form>';
+                                    }
+                                ?>
+                                
+                                
                           </td>
                         </tr>
                     <?php endforeach; ?>
 
                     </tbody>
                     <tfoot>
+                      <tr>
+                      <th scope="col">N</th>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
-                        <th scope="col">CIN</th>
+                        <th scope="col">CNE</th>
+                        <th scope="col">Date Naissance</th>
+                        <th scope="col">Promotion</th>
                         <th scope="col"></th>
+                      </tr>
                     </tfoot>
                   </table>
               </div>
@@ -158,12 +190,12 @@
 <script>
   
   $(document).ready( function () {
-    var dataTable = $('#Table_Ens').DataTable();
+    var dataTable = $('#Table_Etu').DataTable();
 
 
 
-    $('#Table_Ens tfoot tr th').each(function () {
-    var title = $('#Table_Ens thead tr th').eq($(this).index()).text();
+    $('#Table_Etu tfoot tr th').each(function () {
+    var title = $('#Table_Etu thead tr th').eq($(this).index()).text();
     if(title != "")
     {
       $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
@@ -182,5 +214,8 @@
     }
     )
 
+
+
+  
 
 </script>

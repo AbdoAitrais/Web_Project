@@ -12,15 +12,10 @@
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
     
-      $req = "SELECT * FROM etudiant e,users u WHERE e.ID_USER=u.ID_USER AND e.ID_FORM='$id_form'";
-      $Smt = $bdd->query($req);
+      $Smt = $bdd->prepare("SELECT * FROM etudiant e,users u WHERE e.ID_USER=u.ID_USER AND e.ID_FORM=? AND u.VERIFIED=1");
+      $Smt -> execute(array($id_form));
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
 
-
-      
-      
-    
-  
 
 ?>
 <!DOCTYPE html>
@@ -62,6 +57,9 @@
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="Liste_Enseignant_Resp.php">Enseignants</a>
+              </li>
+              <li class="nav-item underline">
+                <a class="nav-link navlink " href="Verify_Etudiant_Resp.php">Verification</a>
               </li>
             </ul>
             

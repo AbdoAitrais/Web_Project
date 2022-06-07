@@ -11,7 +11,7 @@
 	function get_user_id_type_mainPage($table_name,$id_table,$main_page,$user_type,$name,$pass)
 	{
 		require('connexion.php');
-		$Smt = $bdd->prepare("SELECT * FROM $table_name natural join users WHERE LOGIN=? AND PASSWORD=? AND ACTIVE=1");
+		$Smt = $bdd->prepare("SELECT * FROM $table_name natural join users WHERE LOGIN=? AND PASSWORD=? AND ACTIVE=1 AND VERIFIED=1");
 		$Smt -> execute(array($name,$pass));
 		$rows = $Smt -> fetch();
 		var_dump($name);
