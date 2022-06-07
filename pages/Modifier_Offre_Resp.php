@@ -30,6 +30,7 @@
         $Smt = $bdd->prepare("SELECT * FROM offre o, entreprise e WHERE o.ID_ENTREP=e.ID_ENTREP AND ID_OFFRE=?");
         $Smt -> execute(array($id_offre));
         $Data = $Smt->fetch();
+        $_SESSION['NBRCANDIDAT'] = $Data['NBRCANDIDAT'];
         $Smt->closeCursor();//vider le curseur (free)
         $existeOffre = true;
       }
@@ -38,7 +39,6 @@
       {
         $id_offre = htmlspecialchars($_POST['id_offre']);
         $poste = htmlspecialchars( $_POST['poste'] );
-        $statuoffre = htmlspecialchars( $_POST['statuoffre'] );
         $nom_entrep = htmlspecialchars( $_POST['nom_entrep'] );
         $email_entrep = htmlspecialchars( $_POST['email_entrep'] );
         $ville = htmlspecialchars( $_POST['ville'] );
@@ -63,12 +63,33 @@
             $Smt->closeCursor();//vider le curseur (free)
         }
 
+        // Update Statu Offre based on new expiration date
+        if( date("Y-m-d") < $datefin )
+        {
+          if( !empty( $_SESSION['NBRCANDIDAT'] ) )
+          {
+            if( $nbrcandidat > $_SESSION['NBRCANDIDAT'] )
+            {
+              $statuoffre = "Nouveau";
+            }
+            else
+            {
+              $statuoffre = "Completée";
+            }
+            unset($_SESSION['NBRCANDIDAT']);
+          }
+          
+          $Smt = $bdd->prepare("UPDATE offre SET STATUOFFRE=? WHERE ID_OFFRE=?");
+          $Smt -> execute(array($statuoffre,$id_offre));
+          $Smt->closeCursor();//vider le curseur (free)
+        }
+
         //echo "<br><br><br><br>".$source_offre;
         
         // le type de stage (interne/externe)
         
-          $Smt = $bdd->prepare("UPDATE offre SET STATUOFFRE=? ,NBRCANDIDAT=? ,POSTE=? ,DUREE=? ,DATEDEBUT=? ,DATEFIN=? ,DESCRIP=? ,NIVEAU_OFFRE=? WHERE ID_OFFRE=?");
-          $Smt -> execute(array($statuoffre,$nbrcandidat,$poste,$duree,$datedebut,$datefin,$descrip,$niveau,$id_offre));
+          $Smt = $bdd->prepare("UPDATE offre SET NBRCANDIDAT=? ,POSTE=? ,DUREE=? ,DATEDEBUT=? ,DATEFIN=? ,DESCRIP=? ,NIVEAU_OFFRE=? WHERE ID_OFFRE=?");
+          $Smt -> execute(array($nbrcandidat,$poste,$duree,$datedebut,$datefin,$descrip,$niveau,$id_offre));
           $Smt->closeCursor();//vider le curseur (free)
           header('location:Find_Offre_Resp.php');
         
@@ -187,8 +208,7 @@
                         <label for="nbrcandidat" style="margin-top: 55px;"><span>Nombre de Condidats</span></label><br>
                         
                         <label for="niveau" style="margin-top: 28px;"><span>Niveau</span></label><br>
-                        <label for="datedebut" style="margin-top: 55px;"><span>Date Debut</span></label><br>
-                        <label for="statuoffre" style="margin-top: 55px;"><span>Statu d'offre</span></label><br>    
+                        <label for="datedebut" style="margin-top: 55px;"><span>Date Debut</span></label><br>   
                       </div>
                       <div class="col-8 col-md-4 elm" >
                         <input class="inpstyl" type="number" step="1" min="0" id="duree" name="duree" value="<?php echo $Data['DUREE'] ?>"><br>
@@ -252,7 +272,7 @@
                           ?>
                         
                         <input class="inpstyl" type="date" style="margin-top: 23px;" id="datedebut" name="datedebut" value="<?php echo $Data['DATEDEBUT'] ?>"><br>
-                        <input class="inpstyl" type="text" style="margin-top: 45px;" id="statuoffre" name="statuoffre" value="<?php echo $Data['STATUOFFRE'] ?>"><br>
+
                         
                       
                     
