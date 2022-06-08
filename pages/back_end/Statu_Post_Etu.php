@@ -70,11 +70,11 @@
                 
                     /// *** Postulation
                     $Smt = $bdd->prepare("INSERT INTO postuler(ID_ETU,ID_OFFRE,STATU,DATEPOST) values(?,?,?,?)");
-                    $Smt -> execute(array($Etu,$Offre_ID,'Postulée',$curdate));               
+                    $Smt -> execute(array($Etu,$Offre_ID,'Postulée',$curdate));  
+                    $Smt->closeCursor();//vider le curseur (free)               
+    
                     ///*** MAIL SENDING
-                        
                     /// ***
-                   
                     header('location:../Find_Offre_Etu.php');
                 
                 }else if(isset($_POST['offre_non_accepte'])){
