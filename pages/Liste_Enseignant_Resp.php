@@ -121,7 +121,17 @@
                           <td style="color: #7096FF;"><?php echo $row['CIN_ENS']; ?></td>
                           <td style="text-align: end;">
                             <a href="Modifier_Enseignant_Resp.php?id_etu=<?php echo $row['ID_ENS']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
-                            
+                            <?php if($row['ACTIVE_ENS']){ ?> 
+                              <form action="back_end/Desactiver.php" method="post" style="display: inline-block;">
+                                <input type="hidden" name="id_ens_disac" value="<?php echo $row['ID_ENS']; ?>">
+                                <a href=""><button type="submit" class="btn btn-outline-primary" >Desactiver</button></a>
+                              </form>
+                              
+                            <?php }else{ ?> 
+                              <form action="back_end/Desactiver.php" method="post" style="display: inline-block;">
+                                <input type="hidden" name="id_ens_ac" value="<?php echo $row['ID_ENS']; ?>">
+                                <a href=""><button type="submit" class="btn btn-outline-primary" >Activer</button></a><?php } ?>
+                              </form>
                           </td>
                         </tr>
                     <?php endforeach; ?>
@@ -184,9 +194,11 @@
     
     }
     )
+    
     function menuToggle(){
             const toggleMenu = document.querySelector(".menu");
             toggleMenu.classList.toggle('active');
-        }
+    }
+
 
 </script>

@@ -290,7 +290,7 @@
                       </div>
                     <div style="text-align: center; margin-bottom: 10px;">
                       <div class="alert alert-danger" role="alert">
-                          Vous pouvez pas postuler sans un CV—Clicker sur le button ci-dessous!
+                          Vous pouvez pas postuler sans un CV—Cliquer sur le button ci-dessous!
                         </div>
                         <div >
                           <button type = "button" class = "btn-warnin">
