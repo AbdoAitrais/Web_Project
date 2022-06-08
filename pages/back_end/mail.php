@@ -22,7 +22,7 @@
         $Smt -> execute(array($id_etu,$id_offre));
         $Data = $Smt->fetch();
         //var_dump($Data);
-        $Smt->closeCursor();//vider le curseur (free)
+        $Smt->closeCursor();//vider le curseur (free)*/
         
         
         
@@ -32,9 +32,9 @@
         $to = "yassinejrayfy36@gmail.com";  // mail of reciever
         $subject = "Tutorial or any subject";
         $body = "Send Mail Using PHPMailer - MS The Tech Guy";
-        $from = "";  // you mail
-        $password = "";  // your mail password
-        $cv = "path";
+        $from = "abdopro202@gmail.com";  // you mail
+        $password = "abdopro200213";  // your mail password
+        //$cv = "path";
 
         // Ignore from here
 
@@ -47,6 +47,10 @@
 
         //SMTP Settings
         $mail->isSMTP();
+        $mail->oauthUserEmail = "[Redacted]@gmail.com";
+        $mail->oauthClientId = "[Redacted]";
+        $mail->oauthClientSecret = "[Redacted]";
+        $mail->oauthRefreshToken = "[Redacted]";
         // $mail->SMTPDebug = 3;  Keep It commented this is used for debugging                          
         $mail->Host = "smtp.gmail.com"; // smtp address of your email
         $mail->SMTPAuth = true;
@@ -68,12 +72,12 @@
         $mail->addAddress($to); // enter email address whom you want to send
         $mail->Subject = ("$subject");
         $mail->Body = $body;
-        $mail->addAttachment($cv);
+        //$mail->addAttachment($cv);
         if ($mail->send()) {
             echo "Email is sent!";
         } else {
             echo "Something is wrong: <br><br>" . $mail->ErrorInfo;
-        }*/
+        }
     }
 
 

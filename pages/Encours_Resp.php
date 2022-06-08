@@ -79,7 +79,7 @@
                 <a class="nav-link navlink active_link_color" href="Liste_Etudiant_Resp.php">Etudiants</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Enseignants</a>
+                <a class="nav-link navlink" href="Liste_Enseignant_Resp.php">Enseignants</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink " href="Verify_Etudiant_Resp.php">Verification</a>

@@ -214,19 +214,19 @@ form > div .bg-svg {
 }
 
 form > .form-one .bg-svg {
-    background: url(../assets/personal.svg);
+    background: url(icons/assets/personal.svg);
 }
 
 form > .form-two .bg-svg {
-    background: url(../assets/contact.svg);
+    background: url(icons/assets/contact.svg);
 }
 
 form > .form-three .bg-svg {
-    background: url(../assets/studies.svg);
+    background: url(icons/assets/studies.svg);
 }
 
 form > .form-four .bg-svg {
-    background: url(../assets/security.svg);
+    background: url(icons/assets/security.svg);
 }
 
 /* == Button */

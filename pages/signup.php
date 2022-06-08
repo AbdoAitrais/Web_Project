@@ -35,7 +35,7 @@
                         </li>
                     </ul>
                 </div>
-                <form action="back_end/Signup_Etu.php" method="post">
+                <form action="back_end/Signup_Etu.php" method="post" enctype="multipart/form-data">
                     <div class="form-one form-step active">
                         <div class="bg-svg"></div>
                         <h2>Personal Information</h2>
@@ -48,30 +48,30 @@
                                     <label for="imageUpload"></label>
                                 </div>
                                 <div class="avatar-preview">
-                                    <div id="imagePreview" style="background-image: url('../icons/avatar.png');">
+                                    <div id="imagePreview" style="background-image: url('icons/avatar.png');">
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div>
                             <label for="prenom_etu">First Name</label>
-                            <input type="text" name="prenom_etu" id="prenom_etu" placeholder="e.g. John">
+                            <input type="text" name="prenom_etu" id="prenom_etu" placeholder="e.g. John" required>
                         </div>
                         <div>
                             <label for="nom_etu">Last Name</label>
-                            <input type="text"  name="nom_etu" id="nom_etu" placeholder="e.g. Paul">
+                            <input type="text"  name="nom_etu" id="nom_etu" placeholder="e.g. Paul" required>
                         </div>
                         <div class="birth">
                             <label for="id">Date of Birth</label>
                             <div class="grouping">
-                                <input type="text" pattern="[0-9]*" name="day" value="" min="0" max="31" placeholder="DD">
-                                <input type="text" pattern="[0-9]*" name="month" value="" min="0" max="12" placeholder="MM">
-                                <input type="text" pattern="[0-9]*" name="year" value="" min="0" placeholder="MM">
+                                <input type="text" pattern="[0-9]*" name="day" value="" min="0" max="31" placeholder="DD" required>
+                                <input type="text" pattern="[0-9]*" name="month" value="" min="0" max="12" placeholder="MM" required>
+                                <input type="text" pattern="[0-9]*" name="year" value="" min="0" placeholder="MM" required>
                             </div>
                         </div>
                         <div>
-                            <label for="">CIN</label>
-                            <input type="text"  name="CIN" placeholder="">
+                            <label for="cin">CIN</label>
+                            <input type="text"  name="cin" id="cin" placeholder="" required>
                         </div>
                         <div>
                             <label for="">CV</label>
@@ -86,16 +86,16 @@
                         <div class="bg-svg"></div>
                         <h2>Contact</h2>
                         <div>
-                            <label for="">Phone</label>
-                            <input type="text" name="number" placeholder="+212xxxxxxxxx">
+                            <label for="number">Phone</label>
+                            <input type="text" name="number" id="number" placeholder="+212xxxxxxxxx"required>
                         </div>
                         <div>
-                            <label for="">Adress</label>
-                            <input type="text" name="adress" placeholder="Street Adress">
+                            <label for="adress">Adress</label>
+                            <input type="text" name="adress" id="adress" placeholder="Street Adress" required>
                         </div>
                         <div>
-                            <label for="">City</label>
-                            <input type="text" name="city" placeholder="City">
+                            <label for="city">City</label>
+                            <input type="text" name="city" id="city" placeholder="City" required>
                         </div>
                        
                         
@@ -105,19 +105,19 @@
                         <div class="bg-svg"></div>
                         <h2>Studies</h2>
                         <div>
-                            <label for="">CNE</label>
-                            <input type="text" name="CNE" placeholder="">
+                            <label for="cne">CNE</label>
+                            <input type="text" name="cne"  id="cne" placeholder="" required>
                         </div>
                         <div style="display: inline-block !important; ">
-                            <label for="">Type</label>
-                            <select name="Filière" id="Filière">
+                            <label for="type">Type</label>
+                            <select name="type" id="type" required>
                                 <option value="">Please select</option>
                                 <option value="1">Cycle</option>
                                 <option value="2">Master</option>
-                                <option value="3">Liscence</option>
+                                <option value="0">Liscence</option>
                             </select>
-                            <label for="" style="margin-left: 25px;">Filière</label>
-                            <select name="Filière" id="Filière">
+                            <label for="filière" style="margin-left: 25px;">Filière</label>
+                            <select name="filière" id="filière" required>
                                 <option value="">Please select</option>
                                 <option value="1">ILISI</option>
                                 <option value="2">GET</option>
@@ -125,8 +125,8 @@
                             </select>
                         </div>
                         <div>
-                            <label for="">Niveau</label>
-                            <select name="Filière" id="Filière">
+                            <label for="niveau">Niveau</label>
+                            <select name="niveau" id="niveau" required>
                                 <option value="">Please select</option>
                                 <option value="1">1er anneé</option>
                                 <option value="2">2ème anneé</option>
@@ -134,12 +134,12 @@
                             </select>
                         </div>    
                         <div>
-                            <label for="">Promotion</label>
-                            <select name="Filière" id="Filière">
+                            <label for="promo">Promotion</label>
+                            <select name="promo" id="promo" required>
                                 <option value="">Please select</option>
-                                <option value="Afghanistan">2022</option>
-                                <option value="Afghanistan">2023</option>
-                                <option value="Afghanistan">2024</option>
+                                <option value="2022">2022</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
                             </select>
                         </div>       
                     </div>
@@ -147,15 +147,15 @@
                         <div class="bg-svg"></div>
                         <h2>Security</h2>
                         <div>
-                            <label for="">Email</label>
-                            <input type="email" placeholder="Your email address">
+                            <label for="email">Email</label>
+                            <input type="email" name="user_mail" id="email" placeholder="Your email address" required>
                         </div>
                         <div>
-                            <label for="">Password</label>
-                            <input type="text" placeholder="Password">
+                            <label for="pass">Password</label>
+                            <input type="password" name="pass" id="pass" placeholder="Password" required>
                         </div>
                         <div>
-                            <input type="text" placeholder="Confirm Password">
+                            <input type="password" id="confirm_pass" placeholder="Confirm Password" required>
                         </div>
                         <div class="checkbox">
                             <input type="checkbox">
