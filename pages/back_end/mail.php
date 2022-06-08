@@ -1,8 +1,5 @@
 <?php
-    // wamiiiii wa3t9uuuuniiiii
-    // wax7al u7na mdarbin m3a hadxiiiiii 
-
-
+    require('connexion.php');
     
     // Subscribe my channel if you are using this code
     // Subscribe my channel if you are using this code
@@ -10,15 +7,33 @@
     // Subscribe my channel if you are using this code
     // Subscribe my channel if you are using this code
 
+    
 
     use PHPMailer\PHPMailer\PHPMailer;
     function sendmail(){
+        require('connexion.php');
+        
+        $id_etu = $_GET['id_etu'];
+        var_dump($id_etu);
+        $id_offre = $_GET['id_offre'];
+
+        $Smt = $bdd->prepare("SELECT * FROM offre o,postuler p,etudiant e WHERE o.ID_OFFRE = p.ID_OFFRE AND p.ID_ETU = e.ID_ETU AND e.ID_ETU = ? AND o.ID_OFFRE = ?");
+        $Smt -> execute(array($id_etu,$id_offre));
+        $Data = $Smt->fetch();
+        //var_dump($Data);
+        $Smt->closeCursor();//vider le curseur (free)
+        
+        
+        
+        /*
+        
         $name = "FSTAGE";  // Name of your website or yours
         $to = "yassinejrayfy36@gmail.com";  // mail of reciever
         $subject = "Tutorial or any subject";
         $body = "Send Mail Using PHPMailer - MS The Tech Guy";
-        $from = "abdopro202@gmail.com";  // you mail
-        $password = "abdopro200213";  // your mail password
+        $from = "";  // you mail
+        $password = "";  // your mail password
+        $cv = "path";
 
         // Ignore from here
 
@@ -52,11 +67,12 @@
         $mail->addAddress($to); // enter email address whom you want to send
         $mail->Subject = ("$subject");
         $mail->Body = $body;
+        $mail->addAttachment($cv);
         if ($mail->send()) {
             echo "Email is sent!";
         } else {
             echo "Something is wrong: <br><br>" . $mail->ErrorInfo;
-        }
+        }*/
     }
 
 
@@ -65,4 +81,7 @@
         //if (isset($_GET['sendmail'])) {
             sendmail();
         //}
+        
+
+        
 ?>
