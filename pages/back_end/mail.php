@@ -11,6 +11,7 @@
 
     use PHPMailer\PHPMailer\PHPMailer;
     function sendmail(){
+        /*
         require('connexion.php');
         
         $id_etu = $_GET['id_etu'];
@@ -25,7 +26,7 @@
         
         
         
-        /*
+        
         
         $name = "FSTAGE";  // Name of your website or yours
         $to = "yassinejrayfy36@gmail.com";  // mail of reciever

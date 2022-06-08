@@ -73,14 +73,9 @@
                     $Smt -> execute(array($Etu,$Offre_ID,'Postulée',$curdate)); 
                     $Smt->closeCursor();//vider le curseur (free)             
                     ///*** MAIL SENDING
-                    
-                    //var_dump(urlencode($Etu));
-                    header('location:mail.php?id_etu='.$Etu.'&id_offre='.$Offre_ID);
-
-                    
                     /// ***
                    
-                    //header('location:../Find_Offre_Etu.php');
+                    header('location:../Find_Offre_Etu.php');
                 
                 }else if(isset($_POST['offre_non_accepte'])){
 
