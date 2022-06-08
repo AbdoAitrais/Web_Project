@@ -53,7 +53,7 @@
                 <a class="nav-link navlink" href="Historique.php">Historique</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Soumissions_Etu.php">Soumissions</a>
+                <a class="nav-link navlink active_link_color" href="Soumissions_Etu.php">Soumissions</a><span class="active_link_line"></span>
                 <?php if(!empty($row)){ if($row['Nbr_soums']){ ?><span class="icon-button__badge"><?php $Nb_rtn =$row['Nbr_soums'];if($Nb_rtn)print($Nb_rtn);}} ?></span>
               </li>
               <li class="nav-item underline">

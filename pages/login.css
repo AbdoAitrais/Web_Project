@@ -78,8 +78,9 @@ font-size: 15px;
     border: 1px solid rgba(168, 168, 168, 0.8);
     border-radius: 17px;
     box-sizing: border-box;
-width: 385px;
-height: 50px;
+    width: 385px;
+    height: 50px;
+    
   }
 
   button{
