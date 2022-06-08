@@ -91,7 +91,7 @@
             </div>
             <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
               
-              <img class="profile" onclick="menuToggle()" src="popup/img.jpg" alt="">
+              <!-- <img class="profile" onclick="menuToggle()" src="popup/img.jpg" alt="">
               
               <div class="menu" style="margin:5px;">
                   <h3>Someone Famous</h3>
@@ -105,7 +105,7 @@
               
                </div>
 
-              </div>
+              </div> -->
           </div>
         </div>
       </nav>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mar. 07 juin 2022 à 12:45
+-- Généré le : mer. 08 juin 2022 à 12:16
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -87,6 +87,7 @@ CREATE TABLE IF NOT EXISTS `enseignant` (
   `CIN_ENS` varchar(15) DEFAULT NULL,
   `DATENAISS_ENS` date DEFAULT NULL,
   `NUMTEL_ENS` int(11) DEFAULT NULL,
+  `ACTIVE_ENS` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`ID_ENS`),
   KEY `FK_FAIRE_PARTIE_DE` (`ID_DEPART`)
 ) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
@@ -95,15 +96,15 @@ CREATE TABLE IF NOT EXISTS `enseignant` (
 -- Déchargement des données de la table `enseignant`
 --
 
-INSERT INTO `enseignant` (`ID_ENS`, `ID_DEPART`, `NOM_ENS`, `PRENOM_ENS`, `CIN_ENS`, `DATENAISS_ENS`, `NUMTEL_ENS`) VALUES
-(1, 1, 'EN1', 'ENS1', NULL, NULL, NULL),
-(2, 2, 'EN2', 'ENS2', NULL, NULL, NULL),
-(3, 1, 'EN3', 'ENS3', NULL, NULL, NULL),
-(4, 1, 'EN4', 'ENS4', NULL, NULL, NULL),
-(5, 1, 'EN5', 'ENS5', NULL, NULL, NULL),
-(6, 1, 'EN6', 'ENS6', NULL, NULL, NULL),
-(7, 1, 'EN7', 'ENS7', NULL, NULL, NULL),
-(8, 1, 'EN8', 'ENS8', NULL, NULL, NULL);
+INSERT INTO `enseignant` (`ID_ENS`, `ID_DEPART`, `NOM_ENS`, `PRENOM_ENS`, `CIN_ENS`, `DATENAISS_ENS`, `NUMTEL_ENS`, `ACTIVE_ENS`) VALUES
+(1, 1, 'EN1', 'ENS1', NULL, NULL, NULL, 1),
+(2, 2, 'EN2', 'ENS2', NULL, NULL, NULL, 1),
+(3, 1, 'EN3', 'ENS3', NULL, NULL, NULL, 1),
+(4, 1, 'EN4', 'ENS4', NULL, NULL, NULL, 1),
+(5, 1, 'EN5', 'ENS5', NULL, NULL, NULL, 1),
+(6, 1, 'EN6', 'ENS6', NULL, NULL, NULL, 1),
+(7, 1, 'EN7', 'ENS7', NULL, NULL, NULL, 1),
+(8, 1, 'EN8', 'ENS8', NULL, NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -166,9 +167,9 @@ CREATE TABLE IF NOT EXISTS `etudiant` (
 
 INSERT INTO `etudiant` (`ID_ETU`, `ID_FORM`, `NOM_ETU`, `PRENOM_ETU`, `CIN_ETU`, `CNE`, `NIVEAU`, `PROMOTION`, `DATENAISS_ETU`, `ADRESSE_ETU`, `EMAIL_ETU`, `NUMTEL_ETU`, `CV`, `ID_USER`) VALUES
 (1, 1, 'ANAS', 'KABILA', 'AK1', 'R130073870', 3, 2019, '1999-02-01', 'AK1-AK1', 'AK@h', 130073860, 'uploads/cv/defiler (F).pdf', 1),
-(2, 1, 'ABDO', 'RAIS', 'AR1', 'R130073880', 3, 2019, '1999-06-18', 'AR1-AR1', 'AR@R', 130073840, NULL, 2),
+(2, 1, 'ABDO', 'RAIS', 'AR1', 'R130073880', 3, 2019, '1999-06-18', 'AR1-AR1', 'AR@R', 130073840, '../uploads/cv/defiler (F).pdf', 2),
 (3, 2, 'YASSINE', 'JRAYFY', NULL, 'R130073850', 1, 2022, NULL, NULL, NULL, NULL, NULL, 3),
-(4, 1, 'HAMZA', 'BANA', 'BH1', 'R130073860', 3, 2019, '1999-06-10', 'BH1-BH1', 'BH@B', 130073890, NULL, 6);
+(4, 1, 'HAMZA', 'BANA', 'BH1', 'R130073860', 3, 2019, '1999-06-10', 'BH1-BH1', 'BH@B', 130073890, '../uploads/cv/TD1.pdf', 6);
 
 -- --------------------------------------------------------
 
@@ -210,6 +211,14 @@ CREATE TABLE IF NOT EXISTS `juri` (
   PRIMARY KEY (`ID_ENS`,`ID_STAGE`),
   KEY `FK_JURI2` (`ID_STAGE`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `juri`
+--
+
+INSERT INTO `juri` (`ID_ENS`, `ID_STAGE`, `NOTE`) VALUES
+(3, 13, NULL),
+(1, 13, NULL);
 
 -- --------------------------------------------------------
 
@@ -266,8 +275,8 @@ INSERT INTO `offre` (`ID_OFFRE`, `ID_FORM`, `ID_ENTREP`, `STATUOFFRE`, `NBRCANDI
 (8, 1, 1, 'Completée', 1, 'Full-Stack (Java)', 60, '2022-05-24', '2022-06-21', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 0),
 (11, 1, 2, 'Completée', 2, 'BI', 60, '2022-05-24', '2022-06-21', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
 (10, 2, 2, 'Nouveau', 10, 'Cloud', 30, '2022-05-31', '2022-06-21', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 1, 1),
-(16, 1, 7, 'Closed', 10, 'Hacker', 90, '2022-06-05', '2022-06-07', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl', 3, 1),
-(17, 1, 11, 'Closed', 10, 'Engineer', 90, '2022-06-06', '2022-06-07', 'Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem LoremLorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem  Lorem  Lorem', 3, 1);
+(16, 1, 7, 'Nouveau', 10, 'Hacker', 2700, '2022-06-05', '2022-07-07', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl', 3, 1),
+(17, 1, 11, 'Nouveau', 10, 'Engineer', 81000, '2022-06-06', '2022-07-07', 'Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem LoremLorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem  Lorem  Lorem', 3, 1);
 
 -- --------------------------------------------------------
 
@@ -291,8 +300,13 @@ CREATE TABLE IF NOT EXISTS `postuler` (
 --
 
 INSERT INTO `postuler` (`ID_ETU`, `ID_OFFRE`, `STATU`, `DATEREPONS`, `DATEPOST`) VALUES
-(4, 7, 'Non acceptée', '2022-06-06', '2022-06-04'),
-(1, 17, 'Postulée', NULL, '2022-06-06');
+(2, 17, 'Postulée', NULL, '2022-06-08'),
+(2, 3, 'Postulée', NULL, '2022-06-08'),
+(4, 17, 'Postulée', NULL, '2022-06-08'),
+(4, 16, 'Non Acceptée', '2022-06-07', '2022-06-07'),
+(4, 7, 'Retenue', '2022-06-07', '2022-06-07'),
+(4, 6, 'Non Acceptée', '2022-06-07', '2022-06-07'),
+(1, 17, 'Acceptée', '2022-06-07', '2022-06-06');
 
 -- --------------------------------------------------------
 
@@ -344,7 +358,14 @@ CREATE TABLE IF NOT EXISTS `stage` (
   KEY `FK_ENCADRER` (`ID_ENS`),
   KEY `FK_PEUT_DEVENIR` (`ID_OFFRE`),
   KEY `FK_STAGIER` (`ID_ETU`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `stage`
+--
+
+INSERT INTO `stage` (`ID_STAGE`, `ID_OFFRE`, `ID_ENS`, `ID_ETU`, `DATEDEBUT_STAGE`, `NOTENCAD_ENTREP`, `NOTENCAD`, `CONTRAT`, `NIVEAU_STAGE`) VALUES
+(13, 17, NULL, 1, '2022-06-07', NULL, NULL, NULL, 3);
 
 -- --------------------------------------------------------
 
@@ -357,7 +378,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   `ID_USER` int(11) NOT NULL AUTO_INCREMENT,
   `LOGIN` varchar(30) NOT NULL,
   `PASSWORD` varchar(30) NOT NULL,
+  `PICTURE` varchar(50) DEFAULT NULL,
   `ACTIVE` int(11) NOT NULL,
+  `VERIFIED` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID_USER`)
 ) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
@@ -365,13 +388,13 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`ID_USER`, `LOGIN`, `PASSWORD`, `ACTIVE`) VALUES
-(1, 'anas123', 'kabila123', 1),
-(2, 'abdo123', 'aitrais123', 1),
-(3, 'yassine123', 'jrayfy123', 1),
-(4, 'hh1123', 'haha1123', 1),
-(5, 'hh2123', 'haha2123', 1),
-(6, 'hamza123', 'bana123', 1);
+INSERT INTO `users` (`ID_USER`, `LOGIN`, `PASSWORD`, `PICTURE`, `ACTIVE`, `VERIFIED`) VALUES
+(1, 'anas123', 'kabila123', NULL, 1, 1),
+(2, 'abdo123', 'aitrais123', NULL, 1, 1),
+(3, 'yassine123', 'jrayfy123', NULL, 1, 1),
+(4, 'hh1123', 'haha1123', NULL, 1, 1),
+(5, 'hh2123', 'haha2123', NULL, 1, 1),
+(6, 'hamza123', 'bana123', NULL, 1, 1);
 
 DELIMITER $$
 --
@@ -381,7 +404,7 @@ DROP EVENT `Closing_Offre`$$
 CREATE DEFINER=`root`@`localhost` EVENT `Closing_Offre` ON SCHEDULE EVERY 1 DAY STARTS '2022-05-28 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE offre  SET STATUOFFRE="Closed" WHERE DATEFIN=CURRENT_DATE$$
 
 DROP EVENT `Accept_Delay`$$
-CREATE DEFINER=`root`@`localhost` EVENT `Accept_Delay` ON SCHEDULE EVERY 1 DAY STARTS '2022-05-28 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE postuler SET STATU="Non acceptée" WHERE STATU='Retenue' AND DATE_ADD(DATEREPONS, INTERVAL 1 DAY) =CURRENT_DATE$$
+CREATE DEFINER=`root`@`localhost` EVENT `Accept_Delay` ON SCHEDULE EVERY 1 DAY STARTS '2022-05-28 00:00:00' ON COMPLETION NOT PRESERVE ENABLE DO UPDATE postuler SET STATU="Non acceptée" WHERE STATU='Retenue' AND DATE_ADD(DATEREPONS, INTERVAL 10 DAY) =CURRENT_DATE$$
 
 DELIMITER ;
 COMMIT;

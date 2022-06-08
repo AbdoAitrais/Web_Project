@@ -127,14 +127,14 @@
                             <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
                             <a href="Modifier_Etudiant_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
                             <?php if($row['ACTIVE'] == 1){ ?>
-                            <!-- <a href="back_end/Desactiver_account.php?id_etu_disac=<//?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >Desactiver</button></a> -->
-                            <form action="back_end/Desactiver_account.php" method="post" style="display: inline-block;" >
+                            <!-- <a href="back_end/Desactiver.php?id_etu_disac=<//?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >Desactiver</button></a> -->
+                            <form action="back_end/Desactiver.php" method="post" style="display: inline-block;" >
                                 <input type="hidden" name="id_etu_disac" value="<?php echo $row['ID_ETU']; ?>">
                                 <button type="submit" class="btn btn-outline-primary" >Desactiver</button>
                             </form>
                             <?php }else{?>
-                            <!-- <a href="back_end/Desactiver_account.php?id_etu_ac=<//?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Activer&nbsp;&nbsp;&nbsp;</button></a> -->
-                            <form action="back_end/Desactiver_account.php" method="post" style="display: inline-block;">
+                            <!-- <a href="back_end/Desactiver.php?id_etu_ac=<//?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Activer&nbsp;&nbsp;&nbsp;</button></a> -->
+                            <form action="back_end/Desactiver.php" method="post" style="display: inline-block;">
                                 <input type="hidden" name="id_etu_ac" value="<?php echo $row['ID_ETU']; ?>">
                                 <button type="submit" class="btn btn-outline-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Activer&nbsp;&nbsp;&nbsp;</button>
                             </form>

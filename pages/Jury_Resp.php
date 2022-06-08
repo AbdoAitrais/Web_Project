@@ -29,7 +29,7 @@
         $sql3 ="SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS
                 FROM enseignant e
                 WHERE e.ID_DEPART = (SELECT e1.ID_DEPART FROM formation f, enseignant e1 WHERE f.ID_ENS = e1.ID_ENS AND f.ID_FORM = '$id_form') 
-                      AND e.ID_ENS NOT IN (SELECT ID_ENS FROM juri WHERE ID_STAGE = '$id_stage')  ORDER BY e.ID_ENS";
+                      AND e.ID_ENS NOT IN (SELECT ID_ENS FROM juri WHERE ID_STAGE = '$id_stage') AND e.ACTIVE_ENS='1' ORDER BY e.ID_ENS";
       
         $req3 =$bdd->query($sql3);
         $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
@@ -101,7 +101,7 @@
             </div>
             <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
               
-              <img class="profile" onclick="menuToggle()" src="popup/img.jpg" alt="">
+              <!-- <img class="profile" onclick="menuToggle()" src="popup/img.jpg" alt="">
               
               <div class="menu" style="margin:5px;">
                   <h3>Someone Famous</h3>
@@ -113,7 +113,7 @@
                       <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
                   </ul>
               
-               </div>
+               </div> -->
 
               </div>
           </div>
