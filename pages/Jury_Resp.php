@@ -15,6 +15,7 @@
       {
         ///Stage encours
         $id_stage = $_GET['id_stage'];
+
         $sql1 = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP,NOTENCAD_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU  AND s.ID_STAGE='$id_stage'";
         $req1 =$bdd->query($sql1);
         $result1 = $req1->fetch(PDO::FETCH_ASSOC);
@@ -44,6 +45,13 @@
         $sql5 = "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS,j.NOTE FROM enseignant e,juri j WHERE j.ID_ENS = e.ID_ENS AND j.ID_STAGE = '$id_stage' ORDER BY e.ID_ENS ";
         $req5 =$bdd->query($sql5);
         $result5 = $req5->fetchAll(PDO::FETCH_ASSOC);
+
+
+        
+        /// Enseignants d'etre encadrants
+        $Smt =$bdd->prepare("SELECT ID_ENS,NOM_ENS,PRENOM_ENS FROM enseignant WHERE ID_DEPART=(SELECT ID_DEPART FROM enseignant e,formation f WHERE e.ID_ENS=f.ID_ENS AND f.ID_FORM=(SELECT ID_FORM FROM etudiant WHERE ID_ETU=(SELECT ID_ETU FROM STAGE WHERE ID_STAGE=?)) )");
+        $Smt->execute(array($id_stage));
+        $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
 
         
         /// Last visited page 
@@ -162,7 +170,7 @@
             
                               <ul>
                                 <li><img src="icons/loupe.png" alt=""><a href="">Details</a> </li>
-                                <li><img src="icons/teacher.png" alt=""><a href="">Encadrant</a> </li>
+                                <li><img src="icons/teacher.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop4">Encadrant</a> </li>
                                 <li><img src="icons/jury.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Jury</a> </li>
                                 <li><img src="icons/certificate.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Notes</a> </li>
                                 <li><img src="icons/application.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">Rapport</a> </li>
@@ -205,7 +213,6 @@
                           <td style="color: #616161;"><?php print($Jury['NOM_ENS']);?></td>
                           <td style="color: #616161;"><?php print($Jury['PRENOM_ENS']);?></td>
                           <td style="text-align: end;">
-                            <!-- <a href="back_end/Jury_Ens_Resp.php?jury_supp=<?php print($Jury['ID_ENS']);?>&id_stage=<?php print($id_stage);?>"> -->
                             <form action="back_end/Jury_Ens_Resp.php" method="post" style="display: inline-block;" >
                               <input type="hidden" name="id_stage" value="<?php print($id_stage);?>">
                               <input type="hidden" name="jury_supp" value="<?php print($Jury['ID_ENS']);?>" >
@@ -257,7 +264,7 @@
             </div>
           </form>
 
-        <form action="back_end/Notes_Stage_Resp.php?id_stage=<?php print($id_stage);?>" method="post">
+        <form action="back_end/Notes_Stage_Resp.php" method="post">
           <div class="modal fade" id="staticBackdrop2" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
@@ -297,6 +304,8 @@
                       <?php endforeach;}?>
                   </table>
                 </div>
+                  <!-- id stage -->
+                  <input type='hidden' name='id_stage' value="<?php print($id_stage); ?>" />
                  <!-- Jury array -->
                  <input type='hidden' name='jury_array' value="<?php echo htmlentities(serialize($result5)); ?>" />
                 <div class="modal-footer">
@@ -341,6 +350,43 @@
             </div>
         </form>
 
+        <!-- Encadrant -->
+        <form action="back_end/Encadrant_Stage.php" method="post">
+            <div class="modal fade"  id="staticBackdrop4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Enseignants</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body" style="max-height: 300px;">
+                    <table class="hovtr">
+                      <?php
+                          if(!empty($rows)){
+                              foreach($rows as $Ens):
+                          
+                      ?>
+                      <tr style="height: 50px;">
+                        <td><?php print($Ens['NOM_ENS'])?></td>
+                        <td><?php print($Ens['PRENOM_ENS'])?></td>
+                        <td style="text-align: end;">
+                          <input type="hidden" name="id_stage" value="<?php print($id_stage);?>">
+                          <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault">
+                        </td>
+                      </tr>
+                      <?php endforeach;}?>
+                      
+                    </table>
+                </div>
+                  
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
           
           
 
