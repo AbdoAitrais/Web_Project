@@ -60,7 +60,7 @@
               <img class="profile" onclick="menuToggle()" src="<?php if( !empty($_SESSION['user_pdp']) ) echo $_SESSION['user_pdp']; else echo 'icons/avatar.png'; ?>" alt="">
               
               <div class="menu" style="margin:5px;">
-                  <h3>Someone Famous</h3>
+                  <h3><?php if( isset($_SESSION['user_name']) ) echo $_SESSION['user_name']['user_firstname'].'<br>'.$_SESSION['user_name']['user_lastname']; else echo "undefined user"; ?></h3>
               
                   <ul>
                       <li><a href=""><img src="popup/user.png" alt=""><a href="">My profile</a> </li>
