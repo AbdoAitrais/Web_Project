@@ -19,7 +19,7 @@
 		
 		
 		$Smt->closeCursor();//vider le curseur (free)
-		$results = array($rows[$id_table],$main_page,$user_type);//array contains id and main page and user type
+		$results = array($rows[$id_table],$main_page,$user_type,$rows['PICTURE']);//array contains id and main page and user type
 		
 		var_dump($results);
 		return $results;
@@ -60,6 +60,7 @@
 			$_SESSION['user_id'] = $result[0];
 			$_SESSION['main_page'] = $result[1];
 			$_SESSION['user_type'] = $result[2];
+			$_SESSION['user_pdp'] =strchr($result[3],'uploads') ;
 
 			
 		 	if(isset($_SESSION['error']))

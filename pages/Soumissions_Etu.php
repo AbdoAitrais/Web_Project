@@ -70,7 +70,7 @@
               if(isset($_SESSION['pdp']) && !empty($_SESSION['pdp'])){  ?>
                 <img class="profile" onclick="menuToggle()" src="<?php print($_SESSION['pdp']);?>" alt="">
               <?php }else{ ?>
-                <img class="profile" onclick="menuToggle()" src="icons/avatar.png" alt=""><?php } ?>
+                <img class="profile" onclick="menuToggle()" src="<?php if( !empty($_SESSION['user_pdp']) ) echo $_SESSION['user_pdp']; else echo 'icons/avatar.png'; ?>" alt=""><?php } ?>
               
               <div class="menu" style="margin:5px;">
                   <h3>Someone Famous</h3>

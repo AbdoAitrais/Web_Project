@@ -76,6 +76,29 @@
                   <a class="nav-link navlink " href="Verify_Etudiant_Resp.php">Verification</a>
                 </li>
               </ul>
+              <div class="" style="position: fixed; margin-left: 47%;">
+                  <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
+            </div>
+              <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
+              
+              <?php
+              if(isset($_SESSION['pdp']) && !empty($_SESSION['pdp'])){  ?>
+                <img class="profile" onclick="menuToggle()" src="<?php print($_SESSION['pdp']);?>" alt="">
+              <?php }else{ ?>
+                <img class="profile" onclick="menuToggle()" src="<?php if( !empty($_SESSION['user_pdp']) ) echo $_SESSION['user_pdp']; else echo 'icons/avatar.png'; ?>" alt=""><?php } ?>
+              <div class="menu" style="margin:5px;">
+                  <h3>Someone Famous</h3>
+              
+                  <ul>
+                      <li><a href=""><img src="popup/user.png" alt=""><a href=>My profile</a></li>
+                      <li><a href=""><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
+                      <li><a href=""><img src="popup/question.png" alt="">Help</a> </li>
+                      <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
+                  </ul>
+              
+               </div>
+
+              </div>
               <?php 
                     }else if($_SESSION['user_type'] == "Etudiant")
                     {
@@ -110,7 +133,7 @@
               if(isset($_SESSION['pdp']) && !empty($_SESSION['pdp'])){  ?>
                 <img class="profile" onclick="menuToggle()" src="<?php print($_SESSION['pdp']);?>" alt="">
               <?php }else{ ?>
-                <img class="profile" onclick="menuToggle()" src="icons/avatar.png" alt=""><?php } ?>
+                <img class="profile" onclick="menuToggle()" src="<?php if( !empty($_SESSION['user_pdp']) ) echo $_SESSION['user_pdp']; else echo 'icons/avatar.png'; ?>" alt=""><?php } ?>
               <div class="menu" style="margin:5px;">
                   <h3>Someone Famous</h3>
               
