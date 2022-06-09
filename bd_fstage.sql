@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : mer. 08 juin 2022 à 12:16
+-- Généré le : jeu. 09 juin 2022 à 11:07
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -159,7 +159,7 @@ CREATE TABLE IF NOT EXISTS `etudiant` (
   PRIMARY KEY (`ID_ETU`),
   KEY `FK_APPARTENIR` (`ID_FORM`),
   KEY `FK_USER_ETU` (`ID_USER`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `etudiant`
@@ -169,7 +169,8 @@ INSERT INTO `etudiant` (`ID_ETU`, `ID_FORM`, `NOM_ETU`, `PRENOM_ETU`, `CIN_ETU`,
 (1, 1, 'ANAS', 'KABILA', 'AK1', 'R130073870', 3, 2019, '1999-02-01', 'AK1-AK1', 'AK@h', 130073860, 'uploads/cv/defiler (F).pdf', 1),
 (2, 1, 'ABDO', 'RAIS', 'AR1', 'R130073880', 3, 2019, '1999-06-18', 'AR1-AR1', 'AR@R', 130073840, '../uploads/cv/defiler (F).pdf', 2),
 (3, 2, 'YASSINE', 'JRAYFY', NULL, 'R130073850', 1, 2022, NULL, NULL, NULL, NULL, NULL, 3),
-(4, 1, 'HAMZA', 'BANA', 'BH1', 'R130073860', 3, 2019, '1999-06-10', 'BH1-BH1', 'BH@B', 130073890, '../uploads/cv/TD1.pdf', 6);
+(4, 1, 'HAMZA', 'BANA', 'BH1', 'R130073860', 3, 2019, '1999-06-10', 'BH1-BH1', 'BH@B', 130073890, '../uploads/cv/TD1.pdf', 6),
+(6, 1, 'KAMAL', 'hassan', 'BB54FF8', 'R130073800	', 1, 2022, '2000-02-02', 'casablanca-sm', NULL, 130073860, NULL, 13);
 
 -- --------------------------------------------------------
 
@@ -212,14 +213,6 @@ CREATE TABLE IF NOT EXISTS `juri` (
   KEY `FK_JURI2` (`ID_STAGE`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
---
--- Déchargement des données de la table `juri`
---
-
-INSERT INTO `juri` (`ID_ENS`, `ID_STAGE`, `NOTE`) VALUES
-(3, 13, NULL),
-(1, 13, NULL);
-
 -- --------------------------------------------------------
 
 --
@@ -233,7 +226,7 @@ CREATE TABLE IF NOT EXISTS `motcle` (
   `ID_RAPP` int(11) NOT NULL,
   PRIMARY KEY (`ID_MOTCLE`),
   KEY `FK_RAPPORT` (`ID_RAPP`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=22 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=24 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -289,8 +282,8 @@ CREATE TABLE IF NOT EXISTS `postuler` (
   `ID_ETU` int(11) NOT NULL,
   `ID_OFFRE` int(11) NOT NULL,
   `STATU` varchar(30) DEFAULT NULL,
-  `DATEREPONS` date DEFAULT NULL,
-  `DATEPOST` date DEFAULT NULL,
+  `DATEREPONS` timestamp NULL DEFAULT NULL,
+  `DATEPOST` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`ID_ETU`,`ID_OFFRE`),
   KEY `FK_POSTULER2` (`ID_OFFRE`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
@@ -300,13 +293,8 @@ CREATE TABLE IF NOT EXISTS `postuler` (
 --
 
 INSERT INTO `postuler` (`ID_ETU`, `ID_OFFRE`, `STATU`, `DATEREPONS`, `DATEPOST`) VALUES
-(2, 17, 'Postulée', NULL, '2022-06-08'),
-(2, 3, 'Postulée', NULL, '2022-06-08'),
-(4, 17, 'Postulée', NULL, '2022-06-08'),
-(4, 16, 'Non Acceptée', '2022-06-07', '2022-06-07'),
-(4, 7, 'Retenue', '2022-06-07', '2022-06-07'),
-(4, 6, 'Non Acceptée', '2022-06-07', '2022-06-07'),
-(1, 17, 'Acceptée', '2022-06-07', '2022-06-06');
+(2, 17, 'Postulée', NULL, '2022-06-09 11:05:45'),
+(2, 16, 'Postulée', NULL, '2022-06-09 11:05:47');
 
 -- --------------------------------------------------------
 
@@ -321,7 +309,7 @@ CREATE TABLE IF NOT EXISTS `rapport` (
   `ID_STAGE` int(11) NOT NULL,
   PRIMARY KEY (`ID_RAPP`),
   KEY `FK_STAGE` (`ID_STAGE`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -349,7 +337,7 @@ CREATE TABLE IF NOT EXISTS `stage` (
   `ID_OFFRE` int(11) NOT NULL,
   `ID_ENS` int(11) DEFAULT NULL,
   `ID_ETU` int(11) NOT NULL,
-  `DATEDEBUT_STAGE` date DEFAULT NULL,
+  `DATEDEBUT_STAGE` timestamp NULL DEFAULT NULL,
   `NOTENCAD_ENTREP` float DEFAULT NULL,
   `NOTENCAD` float DEFAULT NULL,
   `CONTRAT` varchar(100) DEFAULT NULL,
@@ -358,14 +346,7 @@ CREATE TABLE IF NOT EXISTS `stage` (
   KEY `FK_ENCADRER` (`ID_ENS`),
   KEY `FK_PEUT_DEVENIR` (`ID_OFFRE`),
   KEY `FK_STAGIER` (`ID_ETU`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
-
---
--- Déchargement des données de la table `stage`
---
-
-INSERT INTO `stage` (`ID_STAGE`, `ID_OFFRE`, `ID_ENS`, `ID_ETU`, `DATEDEBUT_STAGE`, `NOTENCAD_ENTREP`, `NOTENCAD`, `CONTRAT`, `NIVEAU_STAGE`) VALUES
-(13, 17, NULL, 1, '2022-06-07', NULL, NULL, NULL, 3);
+) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -382,7 +363,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `ACTIVE` int(11) NOT NULL,
   `VERIFIED` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID_USER`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `users`
@@ -394,7 +375,8 @@ INSERT INTO `users` (`ID_USER`, `LOGIN`, `PASSWORD`, `PICTURE`, `ACTIVE`, `VERIF
 (3, 'yassine123', 'jrayfy123', NULL, 1, 1),
 (4, 'hh1123', 'haha1123', NULL, 1, 1),
 (5, 'hh2123', 'haha2123', NULL, 1, 1),
-(6, 'hamza123', 'bana123', NULL, 1, 1);
+(6, 'hamza123', 'bana123', NULL, 1, 1),
+(13, 'Hassan@gmail.com', 'hehe111', '../uploads/pdp/302340_257908.jpg', 1, 1);
 
 DELIMITER $$
 --

@@ -14,7 +14,9 @@
             {
                 
                 $Etu=$_POST['id_etu'];
-                $curdate = date("Y-m-d");
+                
+                $timestamp = time()+60*60;
+                $curdate = date("Y-m-d h:i:s",$timestamp);
     
                 if(isset($_POST['Post_Non_Retenue'])){
                     
@@ -26,7 +28,7 @@
                     
                     $Offre_ID = $_POST['Post_Retenue'] ;      
                     
-                    /// ***Nbr de Contamination
+                    /// ***Nbr de Candidats
                     $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE AND o.ID_OFFRE=? AND o.STATUOFFRE=?  AND (p.STATU=? OR p.STATU=?)");
                     $Smt1->execute(array($Offre_ID,'Nouveau','Retenue','Acceptée'));
                     $row1 = $Smt1->fetch(PDO::FETCH_ASSOC);

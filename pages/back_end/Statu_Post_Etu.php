@@ -14,7 +14,9 @@
             if(isset($_POST['offre_post']) || isset($_POST['offre_non_accepte']) || isset($_POST['offre_accepte'])){
             
                 $Etu=$_SESSION['user_id'];
-                $curdate = date("Y-m-d");
+
+                $timestamp = time()+60*60;
+                $curdate = date("Y-m-d h:i:s",$timestamp);
                 
                 if(isset($_POST['offre_post'])){
 
