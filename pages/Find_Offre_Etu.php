@@ -15,6 +15,8 @@
     $Smt =$bdd->prepare("SELECT count(e.ID_ETU) as Nbr_soums FROM etudiant e,postuler p WHERE e.ID_ETU = p.ID_ETU AND e.ID_ETU=? AND p.STATU=? ");
     $Smt->execute(array($Etu,'Retenue'));
     $row = $Smt->fetch(PDO::FETCH_ASSOC);
+
+
     
 ?>
 
@@ -65,13 +67,16 @@
             </div>
             <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
               
-              <img class="profile" onclick="menuToggle()" src="popup/img.jpg" alt="">
-              
+              <?php
+              if(isset($_SESSION['pdp']) && !empty($_SESSION['pdp'])){  ?>
+                <img class="profile" onclick="menuToggle()" src="<?php print($_SESSION['pdp']);?>" alt="">
+              <?php }else{ ?>
+                <img class="profile" onclick="menuToggle()" src="icons/avatar.png" alt=""><?php } ?>
               <div class="menu" style="margin:5px;">
                   <h3>Someone Famous</h3>
               
                   <ul>
-                      <li><a href=""><img src="popup/user.png" alt=""><a href="">My profile</a> </li>
+                      <li><a href=""><img src="popup/user.png" alt=""><a href=>My profile</a></li>
                       <li><a href=""><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
                       <li><a href=""><img src="popup/question.png" alt="">Help</a> </li>
                       <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>

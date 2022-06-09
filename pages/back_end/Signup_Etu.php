@@ -95,6 +95,7 @@ if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_PO
         $Smt -> execute(array($formation,$nom_etu,$prenom_etu,$cin,$cne,$niveau,$promotion,$date_naiss,$adress,$numtel,$cv,$id_user));
         $Smt->closeCursor();//vider le curseur (free)
 
+        header('location:../login.php');
         
                 
     

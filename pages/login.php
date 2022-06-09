@@ -68,7 +68,7 @@
               </form>
 
                 <div style="text-align: center; margin-top: 7px;">
-                  <span class="qst">You don’t have an account ? </span><span class="link"><a href="">Sign up</a> </span><br>
+                  <span class="qst">You don’t have an account ? </span><span class="link"><a href="signup.php">Sign up</a> </span><br>
                   <span class="link"><a href="">Forgot Password ?</a> </span>
                 </div>
               
