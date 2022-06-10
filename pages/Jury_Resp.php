@@ -406,6 +406,30 @@
             const toggleMenu = document.querySelector(".menu");
             toggleMenu.classList.toggle('active');
         }
+
+        function add()
+        {
+            const inpt = document.createElement("input");
+            const butt = document.createElement("button");
+            const icn = document.createElement("i");
+            const textnode = document.createTextNode("Add");
+            const line = document.createElement("br");
+            document.getElementById("bt").remove();
+            butt.classList.add("todo-app-btn");
+            butt.setAttribute("id", "bt");
+            inpt.setAttribute('name','motscle[]');
+            inpt.classList.add("inp");
+            icn.classList.add("bi");
+            icn.classList.add("bi-plus-lg");
+            butt.appendChild(icn);
+            butt.appendChild(textnode);
+            butt.onclick = ()=>{
+              add();
+            }
+            document.getElementById("inp").appendChild(inpt);
+            document.getElementById("inp").appendChild(butt);
+            document.getElementById("inp").appendChild(line);
+        }
       </script>
     
 </body>

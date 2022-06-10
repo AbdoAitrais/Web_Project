@@ -133,13 +133,19 @@
                     ///*** Acceptation
                     $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=? ");
                     $Smt->execute(array('Acceptée',$Etu,$Offre_ID));  
+                    $Smt->closeCursor();//vider le curseur (free)
                     /// *** Mettre non acceptée dans tous les offres retenues
-                    $Smt1=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND STATU=? ");
-                    $Smt1->execute(array('Non Acceptée',$Etu,'Retenue'));  
+                    $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND STATU=? ");
+                    $Smt->execute(array('Non Acceptée',$Etu,'Retenue'));  
+                    $Smt->closeCursor();//vider le curseur (free)
                     /// *** Annuler postulation d'autres offres
-                    $Smt2=$bdd->prepare("DELETE FROM postuler WHERE ID_ETU=? AND STATU=? ");
-                    $Smt2->execute(array($Etu,'Postulée'));
-                    
+                    $Smt=$bdd->prepare("DELETE FROM postuler WHERE ID_ETU=? AND STATU=? OR STATU=? ");
+                    $Smt->execute(array($Etu,'Postulée','Retenue en attente'));
+                    $Smt->closeCursor();//vider le curseur (free)
+                    /// *** Supprimer de la liste d'attente
+                    $Smt=$bdd->prepare("DELETE FROM attente WHERE ID_ETU=?");
+                    $Smt->execute(array($Etu));
+                    $Smt->closeCursor();//vider le curseur (free)
                     /// ***ID DE NIVEAU DE L'ETUDIANT
                     $sql_niveau = $bdd->prepare("SELECT NIVEAU FROM etudiant WHERE ID_ETU=? ");
                     $sql_niveau->execute(array($Etu));
