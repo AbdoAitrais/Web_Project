@@ -18,15 +18,25 @@
     $row = $Smt->fetch(PDO::FETCH_ASSOC);
     $type_form = $row['TYPE_FORM'];
     
-    if(isset($_POST['id_etu']))
+    if(isset($_GET['id_etu']))
     {
 
-      $id_etu = $_POST['id_etu'];
+      $id_etu = $_GET['id_etu'];
+      
+      /// *** Test access
+      $Smt =$bdd->prepare("SELECT ID_FORM FROM etudiant WHERE ID_ETU=?");
+      $Smt->execute(array($id_etu));
+      $etu_form = $Smt->fetch(PDO::FETCH_ASSOC);
+      $Smt->closeCursor();//vider le curseur (free) 
+      
+      if($etu_form['ID_FORM'] != $_SESSION['user_id'] )
+          exit("You're not allowed to access for this student");
 
       ///Stage
       $sql1 = "SELECT ID_STAGE,NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP,NOTENCAD_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND etu.ID_ETU='$id_etu' AND s.DATEDEBUT_STAGE =(SELECT max(DATEDEBUT_STAGE) FROM stage WHERE ID_ETU='$id_etu')";
       $req1 =$bdd->query($sql1);
       $result1 = $req1->fetch(PDO::FETCH_ASSOC);
+      
 
       $id_stage = $result1['ID_STAGE'];
       
@@ -163,13 +173,7 @@
                               <ul>
                                 <li><img src="icons/loupe.png" alt=""><a href="">Details</a> </li>
                                 <li><img src="icons/teacher.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop4">Encadrant</a> </li>
-                                <li>
-                                    <!-- Jury -->
-                                    <form action="Jury_Resp.php" method="post" style="display: inline-block;" >
-                                      <input type="hidden" name="id_stage" value="<?php print($result1['ID_STAGE']);?>">
-                                      <img src="icons/jury.png" alt=""> <button type="submit" style="background:none;border:none;">Jury</button>
-                                    </form>
-                                </li>
+                                <li><img src="icons/jury.png" alt=""><a href="Jury_Resp.php?id_stage=<?php print($result1['ID_STAGE']);?>">Jury</a> </li>
                                 <li><img src="icons/certificate.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Notes</a> </li>
                                 <li><img src="icons/application.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">Rapport</a> </li>
                               </ul>
@@ -301,7 +305,9 @@
                           <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault" checked>
                           <?php }else{ ?>
                             <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault">
-                           <?php }} ?> 
+                           <?php }}else{ ?> 
+                            <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault">
+                           <?php } ?>
                         </td>
                       </tr>
                       <?php endforeach;}?>

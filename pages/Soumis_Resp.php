@@ -8,7 +8,23 @@
 
   if($_SESSION['user_type'] == "Responsable")
   {
+    require('back_end/connexion.php');
 
+    $Resp = $_SESSION['user_id'];
+    if(isset($_GET['id_etu']))
+    {
+      $id_etu = $_GET['id_etu'];
+      /// *** Test access
+      $Smt =$bdd->prepare("SELECT ID_FORM FROM etudiant WHERE ID_ETU=?");
+      $Smt->execute(array($id_etu));
+      $etu_form = $Smt->fetch(PDO::FETCH_ASSOC);
+      $Smt->closeCursor();//vider le curseur (free) 
+      
+      if($etu_form['ID_FORM'] != $Resp )
+          exit("You're not allowed to access for this student");
+    }else{
+        exit("Error 404 ");
+  }
   
 ?>
 
@@ -140,13 +156,10 @@
           
           <div class="col-md-6 col-sm-12 elm pub_col">
 
-<?php  require('back_end/connexion.php');
+<?php  
 
-    if(isset($_POST['id_etu']))
+    if(isset($_GET['id_etu']))
     {
-      $Resp = $_SESSION['user_id'];
-      $id_etu = $_POST['id_etu'];
-
       //$sql ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP  AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' AND o.STATUOFFRE!='Completée'";
       $sql = "SELECT * FROM
               (

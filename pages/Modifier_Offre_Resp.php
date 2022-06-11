@@ -23,13 +23,17 @@
       $existeOffre = false;
       $error_msgCne = NULL;
       // Test Whether we show the Offre's data or not
-      if( !empty($_POST['id_offre']) )
+      if( !empty($_GET['id_offre']) )
       {
-        $id_offre = htmlspecialchars($_POST['id_offre']);
+        $id_offre = htmlspecialchars($_GET['id_offre']);
 
         $Smt = $bdd->prepare("SELECT * FROM offre o, entreprise e WHERE o.ID_ENTREP=e.ID_ENTREP AND ID_OFFRE=?");
         $Smt -> execute(array($id_offre));
-        $Data = $Smt->fetch();
+        $Data = $Smt->fetch(PDO::FETCH_ASSOC);
+        /// *** Access test
+        if($Data['ID_FORM'] != $_SESSION['user_id'] )
+            exit("You're not allowed to access to modify this Offre");
+
         $_SESSION['NBRCANDIDAT'] = $Data['NBRCANDIDAT'];
         $Smt->closeCursor();//vider le curseur (free)
         $existeOffre = true;

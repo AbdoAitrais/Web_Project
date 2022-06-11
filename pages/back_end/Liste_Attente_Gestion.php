@@ -14,6 +14,7 @@
             {
                 /// ***
                 $id_offre = $_POST['id_offre'];
+               
                 
                 if(!empty($_POST['etu_add']))
                 {
@@ -45,16 +46,7 @@
                     $Smt->closeCursor();//vider le curseur (free)
                 }
 
-                ?>
-                <form action="../Liste_Attente_Resp.php" method="post" id="liste_attente_form">
-                    <input name="id_offre" value="<?php print($id_offre); ?>">
-                </form>
-
-                <script>
-                    document.getElementById("liste_attente_form").submit();
-                </script>
-
-            <?php           
+                header('location:../Liste_Attente_Resp.php?id_offre='.$id_offre);          
             }else{
                 echo "NO NO ENTER HH ";            
             }

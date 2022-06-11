@@ -13,16 +13,18 @@
       $id_form = $_SESSION['user_id'];
       
     
-      if( !empty($_POST['id_etu']) )
+      if( !empty($_GET['id_etu']) )
       {
        
         // fetch current Etudiant data
-        $id_etu = htmlspecialchars($_POST['id_etu']);
+        $id_etu = htmlspecialchars($_GET['id_etu']);
         $Smt = $bdd->prepare("SELECT * FROM etudiant WHERE ID_ETU=?");
         $Smt -> execute(array($id_etu));
         $rows = $Smt -> fetch();
         $Smt->closeCursor();//vider le curseur (free)
-
+        
+        if($rows['ID_FORM'] != $id_form )
+          exit("You're not allowed to access for this student");
 
         
         // get type Formation

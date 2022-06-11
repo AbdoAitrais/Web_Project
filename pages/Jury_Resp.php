@@ -19,11 +19,20 @@
       $row = $Smt->fetch(PDO::FETCH_ASSOC);
       $type_form = $row['TYPE_FORM'];
 
-      if(!empty($_POST['id_stage']))
+      if(!empty($_GET['id_stage']))
       {
         ///Stage encours
-        $id_stage = $_POST['id_stage'];
-
+        $id_stage = $_GET['id_stage'];
+         /// *** Test access
+        $Smt =$bdd->prepare("SELECT ID_FORM FROM stage s,etudiant e WHERE s.ID_ETU=e.ID_ETU AND ID_STAGE=?");
+        $Smt->execute(array($id_stage));
+        $etu_form = $Smt->fetch(PDO::FETCH_ASSOC);
+        $Smt->closeCursor();//vider le curseur (free) 
+      
+        if($etu_form['ID_FORM'] != $_SESSION['user_id'] )
+            exit("You're not allowed to access for this stage");
+        
+        ///*** 
         $sql1 = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP,NOTENCAD_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU  AND s.ID_STAGE='$id_stage'";
         $req1 =$bdd->query($sql1);
         $result1 = $req1->fetch(PDO::FETCH_ASSOC);
@@ -383,7 +392,9 @@
                           <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault" checked>
                           <?php }else{ ?>
                             <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault">
-                           <?php }} ?>                        
+                            <?php }}else{ ?> 
+                            <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault">
+                           <?php } ?>                        
                         </td>
                       </tr>
                       <?php endforeach;}?>

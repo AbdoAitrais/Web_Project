@@ -129,19 +129,10 @@
                           <td><?php echo $row['PRENOM_ETU']; ?></td>
                           <td style="color: #7096FF;"><?php echo $row['CNE']; ?></td>
                           <td style="text-align: end;">
-                            
-                           <form action="Encours_Resp.php" method="post" style="display: inline-block;" >
-                                <input type="hidden" name="id_etu" value="<?php echo $row['ID_ETU']; ?>">
-                                <button type="submit" class="btn btn-outline-primary">Encours</button>
-                            </form>
-                            <form action="Soumis_Resp.php" method="post" style="display: inline-block;" >
-                                <input type="hidden" name="id_etu" value="<?php echo $row['ID_ETU']; ?>">
-                                <button type="submit" class="btn btn-outline-primary" >Soumissions</button>
-                            </form>
-                            <form action="Modifier_Etudiant_Resp.php" method="post" style="display: inline-block;" >
-                                <input type="hidden" name="id_etu" value="<?php echo $row['ID_ETU']; ?>">
-                                <button type="submit" class="btn btn-outline-primary" >Modifier</button>
-                            </form>
+                          
+                          <a href="Encours_Resp.php?id_etu=<?php print($row['ID_ETU']);?>" ><button  class="btn btn-outline-primary">Encours</button></a>
+                          <a href="Soumis_Resp.php?id_etu=<?php print($row['ID_ETU']);?>" ><button  class="btn btn-outline-primary">Soumissions</button></a>
+                          <a href="Modifier_Etudiant_Resp.php?id_etu=<?php print($row['ID_ETU']);?>" ><button  class="btn btn-outline-primary">Modifier</button></a>
                             <?php if($row['ACTIVE'] == 1){ ?>
                             <form action="back_end/Desactiver.php" method="post" style="display: inline-block;" >
                                 <input type="hidden" name="id_etu_disac" value="<?php echo $row['ID_ETU']; ?>">
