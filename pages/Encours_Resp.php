@@ -11,11 +11,17 @@
   {
 
     require("back_end/connexion.php");
-
-    if(isset($_GET['id_etu']))
+    $id_form = $_SESSION['user_id'];
+    /// *** Type formation
+    $Smt = $bdd->prepare("SELECT TYPE_FORM FROM formation WHERE ID_FORM=?");
+    $Smt -> execute(array($id_form));
+    $row = $Smt->fetch(PDO::FETCH_ASSOC);
+    $type_form = $row['TYPE_FORM'];
+    
+    if(isset($_POST['id_etu']))
     {
 
-      $id_etu = $_GET['id_etu'];
+      $id_etu = $_POST['id_etu'];
 
       ///Stage
       $sql1 = "SELECT ID_STAGE,NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP,NOTENCAD_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND etu.ID_ETU='$id_etu' AND s.DATEDEBUT_STAGE =(SELECT max(DATEDEBUT_STAGE) FROM stage WHERE ID_ETU='$id_etu')";
@@ -133,7 +139,7 @@
                 <table class="table">
                     <thead>
                       <tr>
-                        <th scope="col">N</th>
+                      <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
                         <th scope="col">CNE</th>
@@ -145,7 +151,7 @@
 
                         <?php if(!empty($result1)){?>
                         <tr>
-                          <th scope="row" style="color: #7196FF"><?php print($result1['NIVEAU_STAGE'])?></th>
+                        <?php if( $type_form){ ?><th scope="row" style="color: #7196FF"><?php print($result1['NIVEAU_STAGE'])?></th><?php } ?>
                           <td style="color: #616161;"><?php print($result1['NOM_ETU'])?></td>
                           <td style="color: #616161;"><?php print($result1['PRENOM_ETU'])?></td>
                           <td style="color: #7196FF;"><?php print($result1['CNE'])?></td>
@@ -157,7 +163,13 @@
                               <ul>
                                 <li><img src="icons/loupe.png" alt=""><a href="">Details</a> </li>
                                 <li><img src="icons/teacher.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop4">Encadrant</a> </li>
-                                <li><img src="icons/jury.png" alt=""><a href="Jury_Resp.php?id_stage=<?php print($result1['ID_STAGE']);?>">Jury</a> </li>
+                                <li>
+                                    <!-- Jury -->
+                                    <form action="Jury_Resp.php" method="post" style="display: inline-block;" >
+                                      <input type="hidden" name="id_stage" value="<?php print($result1['ID_STAGE']);?>">
+                                      <img src="icons/jury.png" alt=""> <button type="submit" style="background:none;border:none;">Jury</button>
+                                    </form>
+                                </li>
                                 <li><img src="icons/certificate.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Notes</a> </li>
                                 <li><img src="icons/application.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">Rapport</a> </li>
                               </ul>
@@ -285,7 +297,11 @@
                         <td><?php print($Ens['PRENOM_ENS'])?></td>
                         <td style="text-align: end;">
                           <input type="hidden" name="id_stage" value="<?php print($id_stage);?>">
-                          <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault">
+                          <?php if(!empty($result2)){ if($result2['ID_ENS'] == $Ens['ID_ENS']){ ?>
+                          <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault" checked>
+                          <?php }else{ ?>
+                            <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault">
+                           <?php }} ?> 
                         </td>
                       </tr>
                       <?php endforeach;}?>

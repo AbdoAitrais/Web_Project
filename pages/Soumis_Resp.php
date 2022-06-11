@@ -142,10 +142,10 @@
 
 <?php  require('back_end/connexion.php');
 
-    if(isset($_GET['id_etu']))
+    if(isset($_POST['id_etu']))
     {
       $Resp = $_SESSION['user_id'];
-      $id_etu = $_GET['id_etu'];
+      $id_etu = $_POST['id_etu'];
 
       //$sql ="SELECT * FROM postuler p,offre o,entreprise e WHERE p.ID_OFFRE = o.ID_OFFRE AND o.ID_ENTREP =e.ID_ENTREP  AND  o.ID_FORM='$Resp' AND p.ID_ETU='$id_etu' AND o.STATUOFFRE!='Completée'";
       $sql = "SELECT * FROM

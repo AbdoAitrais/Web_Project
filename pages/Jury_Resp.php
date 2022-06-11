@@ -11,10 +11,18 @@
   {
 
       require("back_end/connexion.php");
-      if(!empty($_GET['id_stage']))
+      
+      $id_form = $_SESSION['user_id'];
+      /// *** Type formation
+      $Smt = $bdd->prepare("SELECT TYPE_FORM FROM formation WHERE ID_FORM=?");
+      $Smt -> execute(array($id_form));
+      $row = $Smt->fetch(PDO::FETCH_ASSOC);
+      $type_form = $row['TYPE_FORM'];
+
+      if(!empty($_POST['id_stage']))
       {
         ///Stage encours
-        $id_stage = $_GET['id_stage'];
+        $id_stage = $_POST['id_stage'];
 
         $sql1 = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP,NOTENCAD_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU  AND s.ID_STAGE='$id_stage'";
         $req1 =$bdd->query($sql1);
@@ -146,7 +154,7 @@
                 <table class="table">
                     <thead>
                       <tr>
-                        <th scope="col">N</th>
+                      <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
                         <th scope="col">CNE</th>
@@ -158,8 +166,8 @@
 
                    
                         <tr>
-                          <?php if(!empty($result1['NIVEAU_STAGE'])){?>
-                          <th scope="row" style="color: #7196FF"><?php print($result1['NIVEAU_STAGE'])?></th>
+                          <?php if(!empty($result1)){?>
+                          <?php if( $type_form){ ?><th scope="row" style="color: #7196FF"><?php print($result1['NIVEAU_STAGE'])?></th><?php } ?>
                           <td style="color: #616161;"><?php print($result1['NOM_ETU'])?></td>
                           <td style="color: #616161;"><?php print($result1['PRENOM_ETU'])?></td>
                           <td style="color: #7196FF;"><?php print($result1['CNE'])?></td>
@@ -371,7 +379,11 @@
                         <td><?php print($Ens['PRENOM_ENS'])?></td>
                         <td style="text-align: end;">
                           <input type="hidden" name="id_stage" value="<?php print($id_stage);?>">
-                          <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault">
+                          <?php if(!empty($result4)){ if($result4['ID_ENS'] == $Ens['ID_ENS']){ ?>
+                          <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault" checked>
+                          <?php }else{ ?>
+                            <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault">
+                           <?php }} ?>                        
                         </td>
                       </tr>
                       <?php endforeach;}?>

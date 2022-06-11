@@ -11,7 +11,13 @@
     {
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
-    
+      /// *** Type formation
+      $Smt = $bdd->prepare("SELECT TYPE_FORM FROM formation WHERE ID_FORM=?");
+      $Smt -> execute(array($id_form));
+      $row = $Smt->fetch(PDO::FETCH_ASSOC);
+      $type_form = $row['TYPE_FORM'];
+
+      /// *** Liste des etudiants
       $Smt = $bdd->prepare("SELECT * FROM etudiant e,users u WHERE e.ID_USER=u.ID_USER AND e.ID_FORM=? AND u.VERIFIED=1");
       $Smt -> execute(array($id_form));
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
@@ -104,7 +110,7 @@
                 <table class="table" id="Table_Etu">
                     <thead>
                       <tr>
-                        <th scope="col">N</th>
+                      <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
                         <th scope="col">CNE</th>
@@ -118,22 +124,30 @@
                     
                       ?>
                         <tr>
-                          <th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU'] ; ?></th>
+                        <?php if( $type_form){ ?><th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU'] ; ?></th><?php } ?>
                           <td><?php echo $row['NOM_ETU']; ?></td>
                           <td><?php echo $row['PRENOM_ETU']; ?></td>
                           <td style="color: #7096FF;"><?php echo $row['CNE']; ?></td>
                           <td style="text-align: end;">
-                            <a href="Encours_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary">En cours</button></a>
-                            <a href="Soumis_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Soumissions</button></a>
-                            <a href="Modifier_Etudiant_Resp.php?id_etu=<?php echo $row['ID_ETU']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
+                            
+                           <form action="Encours_Resp.php" method="post" style="display: inline-block;" >
+                                <input type="hidden" name="id_etu" value="<?php echo $row['ID_ETU']; ?>">
+                                <button type="submit" class="btn btn-outline-primary">Encours</button>
+                            </form>
+                            <form action="Soumis_Resp.php" method="post" style="display: inline-block;" >
+                                <input type="hidden" name="id_etu" value="<?php echo $row['ID_ETU']; ?>">
+                                <button type="submit" class="btn btn-outline-primary" >Soumissions</button>
+                            </form>
+                            <form action="Modifier_Etudiant_Resp.php" method="post" style="display: inline-block;" >
+                                <input type="hidden" name="id_etu" value="<?php echo $row['ID_ETU']; ?>">
+                                <button type="submit" class="btn btn-outline-primary" >Modifier</button>
+                            </form>
                             <?php if($row['ACTIVE'] == 1){ ?>
-                            <!-- <a href="back_end/Desactiver.php?id_etu_disac=<//?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >Desactiver</button></a> -->
                             <form action="back_end/Desactiver.php" method="post" style="display: inline-block;" >
                                 <input type="hidden" name="id_etu_disac" value="<?php echo $row['ID_ETU']; ?>">
                                 <button type="submit" class="btn btn-outline-primary" >Desactiver</button>
                             </form>
                             <?php }else{?>
-                            <!-- <a href="back_end/Desactiver.php?id_etu_ac=<//?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" >&nbsp;&nbsp;&nbsp;&nbsp;Activer&nbsp;&nbsp;&nbsp;</button></a> -->
                             <form action="back_end/Desactiver.php" method="post" style="display: inline-block;">
                                 <input type="hidden" name="id_etu_ac" value="<?php echo $row['ID_ETU']; ?>">
                                 <button type="submit" class="btn btn-outline-primary" style="width:7rem;">Activer</button>
@@ -146,7 +160,7 @@
                     </tbody>
                     <tfoot>
                       <tr>
-                        <th scope="col">N</th>
+                      <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
                         <th scope="col">CNE</th>

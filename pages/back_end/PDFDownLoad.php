@@ -8,11 +8,17 @@
 
     else{
         
-        if(!empty($_GET['rapport']))
+        if(!empty($_POST['rapport']) || !empty($_POST['contract']) )
         {
-            $filename = basename($_GET['rapport']);
+            if(!empty($_POST['rapport'])){
+                
+                $filename = basename($_POST['rapport']);
+                $filepath = '../uploads/rapport/' . $filename;
+            }else if(!empty($_POST['contract'])){
+                $filename = basename($_POST['contract']);
+                $filepath = '../uploads/Contracts/' . $filename;
+            }
             
-            $filepath = '../uploads/rapport/' . $filename;
             if(!empty($filename) && file_exists($filepath)){
         
                 //Define Headers
@@ -29,7 +35,6 @@
             else{
                 echo "This File Does not exist.";
             }
-            header('location:../Historique.php');
             
         }else{
             header('location:../'.$_SESSION['main_page']);

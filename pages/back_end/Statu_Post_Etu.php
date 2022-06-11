@@ -122,9 +122,9 @@
                         $Smt->execute(array($id_etu_att,$Offre_ID));
                         $Smt->closeCursor();//vider le curseur (free)
                     }
-                    
-
                     header('location:../Soumissions_Etu.php');
+
+                     
                 
                 }else if(isset($_POST['offre_accepte'])){
                     
@@ -152,11 +152,24 @@
                     $result_niveau = $sql_niveau->fetch(PDO::FETCH_ASSOC);
                     $NIVEAU = $result_niveau['NIVEAU'];
                     
-                    /// *** Inserer stage 
-                    $sql_stage = $bdd->prepare("INSERT INTO stage(ID_OFFRE,ID_ETU,DATEDEBUT_STAGE,NIVEAU_STAGE) VALUES(?,?,?,?)  ");
-                    $sql_stage->execute(array($Offre_ID,$Etu,$curdate,$NIVEAU));
+                    /// *** Generate contract
+                   require_once __DIR__ . '/Mpdf/vendor/autoload.php';
 
-                    header('location:../Soumissions_Etu.php');
+                   $mpdf = new mPDF();
+                   $Contract_Form = "<div style='color:red;'>
+                                 ".$Etu." A un stage dans l'entreprise de L'Offre ".$Offre_ID."
+                                </div>";
+                   $mpdf->WriteHTML($Contract_Form);
+                   $Contract = '../uploads/Contracts/Contract'.$Offre_ID.'-'.$Etu.'.pdf';
+                   $mpdf->Output($Contract,"F");
+                   $Contract = strchr($Contract,'uploads') ;
+                   
+                   /// *** Inserer stage 
+                   $sql_stage = $bdd->prepare("INSERT INTO stage(ID_OFFRE,ID_ETU,DATEDEBUT_STAGE,NIVEAU_STAGE,CONTRAT) VALUES(?,?,?,?,?)  ");
+                   $sql_stage->execute(array($Offre_ID,$Etu,$curdate,$NIVEAU,$Contract));
+
+            
+                  header('location:../Soumissions_Etu.php');
                 }
             
             }

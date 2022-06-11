@@ -10,9 +10,9 @@
   {
       require("back_end/connexion.php");
 
-      if(isset($_GET['id_offre']) )
+      if(isset($_POST['id_offre']) )
       {
-        $id_offre=$_GET['id_offre'];
+        $id_offre = $_POST['id_offre'];
 
         /// *** Liste attentes
         $Smt = $bdd->prepare("SELECT e.ID_ETU,e.NOM_ETU,e.PRENOM_ETU,e.CNE FROM etudiant e,attente a WHERE e.ID_ETU=a.ID_ETU AND a.ID_OFFRE =? ORDER BY a.PRIORITE");

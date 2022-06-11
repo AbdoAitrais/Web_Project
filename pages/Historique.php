@@ -11,13 +11,21 @@
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
       
+      /// *** Type formation
+      $Smt = $bdd->prepare("SELECT TYPE_FORM FROM formation WHERE ID_FORM=?");
+      $Smt -> execute(array($id_form));
+      $row = $Smt->fetch(PDO::FETCH_ASSOC);
+      $type_form = $row['TYPE_FORM'];  
+
       if($_SESSION['user_type'] == "Etudiant"){
          
-        $sql = "SELECT ID_FORM FROM etudiant WHERE ID_ETU='$id_form' ";
+        $sql = "SELECT ID_FORM,NIVEAU FROM etudiant WHERE ID_ETU='$id_form' ";
         $req = $bdd->query($sql); 
         $result = $req->fetch(PDO::FETCH_ASSOC);
-        $id_form = $result['ID_FORM'] ;
+        $id_form = $result['ID_FORM'];
+        $type_form = $result['NIVEAU'];
       }
+
       $req = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,POSTE,NOM_ENTREP,r.FICHIER FROM entreprise ent,offre o,stage s,etudiant etu,rapport r  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND r.ID_STAGE=s.ID_STAGE AND o.ID_FORM='$id_form' ";    
       $Smt = $bdd->query($req);
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
@@ -166,7 +174,7 @@
                 <table class="table" id="Table_Histo">
                     <thead>
                       <tr>
-                        <th scope="col">N</th>
+                      <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
                         <th scope="col">Poste</th>
@@ -181,14 +189,17 @@
                     
                       ?>
                         <tr>
-                          <th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU_STAGE'] ; ?></th>
+                        <?php if( $type_form){ ?><th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU_STAGE'] ; ?></th><?php } ?>
                           
                           <td><?php echo $row['NOM_ETU']; ?></td>
                           <td><?php echo $row['PRENOM_ETU']; ?></td>
                           <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
                           <td style="color: #7096FF;"><?php echo $row['NOM_ENTREP']; ?></td>
                           <td style="text-align: end;">
-                            <a href="back_end/Rapport_Historique.php?rapport=<?php print($row['FICHIER']); ?>"><button type="button" class="btn btn-outline-primary">Rapport</button></a>
+                          <form action="back_end/PDFDownLoad.php" method="post" style="display: inline-block;">
+                            <input type="hidden" name="rapport" value="<?php print($row['FICHIER']);?>">
+                            <button type="submit" class="btn btn-outline-primary">Rapport</button>
+                          </form>
                             <button type="button" class="btn btn-outline-primary">Detail</button>
                           </td>
                         </tr>
@@ -196,7 +207,7 @@
 
                     </tbody>
                     <tfoot>
-                        <th scope="col">N</th>
+                    <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
                         <th scope="col">Poste</th>

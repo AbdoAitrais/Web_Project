@@ -49,7 +49,16 @@
                 }
                 $Smt->closeCursor();//vider le curseur (free)
                 
-                header('location:../Jury_Resp.php?id_stage='.$id_stage);
+                ?>
+                <form action="../Jury_Resp.php" method="post" id="jury_form">
+                    <input name="id_stage" value="<?php print($id_stage); ?>">
+                </form>
+
+                <script>
+                    document.getElementById("jury_form").submit();
+                </script>
+
+            <?php 
             }
         }
         else
