@@ -65,6 +65,8 @@
           $Smt->closeCursor();//vider le curseur (free)
         }
 
+        //TODO: update mail entreprise 
+
         // select l'id d'entreprise
         $id_entrep = $row[0];
 

@@ -217,6 +217,7 @@
         var niv_cycle = $('#niv_cycle');
         var niv_master = $('#niv_master');
         var button_next = $('.btn-next');
+        var button_prev = $('.btn-prev');
         var number = 0;
         var page = 1;
         var inputs = $('form#form :input');
@@ -343,68 +344,71 @@ $("#imageUpload").change(function() {
 
 
             
+            var is_empty = false;
+
             
 
-            $(".step1_input").on('focus keyup', function disable_next() {
+            function disable_text(class_name,event)
+            {
+                $(class_name).on(event, function() {
                             
-                console.log(this.value);
+                            console.log(this.value);
+            
+                            is_empty = false;
+            
+                            $(class_name).each(function () {
+                                if ( this.value == '' )
+                                    is_empty = true;
+                            })
+                            
+                            if(is_empty == false)
+                                button_next.prop("disabled",false);
+                            else
+                                button_next.prop("disabled",true);
+            
+            
+            
+                });
+            }
 
-                is_empty = false;
+            
+            disable_text(".step1_input","focus"+" keyup");
 
-                $(".step1_input").each(function () {
-                    if ( this.value == '' )
-                        is_empty = true;
-                })
-                
-                if(is_empty == false)
-                    button_next.prop("disabled",false);
-                else
-                    button_next.prop("disabled",true);
+            disable_text(".step2_input","focus"+" keyup");
+
+            disable_text(".step3_input","focus"+" keyup"+" change");
 
 
-
-            });
 
             button_next.on('click', function(){
-                button_next.prop("disabled",true);
-            })
-
-
-            $(".step2_input").on('focus keyup', function disable_next() {
-                            
-                console.log(this);
-            
                 is_empty = false;
-            
-                $(".step2_input").each(function () {
+
+                if( number == 1 )
+                {
+                    $(".step2_input").each(function () {
                     if ( this.value == '' )
                         is_empty = true;
                     })
-                            
-                    if(is_empty == false)
-                        button_next.prop("disabled",false);
-                    else
-                        button_next.prop("disabled",true);
+                }
+                else if( number == 2 )
+                {
+                    $(".step3_input").each(function () {
+                    if ( this.value == '' )
+                        is_empty = true;
+                    })
+                }
 
-            });
-            
-            $(".step3_input").on('focus keyup change', function disable_next() {
-                            
-                            console.log(this);
-                        
-                            is_empty = false;
-                        
-                            $(".step3_input").each(function () {
-                                if ( this.value == '' )
-                                    is_empty = true;
-                                })
-                                        
-                                if(is_empty == false)
-                                    button_next.prop("disabled",false);
-                                else
-                                    button_next.prop("disabled",true);
-            
-                        });
+                if( is_empty == true )
+                    button_next.prop("disabled",true);
+                else
+                    button_next.prop("disabled",false);
+            })
+
+           
+
+            button_prev.on('click', function(){
+                button_next.prop("disabled",false);
+            })
 
     </script>
 </body>
