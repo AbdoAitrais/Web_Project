@@ -11,16 +11,32 @@
   {
 
     require("back_end/connexion.php");
-
+    $id_form = $_SESSION['user_id'];
+    /// *** Type formation
+    $Smt = $bdd->prepare("SELECT TYPE_FORM FROM formation WHERE ID_FORM=?");
+    $Smt -> execute(array($id_form));
+    $row = $Smt->fetch(PDO::FETCH_ASSOC);
+    $type_form = $row['TYPE_FORM'];
+    
     if(isset($_GET['id_etu']))
     {
 
       $id_etu = $_GET['id_etu'];
+      
+      /// *** Test access
+      $Smt =$bdd->prepare("SELECT ID_FORM FROM etudiant WHERE ID_ETU=?");
+      $Smt->execute(array($id_etu));
+      $etu_form = $Smt->fetch(PDO::FETCH_ASSOC);
+      $Smt->closeCursor();//vider le curseur (free) 
+      
+      if($etu_form['ID_FORM'] != $_SESSION['user_id'] )
+          exit("You're not allowed to access for this student");
 
       ///Stage
       $sql1 = "SELECT ID_STAGE,NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP,NOTENCAD_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND etu.ID_ETU='$id_etu' AND s.DATEDEBUT_STAGE =(SELECT max(DATEDEBUT_STAGE) FROM stage WHERE ID_ETU='$id_etu')";
       $req1 =$bdd->query($sql1);
       $result1 = $req1->fetch(PDO::FETCH_ASSOC);
+      
 
       $id_stage = $result1['ID_STAGE'];
       
@@ -34,6 +50,11 @@
       $req3 =$bdd->query($sql3);
       $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
 
+
+      /// Enseignants d'etre encadrants
+      $Smt =$bdd->prepare("SELECT ID_ENS,NOM_ENS,PRENOM_ENS FROM enseignant WHERE ID_DEPART=(SELECT ID_DEPART FROM enseignant e,formation f WHERE e.ID_ENS=f.ID_ENS AND f.ID_FORM=(SELECT ID_FORM FROM etudiant WHERE ID_ETU=?) )");
+      $Smt->execute(array($id_etu));
+      $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
       ///Last visited page
       $_SESSION['Last_visite'] =$_SERVER['REQUEST_URI']; 
 
@@ -128,7 +149,7 @@
                 <table class="table">
                     <thead>
                       <tr>
-                        <th scope="col">N</th>
+                      <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
                         <th scope="col">CNE</th>
@@ -140,7 +161,7 @@
 
                         <?php if(!empty($result1)){?>
                         <tr>
-                          <th scope="row" style="color: #7196FF"><?php print($result1['NIVEAU_STAGE'])?></th>
+                        <?php if( $type_form){ ?><th scope="row" style="color: #7196FF"><?php print($result1['NIVEAU_STAGE'])?></th><?php } ?>
                           <td style="color: #616161;"><?php print($result1['NOM_ETU'])?></td>
                           <td style="color: #616161;"><?php print($result1['PRENOM_ETU'])?></td>
                           <td style="color: #7196FF;"><?php print($result1['CNE'])?></td>
@@ -151,7 +172,7 @@
             
                               <ul>
                                 <li><img src="icons/loupe.png" alt=""><a href="">Details</a> </li>
-                                <li><img src="icons/teacher.png" alt=""><a href="">Encadrant</a> </li>
+                                <li><img src="icons/teacher.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop4">Encadrant</a> </li>
                                 <li><img src="icons/jury.png" alt=""><a href="Jury_Resp.php?id_stage=<?php print($result1['ID_STAGE']);?>">Jury</a> </li>
                                 <li><img src="icons/certificate.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Notes</a> </li>
                                 <li><img src="icons/application.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">Rapport</a> </li>
@@ -173,7 +194,7 @@
         
         <!-- Notes -->
 
-        <form action="back_end/Notes_Stage_Resp.php?id_stage=<?php print($id_stage);?>" method="post">
+        <form action="back_end/Notes_Stage_Resp.php" method="post">
           <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
               <div class="modal-content">
@@ -213,6 +234,8 @@
                       <?php endforeach;}?>
                   </table>
                 </div>
+                <!-- stage id -->
+                <input type='hidden' name='id_stage' value="<?php print($id_stage); ?>" />
                 <!-- Jury array -->
                 <input type='hidden' name='jury_array' value="<?php echo htmlentities(serialize($result3)); ?>" />
                 <div class="modal-footer">
@@ -256,7 +279,50 @@
               </div>
             </div>
         </form>
-          
+
+        <!-- Encadrant -->
+        <form action="back_end/Encadrant_Stage.php" method="post">
+            <div class="modal fade"  id="staticBackdrop4" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+                <div class="modal-content" >
+                  <div class="modal-header">
+                    <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Enseignants</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body" style="max-height: 300px;">
+                    <table class="hovtr">
+                      <?php
+                          if(!empty($rows)){
+                              foreach($rows as $Ens):
+                          
+                      ?>
+                      <tr style="height: 50px;">
+                        <td><?php print($Ens['NOM_ENS'])?></td>
+                        <td><?php print($Ens['PRENOM_ENS'])?></td>
+                        <td style="text-align: end;">
+                          <input type="hidden" name="id_stage" value="<?php print($id_stage);?>">
+                          <?php if(!empty($result2)){ if($result2['ID_ENS'] == $Ens['ID_ENS']){ ?>
+                          <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault" checked>
+                          <?php }else{ ?>
+                            <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault">
+                           <?php }}else{ ?> 
+                            <input class="form-check-input" type="radio" name='encadrant_stage' value="<?php print($Ens['ID_ENS']);?>" id="flexCheckDefault">
+                           <?php } ?>
+                        </td>
+                      </tr>
+                      <?php endforeach;}?>
+                      
+                    </table>
+                </div>
+                  
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Enregistrer</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
         crossorigin="anonymous">

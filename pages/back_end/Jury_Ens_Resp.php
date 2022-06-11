@@ -49,7 +49,7 @@
                 }
                 $Smt->closeCursor();//vider le curseur (free)
                 
-                header('location:../Jury_Resp.php?id_stage='.$id_stage);
+                header('location:../Jury_Resp.php?id_stage='.$id_stage);  
             }
         }
         else

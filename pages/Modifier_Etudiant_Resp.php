@@ -10,8 +10,8 @@
     if($_SESSION['user_type'] == "Responsable")
     {
       require('back_end/connexion.php');
-
       $id_form = $_SESSION['user_id'];
+      
     
       if( !empty($_GET['id_etu']) )
       {
@@ -20,10 +20,11 @@
         $id_etu = htmlspecialchars($_GET['id_etu']);
         $Smt = $bdd->prepare("SELECT * FROM etudiant WHERE ID_ETU=?");
         $Smt -> execute(array($id_etu));
-        
         $rows = $Smt -> fetch();
         $Smt->closeCursor();//vider le curseur (free)
-
+        
+        if($rows['ID_FORM'] != $id_form )
+          exit("You're not allowed to access for this student");
 
         
         // get type Formation
@@ -216,7 +217,7 @@
                       <div class="col-4 col-md-2 elm "> 
                         <label for="address"><span>Adresse</span></label><br>
                         <label for="tel" style="margin-top: 55px;"><span>Tel</span></label><br>
-                        <label for="niveau" style="margin-top: 55px;"><span>Niveau</span></label><br>
+                        <?php if($formation[0]){ ?><label for="niveau" style="margin-top: 55px;"><span>Niveau</span></label><br><?php } ?>
                         <label for="promo" style="margin-top: 55px;"><span>Promotion</span></label><br>
                         <label for="naiss" style="margin-top: 55px;"><span>Date Naissance</span></label><br>
                       </div>

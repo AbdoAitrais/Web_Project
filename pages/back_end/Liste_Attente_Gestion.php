@@ -14,6 +14,7 @@
             {
                 /// ***
                 $id_offre = $_POST['id_offre'];
+               
                 
                 if(!empty($_POST['etu_add']))
                 {
@@ -45,7 +46,7 @@
                     $Smt->closeCursor();//vider le curseur (free)
                 }
 
-                header("location:../Liste_Attente_Resp.php?id_offre=".$id_offre);
+                header('location:../Liste_Attente_Resp.php?id_offre='.$id_offre);          
             }else{
                 echo "NO NO ENTER HH ";            
             }

@@ -13,7 +13,12 @@
     require("back_end/connexion.php");
 
     $id_form = $_SESSION['user_id'];
-                                
+    
+    /// *** Type formation
+    $Smt = $bdd->prepare("SELECT TYPE_FORM FROM formation WHERE ID_FORM=?");
+		$Smt -> execute(array($id_form));
+    $row = $Smt->fetch(PDO::FETCH_ASSOC);
+    $type_form = $row['TYPE_FORM'];                 
     ///Tous les offres de cette formation
     $Smt = $bdd->prepare("SELECT * FROM offre O,entreprise E WHERE E.ID_ENTREP=O.ID_ENTREP AND O.ID_FORM=? ORDER BY O.ID_OFFRE DESC");
     $Smt -> execute(array($id_form));
@@ -115,8 +120,8 @@
                 <table class="table" id="Table_Offre">
                     <thead>
                       <tr>
-                         <th scope="col">N</th>
-                         <th scope="col">Statut</th>
+                         <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
+                        <th scope="col">Statut</th>
                         <th scope="col">Entreprise</th>
                         <th scope="col">Ville</th>
                         <th scope="col">Poste</th>
@@ -130,7 +135,7 @@
                         foreach ($rows as $row): 
                     ?>
                         <tr>
-                            <th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU_OFFRE']; ?></th>
+                            <?php if( $type_form){ ?><th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU_OFFRE']; ?></th><?php } ?>
                             <?php
                               switch ($row['STATUOFFRE']) {
                                 case 'Nouveau':
@@ -155,15 +160,24 @@
                           <td style="text-align: end; ">
                             
                             <a href="#" data-bs-toggle="modal" data-bs-target="#offre<?php print($row['ID_OFFRE']);?>" title="detail" ><i style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></a>
-                            <a href="Modifier_Offre_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>" title="modifier"><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></a>
-                            <a href="Liste_Attente_Resp.php?id_offre=<?php echo $row['ID_OFFRE']; ?>" title="attente"><i style="margin-right: 15px;"><img src="icons/file.png" alt=""></i></a>
+                            <a href="Modifier_Offre_Resp.php?id_offre=<?php print($row['ID_OFFRE']);?>" ><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></a>
+                            <a href="Liste_Attente_Resp.php?id_offre=<?php print($row['ID_OFFRE']);?>" ><i style="margin-right: 15px;"><img src="icons/file.png" alt=""></i></a>
+                            <!-- <form action="Modifier_Offre_Resp.php" method="post"  style="display: inline-block;" >
+                                <input type="hidden" name="id_offre" value="<//?php print($row['ID_OFFRE']);?>">
+                                <button style="background:none;border:none;margin-right: 15px;"><img src="icons/edit.png" alt=""></button>
+                            </form>
+
+                            <form action="Liste_Attente_Resp.php" method="post"  style="display: inline-block;" >
+                                <input type="hidden" name="id_offre" value="<//?php print($row['ID_OFFRE']);?>">
+                                <button style="background:none;border:none;margin-right: 15px;"><img src="icons/file.png" alt=""></button>
+                            </form> -->
                           </td>
                         </tr>
                         <?php endforeach; ?>
                     </tbody>
                     <tfoot>
                         <tr>
-                          <th scope="col">N</th>
+                        <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
                           <th scope="col">Statut</th>
                           <th scope="col">Entreprise</th>
                           <th scope="col">Ville</th>
@@ -242,6 +256,8 @@
             const toggleMenu = document.querySelector(".menu");
             toggleMenu.classList.toggle('active');
         }
+
+       
       </script>
 
 <script>

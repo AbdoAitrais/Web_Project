@@ -122,9 +122,9 @@
                         $Smt->execute(array($id_etu_att,$Offre_ID));
                         $Smt->closeCursor();//vider le curseur (free)
                     }
-                    
-
                     header('location:../Soumissions_Etu.php');
+
+                     
                 
                 }else if(isset($_POST['offre_accepte'])){
                     
@@ -133,24 +133,43 @@
                     ///*** Acceptation
                     $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=? ");
                     $Smt->execute(array('Acceptée',$Etu,$Offre_ID));  
+                    $Smt->closeCursor();//vider le curseur (free)
                     /// *** Mettre non acceptée dans tous les offres retenues
-                    $Smt1=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND STATU=? ");
-                    $Smt1->execute(array('Non Acceptée',$Etu,'Retenue'));  
+                    $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND STATU=? ");
+                    $Smt->execute(array('Non Acceptée',$Etu,'Retenue'));  
+                    $Smt->closeCursor();//vider le curseur (free)
                     /// *** Annuler postulation d'autres offres
-                    $Smt2=$bdd->prepare("DELETE FROM postuler WHERE ID_ETU=? AND STATU=? ");
-                    $Smt2->execute(array($Etu,'Postulée'));
-                    
+                    $Smt=$bdd->prepare("DELETE FROM postuler WHERE ID_ETU=? AND STATU=? OR STATU=? ");
+                    $Smt->execute(array($Etu,'Postulée','Retenue en attente'));
+                    $Smt->closeCursor();//vider le curseur (free)
+                    /// *** Supprimer de la liste d'attente
+                    $Smt=$bdd->prepare("DELETE FROM attente WHERE ID_ETU=?");
+                    $Smt->execute(array($Etu));
+                    $Smt->closeCursor();//vider le curseur (free)
                     /// ***ID DE NIVEAU DE L'ETUDIANT
                     $sql_niveau = $bdd->prepare("SELECT NIVEAU FROM etudiant WHERE ID_ETU=? ");
                     $sql_niveau->execute(array($Etu));
                     $result_niveau = $sql_niveau->fetch(PDO::FETCH_ASSOC);
                     $NIVEAU = $result_niveau['NIVEAU'];
                     
-                    /// *** Inserer stage 
-                    $sql_stage = $bdd->prepare("INSERT INTO stage(ID_OFFRE,ID_ETU,DATEDEBUT_STAGE,NIVEAU_STAGE) VALUES(?,?,?,?)  ");
-                    $sql_stage->execute(array($Offre_ID,$Etu,$curdate,$NIVEAU));
+                    /// *** Generate contract
+                   require_once __DIR__ . '/Mpdf/vendor/autoload.php';
 
-                    header('location:../Soumissions_Etu.php');
+                   $mpdf = new mPDF();
+                   $Contract_Form = "<div style='color:red;'>
+                                 ".$Etu." A un stage dans l'entreprise de L'Offre ".$Offre_ID."
+                                </div>";
+                   $mpdf->WriteHTML($Contract_Form);
+                   $Contract = '../uploads/Contracts/Contract'.$Offre_ID.'-'.$Etu.'.pdf';
+                   $mpdf->Output($Contract,"F");
+                   $Contract = strchr($Contract,'uploads') ;
+                   
+                   /// *** Inserer stage 
+                   $sql_stage = $bdd->prepare("INSERT INTO stage(ID_OFFRE,ID_ETU,DATEDEBUT_STAGE,NIVEAU_STAGE,CONTRAT) VALUES(?,?,?,?,?)  ");
+                   $sql_stage->execute(array($Offre_ID,$Etu,$curdate,$NIVEAU,$Contract));
+
+            
+                  header('location:../Soumissions_Etu.php');
                 }
             
             }

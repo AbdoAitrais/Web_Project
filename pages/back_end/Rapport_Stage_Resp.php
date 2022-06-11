@@ -72,9 +72,12 @@
                 }
 
                 /// *** Insert rapport
-                $Smt = $bdd->prepare("INSERT INTO rapport(fichier,id_stage) values(?,?)");
-                $Smt -> execute(array($rapport,$id_stage));
-                $Smt->closeCursor();//vider le curseur (free)
+                if($rapport)
+                {
+                    $Smt = $bdd->prepare("INSERT INTO rapport(fichier,id_stage) values(?,?)");
+                    $Smt -> execute(array($rapport,$id_stage));
+                    $Smt->closeCursor();//vider le curseur (free)
+                }
                 ///Insert motcles
                 if( !empty($_POST['motscle']) )
                  {
@@ -90,9 +93,12 @@
                         
                     foreach($MotsCles as $MotCle)
                     {
-                            
-                        $Smt = $bdd->prepare("INSERT INTO motcle(MOT,ID_RAPP) values(?,?)");
-                        $Smt -> execute(array($MotCle , $ID_RAPPORT));
+                        if(!empty($MotCle))
+                        {
+                            $Smt = $bdd->prepare("INSERT INTO motcle(MOT,ID_RAPP) values(?,?)");
+                            $Smt -> execute(array($MotCle , $ID_RAPPORT));
+                        }
+                        
 
             
                     }

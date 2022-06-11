@@ -10,9 +10,9 @@
 
         if( $_SESSION['user_type'] == "Responsable" )
         {
-            if(!empty($_GET['id_stage']))
+            if(!empty($_POST['id_stage']))
             {
-                $id_stage = $_GET['id_stage'];
+                $id_stage = $_POST['id_stage'];
                 
                 /// Etudiant
                 $Smt = $bdd->prepare("SELECT ID_ETU FROM STAGE WHERE ID_STAGE=?");

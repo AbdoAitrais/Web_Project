@@ -12,13 +12,22 @@
 
       if(isset($_GET['id_offre']) )
       {
-        $id_offre=$_GET['id_offre'];
+        $id_offre = $_GET['id_offre'];
 
+        /// *** Test access responsables
+        $Smt = $bdd->prepare("SELECT ID_FORM FROM offre WHERE ID_OFFRE=?");
+        $Smt->execute(array($id_offre));
+        $Offre_form = $Smt->fetch(PDO::FETCH_ASSOC);
+        $Smt->closeCursor();//vider le curseur (free)
+
+        if($Offre_form['ID_FORM'] != $_SESSION['user_id'] )
+            exit("You're not allowed to access for this Offre");
         /// *** Liste attentes
         $Smt = $bdd->prepare("SELECT e.ID_ETU,e.NOM_ETU,e.PRENOM_ETU,e.CNE FROM etudiant e,attente a WHERE e.ID_ETU=a.ID_ETU AND a.ID_OFFRE =? ORDER BY a.PRIORITE");
         $Smt->execute(array($id_offre));
         $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
         $Smt->closeCursor();//vider le curseur (free)
+        
 
         /// *** Liste d'etudiants postulées
         $Smt1 = $bdd->prepare("SELECT e.ID_ETU,e.NOM_ETU,e.PRENOM_ETU,e.CNE FROM etudiant e,postuler p WHERE e.ID_ETU=p.ID_ETU AND p.ID_OFFRE =? AND p.STATU=? ");
