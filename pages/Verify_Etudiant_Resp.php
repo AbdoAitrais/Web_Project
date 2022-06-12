@@ -142,6 +142,18 @@
                           <td style="color: #7096FF;"><?php echo $row['DATENAISS_ETU']; ?></td>
                           <td style="color: #7096FF;"><?php echo $row['PROMOTION']; ?></td>
                           <td style="text-align: end;">
+                          
+                            <?php
+                              if( $row['VERIFIED'] == 0 )
+                              {
+                            ?>
+                            <form action="back_end/Refuser_Account_Resp.php" method="post" style="display: inline-block;"  >
+                              <input type="hidden" name="id_etu_refus" value="<?php echo $row['ID_ETU']; ?>">
+                              <button type="submit" class="btn btn-outline-primary" id="verify" >Refuser</button>
+                            </form>
+                            <?php
+                              }
+                            ?>
                             
                             <form action="back_end/Verifier_Account_Resp.php" method="post" style="display: inline-block;" >
                                 <input type="hidden" name="id_etu_verif" value="<?php echo $row['ID_ETU']; ?>">
@@ -152,7 +164,7 @@
                                     }
                                     else if( $row['VERIFIED'] == 1 )
                                     {
-                                        echo '<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">Verifié</label>
+                                        echo '<label style="text-align:end;text-decoration:underline;color: cornflowerblue; margin-left:1rem; margin-right:1rem;">Verifié</label>
                                         </form>';
                                     }
                                 ?>
