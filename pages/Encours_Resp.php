@@ -145,7 +145,7 @@
                   </div>
                 </form>
                   
-
+                <?php if(!empty($result1)){?>
                 <table class="table">
                     <thead>
                       <tr>
@@ -159,7 +159,7 @@
                     </thead>
                     <tbody>
 
-                        <?php if(!empty($result1)){?>
+                        
                         <tr>
                         <?php if( $type_form){ ?><th scope="row" style="color: #7196FF"><?php print($result1['NIVEAU_STAGE'])?></th><?php } ?>
                           <td style="color: #616161;"><?php print($result1['NOM_ETU'])?></td>
@@ -180,7 +180,11 @@
                             </div>
                           </td>
                         </tr>
-                        <?php }?>
+                        <?php }
+                        else
+                        echo '<div class="alert alert-primary" role="alert" style="margin-top:5%;">
+                        No data found !
+                      </div>';?>
                     </tbody>
                   </table>
               </div>

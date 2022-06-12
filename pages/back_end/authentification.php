@@ -11,7 +11,7 @@
 	function get_user_id_type_mainPage($table_name,$id_table,$main_page,$user_type,$name,$pass)
 	{
 		require('connexion.php');
-		$Smt = $bdd->prepare("SELECT * FROM $table_name as x, users u WHERE x.ID_USER=u.ID_USER AND u.LOGIN=? AND u.PASSWORD=? AND u.ACTIVE=1 AND u.VERIFIED=1");
+		$Smt = $bdd->prepare("SELECT * FROM $table_name as x, users u WHERE x.ID_USER=u.ID_USER AND u.LOGIN=? AND u.PASSWORD=? AND u.ACTIVE=1");
 		$Smt -> execute(array($name,$pass));
 		$rows = $Smt -> fetch();
 		$Smt->closeCursor();//vider le curseur (free)
@@ -32,7 +32,7 @@
 		}
 
 		$Smt->closeCursor();//vider le curseur (free)
-		$results = array($rows[$id_table],$main_page,$user_type,$rows['PICTURE'],$user_name);//array contains id and main page and user type
+		$results = array($rows[$id_table],$main_page,$user_type,$rows['PICTURE'],$user_name,$rows['VERIFIED']);//array contains id and main page and user type
 
 		var_dump($results);
 		return $results;
@@ -51,6 +51,8 @@
 		{
 			$result = get_user_id_type_mainPage('etudiant','ID_ETU',
 												'Find_Offre_Etu.php','Etudiant',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
+			
+
 		}
 		else if ($type_user == "Responsable")
 		{
@@ -68,7 +70,17 @@
 
 		if( $result[0] != NULL )
 		{
-			echo "test3";
+			
+
+			if( $result[5] == 0 )
+			{
+				echo "asdasd";
+				$_SESSION['error'] = '<div class="alert alert-warning" role="alert">
+											Your account is not yet verrified !
+										</div>';
+				header('location: ../login.php');
+		 		exit(0);
+			}
 
 			$_SESSION['user_id'] = $result[0];
 			$_SESSION['main_page'] = $result[1];
@@ -97,9 +109,12 @@
 		}
 		else
 		{
-		 	$_SESSION['error'] = 'Incorrect login !';
+		 	$_SESSION['error'] = '<div class="alert alert-danger" role="alert">
+			 							Incorrect login !
+									</div>';
 		 	header('location: ../login.php');
 		 	echo "alo";
 		}
+		
 	}
 ?>

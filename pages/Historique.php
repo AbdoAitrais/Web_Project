@@ -170,7 +170,10 @@
                   <div class="tableHead" >
                         <h4>Liste des stages</h4>
                   </div>                  
-
+                <?php 
+                if( !empty($rows) )
+                {
+                ?>
                 <table class="table" id="Table_Histo">
                     <thead>
                       <tr>
@@ -185,7 +188,9 @@
                     <tbody>
 
                    
-                    <?php foreach ($rows as $row): 
+                    <?php 
+                    
+                    foreach ($rows as $row): 
                     
                       ?>
                         <tr>
@@ -203,7 +208,10 @@
                             <button type="button" class="btn btn-outline-primary">Detail</button>
                           </td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php 
+                    endforeach; 
+                    
+                    ?>
 
                     </tbody>
                     <tfoot>
@@ -215,6 +223,15 @@
                         <th scope="col"></th>
                     </tfoot>
                   </table>
+                  <?php
+                  }
+                  else
+                  {
+                    echo '<div class="alert alert-primary" role="alert">
+                            No data found !
+                          </div>';
+                  }
+                  ?>
               </div>
           </div>
           
@@ -241,7 +258,7 @@
   $(document).ready( function () {
       var dataTable = $('#Table_Histo').DataTable();
 
-
+      
 
       $('#Table_Histo tfoot tr th').each(function () {
       var title = $('#Table_Histo thead tr th').eq($(this).index()).text();

@@ -121,6 +121,10 @@
                   <div class="tableHead" >
                         <h4>Liste d'attente</h4>
                   </div>
+                  <?php
+                  if(!empty($rows))
+                  {
+                  ?>
                 <table  id="table" class="table draggable-table">
                     <thead>
                       <tr>
@@ -132,8 +136,7 @@
                     </thead>
                     <tbody id="tbdy">
                         <?php
-                          if(!empty($rows))
-                          {
+                          
                             foreach($rows as $attente_etu):
                          ?>
                         <tr>
@@ -149,9 +152,16 @@
                           </form>
                           </td>
                         </tr>
-                        <?php endforeach;}?>
+                        <?php endforeach;?>
                     </tbody>
                   </table>
+                  <?php
+                  }
+                  else
+            echo '<div class="alert alert-primary" role="alert" style="margin-top:5%;">
+            No data found !
+          </div>';
+                  ?>
               </div>
           </div>
 
@@ -161,7 +171,10 @@
                   <div class="tableHead" style="margin-bottom: 10px;">
                         <h4>Liste des etudiants postulée</h4>   
                   </div>
-                  
+                  <?php
+                    if(!empty($rows1))
+                    {
+                  ?>
                   <table class="table" id="Table_Etu">
                     <thead>
                       <tr>
@@ -174,8 +187,7 @@
                     </thead>
                     <tbody>
                       <?php
-                          if(!empty($rows1))
-                          {
+                          
                             foreach($rows1 as $postule_etu):
                       ?>
                         <tr> 
@@ -190,10 +202,18 @@
                             </form>
                           </td>
                         </tr>
-                        <?php endforeach;}?>
+                        <?php endforeach;?>
                     </tbody>
                     
                   </table>
+
+                  <?php
+                  }
+                  else
+                  echo '<div class="alert alert-primary" role="alert" style="margin-top:5%;">
+                          No data found !
+                        </div>';
+                  ?>
               </div>
           </div>
 

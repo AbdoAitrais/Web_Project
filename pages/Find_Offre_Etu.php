@@ -298,7 +298,14 @@
                   </div>
               </div>
             </form>
-            <?php endforeach;} ?>            
+            <?php 
+              endforeach;
+              }
+              else
+                  echo '<div class="alert alert-primary" role="alert" style="margin-top:5%;">
+                          No data found !
+                        </div>';
+            ?>            
           </div>
           <div class="col-3 d-none d-md-block elm blank_col"></div>
         </div>
