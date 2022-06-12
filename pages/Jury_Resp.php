@@ -33,7 +33,7 @@
             exit("You're not allowed to access for this stage");
         
         ///*** 
-        $sql1 = "SELECT NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,CNE,POSTE,NOM_ENTREP,NOTENCAD_ENTREP FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU  AND s.ID_STAGE='$id_stage'";
+        $sql1 = "SELECT * FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU  AND s.ID_STAGE='$id_stage'";
         $req1 =$bdd->query($sql1);
         $result1 = $req1->fetch(PDO::FETCH_ASSOC);
 
@@ -186,7 +186,7 @@
                             <div class="menu" id="mn1">
             
                               <ul>
-                                <li><img src="icons/loupe.png" alt=""><a href="">Details</a> </li>
+                                <li><img src="icons/loupe.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#stage_offre">Details</a> </li>
                                 <li><img src="icons/teacher.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop4">Encadrant</a> </li>
                                 <li><img src="icons/jury.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Jury</a> </li>
                                 <li><img src="icons/certificate.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Notes</a> </li>
@@ -411,6 +411,45 @@
             </div>
           </form>
           
+          <!-- Detail -->
+          <div class="modal fade"  id="stage_offre" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable"  style="max-width:800px !important;" >
+              <div class="modal-content" >
+                <div class="modal-header">
+                  <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Offre </h3>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" >
+                <div class="col-md-12 elm pub_col">
+                      <div class="content">
+
+                        <span class="poste" ><?php print($result1['POSTE'])?></span> <br><br>
+
+                        <span class="ville" ><?php print($result1['NOM_ENTREP'])?> - <?php print($result1['VILLE'])?></span> <br>
+
+                        <span class="duree" >(Durée <?php print($result1['DUREE']/30);?> months)</span> <br><br>
+
+                        <div class="desc" >
+                          <p><?php print($result1['DESCRIP']);?></p>
+                        </div>
+
+                        <div>
+                          <span class="time"> <img src="icons/time.png" alt=""> <?php print($result1['DATEFIN']);?> </span>
+                        </div>
+
+                      </div>
+
+                    </div><br>
+                               
+                  </div>
+                    
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button> 
+                    </div>
+                  </div>
+                </div>
+              </div> 
+          </div>
           
 
 

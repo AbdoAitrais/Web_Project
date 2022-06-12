@@ -160,15 +160,6 @@
                             <a href="#" data-bs-toggle="modal" data-bs-target="#offre<?php print($row['ID_OFFRE']);?>" title="detail" ><i style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></a>
                             <a href="Modifier_Offre_Resp.php?id_offre=<?php print($row['ID_OFFRE']);?>" ><i style="margin-right: 15px;"><img src="icons/edit.png" alt=""></i></a>
                             <a href="Liste_Attente_Resp.php?id_offre=<?php print($row['ID_OFFRE']);?>" ><i style="margin-right: 15px;"><img src="icons/file.png" alt=""></i></a>
-                            <!-- <form action="Modifier_Offre_Resp.php" method="post"  style="display: inline-block;" >
-                                <input type="hidden" name="id_offre" value="<//?php print($row['ID_OFFRE']);?>">
-                                <button style="background:none;border:none;margin-right: 15px;"><img src="icons/edit.png" alt=""></button>
-                            </form>
-
-                            <form action="Liste_Attente_Resp.php" method="post"  style="display: inline-block;" >
-                                <input type="hidden" name="id_offre" value="<//?php print($row['ID_OFFRE']);?>">
-                                <button style="background:none;border:none;margin-right: 15px;"><img src="icons/file.png" alt=""></button>
-                            </form> -->
                           </td>
                         </tr>
                         <?php endforeach; ?>
