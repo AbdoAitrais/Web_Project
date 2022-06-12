@@ -121,15 +121,15 @@
                                 <option value="0">Liscence</option>
                             </select>
                             <label for="filière" style="margin-left: 25px;">Filière</label>
-                            <select name="filière" id="filiere_Cycle" required>
+                            <select name="filière" id="filiere_Cycle" >
                                 <option value="">Select Cycle</option>
-                                <option value="1">GET</option>
-                                <option value="2">GE</option>
-                                <option value="3">GMI</option>
-                                <option value="4">GPE</option>
-                                <option value="5">ILISI</option>
+                                <option value="1">ILISI</option>
+                                <option value="2">GET</option>
+                                <option value="3">GE</option>
+                                <option value="4">GMI</option>
+                                <option value="5">GPE</option>    
                             </select>
-                            <select name="filière" id="filiere_LST" style="display:none;" required>
+                            <select name="filière" id="filiere_LST" style="display:none;" >
                                 <option value="">Select LST</option>
                                 <option value="1">GT</option>
                                 <option value="2">GE2I</option>
@@ -143,7 +143,7 @@
                                 <option value="10">CA</option>
                                 <option value="11">GEE</option>
                             </select>
-                            <select name="filière" id="filiere_Master" style="display:none;" required >
+                            <select name="filière" id="filiere_Master" style="display:none;" >
                                 <option value="">Select Master</option>
                                 <option value="1">MQSA</option>
                                 <option value="2">MAGBio</option>
@@ -156,7 +156,7 @@
                         </div>
                         <div id="niv_cycle">
                             <label for="niveau">Niveau</label>
-                            <select name="niveau" id="niveau_cycle" required>
+                            <select name="niveau" id="niveau_cycle" >
                                 <option value="">Please select</option>
                                 <option value="1">1er anneé</option>
                                 <option value="2">2ème anneé</option>
@@ -165,7 +165,7 @@
                         </div>  
                         <div style="display:none;" id="niv_master">
                             <label for="niveau">Niveau</label>
-                            <select name="niveau" id="niveau_master" required>
+                            <select name="niveau" id="niveau_master" >
                                 <option value="">Please select</option>
                                 <option value="1">1er anneé</option>
                                 <option value="2">2ème anneé</option>
@@ -173,7 +173,7 @@
                         </div>     
                         <div>
                             <label for="promo">Promotion</label>
-                            <select name="promo" id="promo" required>
+                            <select name="promo" id="promo" >
                                 <option value="">Please select</option>
                                 <option value="2022">2022</option>
                                 <option value="2023">2023</option>
