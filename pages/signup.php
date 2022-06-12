@@ -68,7 +68,9 @@
                                 <input class="step1_input day" type="text" pattern="[0-9]*" name="day" id="day" value="" min="0" max="31" placeholder="DD" required>
                                 <input class="step1_input month" type="text" pattern="[0-9]*" name="month" id="month" value="" min="0" max="12" placeholder="MM" required>
                                 <input class="step1_input year" type="text" pattern="[0-9]*" name="year" id="year" value="" min="0" placeholder="YYYY" required>
+                                
                             </div>
+                            <span id="date" style="color:red; display:none;" >ex: 01 01 2000<span>
                         </div>
                         <div>
                             <label for="cin">CIN</label>
@@ -108,6 +110,7 @@
                         <div>
                             <label for="cne">CNE</label>
                             <input class="step3_input" type="text" name="cne"  id="cne" placeholder="" required>
+                            <span id="cne_msg" style="color:red; display:none;" >ex: R112020203<span>
                         </div>
                         <div style="display: inline-block !important; ">
                             <label for="type">Type</label>
@@ -184,10 +187,12 @@
                         <div>
                             <label for="email">Email</label>
                             <input type="email" name="user_mail" id="email" placeholder="Your email address" required>
+                            <span id="email_msg" style="color:red; display:none;" >ex: user@mail.xyz<span>
                         </div>
                         <div>
                             <label for="pass">Password</label>
                             <input type="password" class="pass" name="pass" id="pass" placeholder="Password" required>
+                            <span id="pass1_msg" style="color:red; display:none;" >more than 8 chararacters<span>
                         </div>
                         <div>
                             <input type="password" class="pass" id="confirm_pass" placeholder="Confirm Password" required>
@@ -434,27 +439,30 @@ $("#imageUpload").change(function() {
                     })
                     if( number == 3 )
                         enable_button(sumbit);
-                }else{
-                    $(class_name).css(
-                    {
-                        "border-color" : "red"
-                    });
-                    if( number == 3 )
-                        disable_button(sumbit);
-                    else
-                        disable_button(button_next);
+                    return true;
                 }
+                
+                $(class_name).css(
+                {
+                    "border-color" : "red"
+                });
+                if( number == 3 )
+                    disable_button(sumbit);
+                else
+                    disable_button(button_next);
+                
+                return false;    
             }
 
             $("form").on('focus keyup',function()
             {
                 // body...
-                var regEx_name = /^[A-Z][a-zA-Z]{1,20}( [A-Z][a-zA-Z]{0,20})*$/;
+                //var regEx_name = /^[A-Z][a-zA-Z]{1,20}( [A-Z][a-zA-Z]{0,20})*$/;
                 var regEx_month = /(0[1-9]|1[012])$/;
                 var regEx_day = /(0[1-9]|1[0-9]|2[0-9]|3[01])$/;
                 var regEx_year = /(19[0-9][0-9]|2[0-9][0-9][0-9])$/;
                 var regEx_cne = /(^[a-zA-Z][0-9]{9})$/;
-                var regEx_cin = /(^[a-zA-Z][a-zA-Z][0-9]{5})$/;
+                //var regEx_cin = /(^[a-zA-Z][a-zA-Z][0-9]{5})$/;
                 var regEx_mail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
                 var regEx_pass = /.{8,}$/;
                 var regEx_phone = /[^a-z][^A-Z]$/;
@@ -468,24 +476,17 @@ $("#imageUpload").change(function() {
                 var pass1 = (document).getElementById('pass');
                 var pass2 = (document).getElementById('confirm_pass');
 
-
-                console.log(day.value);
-                console.log(month.value);
-                console.log(year.value);
-
-                
-
                 
 
                 if( number == 0 )
                 {
-                    $(".name").each( function(){
-                    
-                    verifier(regEx_name,this.value,this);
-                    })
-                    verifier(regEx_day,day.value,day);
-                    verifier(regEx_month,month.value,month);
-                    verifier(regEx_year,year.value,year);
+                    if( verifier(regEx_day,day.value,day) &&
+                        verifier(regEx_month,month.value,month) &&
+                        verifier(regEx_year,year.value,year)
+                      )
+                        $('#date').hide();
+                    else
+                        $('#date').show();
                 }
                 else if( number == 1 )
                 {
@@ -493,14 +494,23 @@ $("#imageUpload").change(function() {
                 }
                 else if( number == 2 )
                 {
-                    verifier(regEx_cne,cne.value,cne);
+                    if( verifier(regEx_cne,cne.value,cne) )
+                        $('#cne_msg').hide();
+                    else
+                        $('#cne_msg').show();
                     
                 }
                 else if( number == 3 )
                 {
-                    verifier(regEx_mail,mail.value,mail);
+                    if(verifier(regEx_mail,mail.value,mail))
+                        $('#email_msg').hide();
+                    else
+                        $('#email_msg').show();
 
-                    verifier(regEx_pass,pass1.value,pass1);
+                    if(verifier(regEx_pass,pass1.value,pass1))
+                        $('#pass1_msg').hide();
+                    else
+                        $('#pass1_msg').show();
 
                     if(pass1.value == pass2.value)
                     {
