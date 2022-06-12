@@ -438,12 +438,12 @@ cursor: pointer;
     }
 
     .inpp1,.inpp2 {
-      width: 111px;
-      margin-right: 40px;
+      width: 20%;
+      margin-right: 10%;
     }
   
     .inpp3 {
-      width: 222px;
+      width: 40%;
     }
 
   }
