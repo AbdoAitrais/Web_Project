@@ -145,7 +145,7 @@
       
     <nav class="navbar navbar-expand-lg navbar-light bg-light position-fixed" style="z-index: 9; width: 100%; top: 0;">
         <div class="container-fluid">
-          <a class="navbar-brand navt d-lg-block d-lg-none" href="#">FSTAGE</a>
+          <a class="navbar-brand navt d-lg-block d-lg-none" href="#"><img src="icons/weblog.png" alt="" width="150" height="35"></a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -168,7 +168,7 @@
               </li>
             </ul>
             <div class="" style="position: fixed; margin-left: 47%;">
-            <a class="navbar-brand navt d-none d-lg-block" href="#">FSTAGE</a>
+            <a class="navbar-brand navt d-none d-lg-block" href="#"><img src="icons/weblog.png" alt="" width="150" height="35"></a>
           </div>
           <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
               
