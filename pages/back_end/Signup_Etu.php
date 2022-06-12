@@ -4,7 +4,7 @@ if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_PO
 {
 
         require('connexion.php');
-        $formation=htmlspecialchars($_POST['filière']);
+        //$formation=htmlspecialchars($_POST['filière']);
         $formation=htmlspecialchars($_POST['filière']);
         $nom_etu = htmlspecialchars($_POST['nom_etu']);
         $prenom_etu = htmlspecialchars($_POST['prenom_etu']);

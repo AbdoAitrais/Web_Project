@@ -56,19 +56,21 @@
                         </div>
                         <div>
                             <label for="prenom_etu">First Name</label>
-                            <input class="step1_input" type="text" name="prenom_etu" id="prenom_etu" placeholder="e.g. John" required>
+                            <input class="step1_input name" type="text" name="prenom_etu" id="prenom_etu" placeholder="e.g. John" required>
                         </div>
                         <div>
                             <label for="nom_etu">Last Name</label>
-                            <input class="step1_input" type="text"  name="nom_etu" id="nom_etu" placeholder="e.g. Paul" required>
+                            <input class="step1_input name" type="text"  name="nom_etu" id="nom_etu" placeholder="e.g. Paul" required>
                         </div>
                         <div class="birth">
                             <label for="id">Date of Birth</label>
                             <div class="grouping">
-                                <input class="step1_input" type="text" pattern="[0-9]*" name="day" value="" min="0" max="31" placeholder="DD" required>
-                                <input class="step1_input" type="text" pattern="[0-9]*" name="month" value="" min="0" max="12" placeholder="MM" required>
-                                <input class="step1_input" type="text" pattern="[0-9]*" name="year" value="" min="0" placeholder="MM" required>
+                                <input class="step1_input day" type="text" pattern="[0-9]*" name="day" id="day" value="" min="0" max="31" placeholder="DD" required>
+                                <input class="step1_input month" type="text" pattern="[0-9]*" name="month" id="month" value="" min="0" max="12" placeholder="MM" required>
+                                <input class="step1_input year" type="text" pattern="[0-9]*" name="year" id="year" value="" min="0" placeholder="YYYY" required>
+                                
                             </div>
+                            <span id="date" style="color:red; display:none;" >ex: 01 01 2000<span>
                         </div>
                         <div>
                             <label for="cin">CIN</label>
@@ -108,6 +110,7 @@
                         <div>
                             <label for="cne">CNE</label>
                             <input class="step3_input" type="text" name="cne"  id="cne" placeholder="" required>
+                            <span id="cne_msg" style="color:red; display:none;" >ex: R112020203<span>
                         </div>
                         <div style="display: inline-block !important; ">
                             <label for="type">Type</label>
@@ -118,15 +121,15 @@
                                 <option value="0">Liscence</option>
                             </select>
                             <label for="filière" style="margin-left: 25px;">Filière</label>
-                            <select name="filière" id="filiere_Cycle" required>
+                            <select name="filière" id="filiere_Cycle" >
                                 <option value="">Select Cycle</option>
-                                <option value="1">GET</option>
-                                <option value="2">GE</option>
-                                <option value="3">GMI</option>
-                                <option value="4">GPE</option>
-                                <option value="5">ILISI</option>
+                                <option value="1">ILISI</option>
+                                <option value="2">GET</option>
+                                <option value="3">GE</option>
+                                <option value="4">GMI</option>
+                                <option value="5">GPE</option>    
                             </select>
-                            <select name="filière" id="filiere_LST" style="display:none;" required>
+                            <select name="filière" id="filiere_LST" style="display:none;" >
                                 <option value="">Select LST</option>
                                 <option value="1">GT</option>
                                 <option value="2">GE2I</option>
@@ -140,7 +143,7 @@
                                 <option value="10">CA</option>
                                 <option value="11">GEE</option>
                             </select>
-                            <select name="filière" id="filiere_Master" style="display:none;" required >
+                            <select name="filière" id="filiere_Master" style="display:none;" >
                                 <option value="">Select Master</option>
                                 <option value="1">MQSA</option>
                                 <option value="2">MAGBio</option>
@@ -153,7 +156,7 @@
                         </div>
                         <div id="niv_cycle">
                             <label for="niveau">Niveau</label>
-                            <select name="niveau" id="niveau_cycle" required>
+                            <select name="niveau" id="niveau_cycle" >
                                 <option value="">Please select</option>
                                 <option value="1">1er anneé</option>
                                 <option value="2">2ème anneé</option>
@@ -162,7 +165,7 @@
                         </div>  
                         <div style="display:none;" id="niv_master">
                             <label for="niveau">Niveau</label>
-                            <select name="niveau" id="niveau_master" required>
+                            <select name="niveau" id="niveau_master" >
                                 <option value="">Please select</option>
                                 <option value="1">1er anneé</option>
                                 <option value="2">2ème anneé</option>
@@ -170,7 +173,7 @@
                         </div>     
                         <div>
                             <label for="promo">Promotion</label>
-                            <select name="promo" id="promo" required>
+                            <select name="promo" id="promo" >
                                 <option value="">Please select</option>
                                 <option value="2022">2022</option>
                                 <option value="2023">2023</option>
@@ -184,13 +187,15 @@
                         <div>
                             <label for="email">Email</label>
                             <input type="email" name="user_mail" id="email" placeholder="Your email address" required>
+                            <span id="email_msg" style="color:red; display:none;" >ex: user@mail.xyz<span>
                         </div>
                         <div>
                             <label for="pass">Password</label>
-                            <input type="password" name="pass" id="pass" placeholder="Password" required>
+                            <input type="password" class="pass" name="pass" id="pass" placeholder="Password" required>
+                            <span id="pass1_msg" style="color:red; display:none;" >more than 8 chararacters<span>
                         </div>
                         <div>
-                            <input type="password" id="confirm_pass" placeholder="Confirm Password" required>
+                            <input type="password" class="pass" id="confirm_pass" placeholder="Confirm Password" required>
                         </div>
                         <div class="checkbox">
                             <input type="checkbox">
@@ -348,11 +353,11 @@ $("#imageUpload").change(function() {
 
             
 
-            function disable_text(class_name,event)
+            function disable_next(class_name,event)
             {
                 $(class_name).on(event, function() {
                             
-                            console.log(this.value);
+                            //console.log(this.value);
             
                             is_empty = false;
             
@@ -372,11 +377,11 @@ $("#imageUpload").change(function() {
             }
 
             
-            disable_text(".step1_input","focus"+" keyup");
+            disable_next(".step1_input","focus"+" keyup");
 
-            disable_text(".step2_input","focus"+" keyup");
+            disable_next(".step2_input","focus"+" keyup");
 
-            disable_text(".step3_input","focus"+" keyup"+" change");
+            disable_next(".step3_input","focus"+" keyup"+" change");
 
 
 
@@ -404,11 +409,132 @@ $("#imageUpload").change(function() {
                     button_next.prop("disabled",false);
             })
 
-           
+            // button_prev.on('click', function(){
+            //     button_next.prop("disabled",false);
+            // })
+
+            function enable_button(button){
+                button.prop("disabled",false);
+            }
+
+            function disable_button(button){
+                button.prop("disabled",true);
+            }
 
             button_prev.on('click', function(){
-                button_next.prop("disabled",false);
+                enable_button(button_next);
             })
+            
+
+            var sumbit = $(".btn-submit");
+
+            function verifier(regularExp,inputValue,class_name)
+            {
+                
+                if(regularExp.test(inputValue))
+                {
+                    $(class_name).css(
+                    {
+                        "border-color" : "#54BE4A"                           
+                    })
+                    if( number == 3 )
+                        enable_button(sumbit);
+                    return true;
+                }
+                
+                $(class_name).css(
+                {
+                    "border-color" : "red"
+                });
+                if( number == 3 )
+                    disable_button(sumbit);
+                else
+                    disable_button(button_next);
+                
+                return false;    
+            }
+
+            $("form").on('focus keyup',function()
+            {
+                // body...
+                //var regEx_name = /^[A-Z][a-zA-Z]{1,20}( [A-Z][a-zA-Z]{0,20})*$/;
+                var regEx_month = /(0[1-9]|1[012])$/;
+                var regEx_day = /(0[1-9]|1[0-9]|2[0-9]|3[01])$/;
+                var regEx_year = /(19[0-9][0-9]|2[0-9][0-9][0-9])$/;
+                var regEx_cne = /(^[a-zA-Z][0-9]{9})$/;
+                //var regEx_cin = /(^[a-zA-Z][a-zA-Z][0-9]{5})$/;
+                var regEx_mail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                var regEx_pass = /.{8,}$/;
+                var regEx_phone = /[^a-z][^A-Z]$/;
+
+                var day = (document).getElementById('day');
+                var month = (document).getElementById('month');
+                var year = (document).getElementById('year');
+                var cne = (document).getElementById('cne');
+                var mail = (document).getElementById('email');
+                var phone = (document).getElementById('number');
+                var pass1 = (document).getElementById('pass');
+                var pass2 = (document).getElementById('confirm_pass');
+
+                
+
+                if( number == 0 )
+                {
+                    if( verifier(regEx_day,day.value,day) &&
+                        verifier(regEx_month,month.value,month) &&
+                        verifier(regEx_year,year.value,year)
+                      )
+                        $('#date').hide();
+                    else
+                        $('#date').show();
+                }
+                else if( number == 1 )
+                {
+                    verifier(regEx_phone,phone.value,phone);
+                }
+                else if( number == 2 )
+                {
+                    if( verifier(regEx_cne,cne.value,cne) )
+                        $('#cne_msg').hide();
+                    else
+                        $('#cne_msg').show();
+                    
+                }
+                else if( number == 3 )
+                {
+                    if(verifier(regEx_mail,mail.value,mail))
+                        $('#email_msg').hide();
+                    else
+                        $('#email_msg').show();
+
+                    if(verifier(regEx_pass,pass1.value,pass1))
+                        $('#pass1_msg').hide();
+                    else
+                        $('#pass1_msg').show();
+
+                    if(pass1.value == pass2.value)
+                    {
+                        $(pass2).css(
+                        {
+                            "border-color" : "#54BE4A"
+                            
+                        })
+                        enable_button(sumbit);
+                    }
+                    else
+                    {
+                        $(pass2).css(
+                        {
+                            "border-color" : "red"
+                        });
+                        disable_button(sumbit);
+                    }
+                }
+                
+                
+ 
+            })
+
 
     </script>
 </body>

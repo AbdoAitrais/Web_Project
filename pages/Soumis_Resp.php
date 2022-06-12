@@ -259,7 +259,12 @@
 
             </div><br>
             <?php 
-              endforeach;}
+              endforeach;
+            }
+            else
+              echo '<div class="alert alert-primary" role="alert" style="margin-top:5%;">
+                      No data found !
+                    </div>';
               } 
               
             ?>            

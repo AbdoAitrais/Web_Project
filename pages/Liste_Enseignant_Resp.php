@@ -98,6 +98,11 @@
                         <h4>Liste des enseignants</h4>
 
                   </div>
+
+                  <?php
+                  if( !empty($rows) )
+                  {
+                  ?>
             
                 <table class="table" id="Table_Ens">
                     <thead>
@@ -144,6 +149,14 @@
                         <th scope="col"></th>
                     </tfoot>
                   </table>
+
+                  <?php
+                  }
+                  else
+                    echo '<div class="alert alert-primary" role="alert">
+                            No data found !
+                          </div>';
+                  ?>
               </div>
           </div>
           

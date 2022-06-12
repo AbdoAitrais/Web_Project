@@ -100,12 +100,6 @@
 
     <div class="container-fluid ">
       <div class="" style="margin-top: 150px;">
-        
-
-
-        
-         
-
 
           <div class="row" >
             <div class="col-md-8 elm pub_col" style=" background: #FFFFFF !important;
@@ -116,6 +110,10 @@
                         <a href="Publier_Offre_Resp.php"><button>Publier Offre</button></a>   
                   </div>
                   
+                  <?php
+                    if( !empty($rows) )
+                    {
+                  ?>
 
                 <table class="table" id="Table_Offre">
                     <thead>
@@ -177,6 +175,13 @@
                         </tr>
                       </tfoot>
                   </table>
+                  <?php
+                    }
+                    else
+                    echo '<div class="alert alert-primary" role="alert">
+                            No data found !
+                          </div>';
+                  ?>
               </div>
           </div>
           
