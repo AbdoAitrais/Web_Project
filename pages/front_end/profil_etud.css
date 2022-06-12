@@ -118,6 +118,24 @@ body,nav {
     height: 35px;
   }
 
+  .inpp1,.inpp2,.inpp3 {
+    box-sizing: border-box;
+    background: #FFFFFF;
+    border: 1px solid #A4A3A3;
+    border-radius: 10px;
+    
+    height: 35px;
+  }
+
+  .inpp1,.inpp2 {
+    width: 125px;
+    margin-right: 50px;
+  }
+
+  .inpp3 {
+    width: 250px;
+  }
+
   #sec {
     margin-top: 20px;
   }
@@ -306,6 +324,15 @@ cursor: pointer;
       width: 500px;
     }
 
+    .inpp1,.inpp2 {
+      width: 105px;
+      margin-right: 40px;
+    }
+  
+    .inpp3 {
+      width: 210px;
+    }
+
   }
 
 
@@ -315,6 +342,15 @@ cursor: pointer;
 
     .inpp {
       width: 450px;
+    }
+
+    .inpp1,.inpp2 {
+      width: 95px;
+      margin-right: 35px;
+    }
+  
+    .inpp3 {
+      width: 190px;
     }
 
   }
@@ -328,6 +364,15 @@ cursor: pointer;
       width: 400px;
     }
 
+    .inpp1,.inpp2 {
+      width: 85px;
+      margin-right: 30px;
+    }
+  
+    .inpp3 {
+      width: 170px;
+    }
+
   }
 
 
@@ -339,6 +384,15 @@ cursor: pointer;
       width: 330px;
     }
 
+    .inpp1,.inpp2 {
+      width: 70px;
+      margin-right: 25px;
+    }
+  
+    .inpp3 {
+      width: 140px;
+    }
+
   }
 
   @media screen and (max-width: 1000px) {
@@ -347,6 +401,15 @@ cursor: pointer;
 
     .inpp {
       width: 280px;
+    }
+
+    .inpp1,.inpp2 {
+      width: 60px;
+      margin-right: 20px;
+    }
+  
+    .inpp3 {
+      width: 120px;
     }
 
     .cov {
@@ -372,6 +435,15 @@ cursor: pointer;
 
     .inpp {
       width: 100%;
+    }
+
+    .inpp1,.inpp2 {
+      width: 111px;
+      margin-right: 40px;
+    }
+  
+    .inpp3 {
+      width: 222px;
     }
 
   }
