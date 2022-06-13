@@ -55,6 +55,7 @@
                 <a class="nav-link navlink " href="Soumissions_Etu.php">Soumissions</a>
                 <?php 
                 /// ***Nombre de soumissions
+              
                 $Smt =$bdd->prepare("SELECT count(e.ID_ETU) as Nbr_soums FROM etudiant e,postuler p WHERE e.ID_ETU = p.ID_ETU AND e.ID_ETU=? AND p.STATU=? ");
                 $Smt->execute(array($Etu,'Retenue'));
                 $row = $Smt->fetch(PDO::FETCH_ASSOC);

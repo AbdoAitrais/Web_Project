@@ -21,7 +21,7 @@
                 $Smt->execute(array($nom_modif , $email_modif, $website_modif ,$id_modif) );
                 
 
-               header('location:../Entreprises_Admin.php');
+               header('location:../Liste_Entreprises_Admin.php');
                
             }else if(!empty($_POST['nom_add']) && !empty($_POST['email_add']) && !empty($_POST['website_add']) ){
                 $nom_add = $_POST['nom_add'];
@@ -32,7 +32,7 @@
                 $Smt->execute(array($nom_add , $email_add, $website_add));
                 
 
-               header('location:../Entreprises_Admin.php');
+               header('location:../Liste_Entreprises_Admin.php');
             }
         }
         else

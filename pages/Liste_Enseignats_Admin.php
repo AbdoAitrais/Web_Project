@@ -55,14 +55,14 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Formations_Admin.php">Formations</a>
+                <a class="nav-link navlink " href="Liste_Formations_Admin.php">Formations</a>
               </li>
               
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="Enseignats_Admin.php">Enseignants</a><span class="active_link_line"></span>
+                <a class="nav-link navlink active_link_color" href="Liste_Enseignats_Admin.php">Enseignants</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Entreprises_Admin.php">Entreprises</a>
+                <a class="nav-link navlink " href="Liste_Entreprises_Admin.php">Entreprises</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Départements</a>
@@ -71,20 +71,23 @@
             <div class="" style="position: fixed; margin-left: 44%;">
             <a class="navbar-brand navt d-none d-lg-block" href="#"><img src="icons/weblog.png" alt="" width="150" height="35"></a>
           </div>
-            <ul class="navbar-nav ms-auto margin ">
-              <li class="nav-item back">
-                <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink blue" href="#">Contact Us</a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink blue " href="#">Log out</a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
-              </li>
-            </ul>
+            <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
+              
+              <img class="profile" onclick="menuToggle()" src="<?php if( !empty($_SESSION['user_pdp']) ) echo $_SESSION['user_pdp']; else echo 'icons/avatar.png'; ?>" alt="">
+              
+              <div class="menu" style="margin:5px;">
+                  <h3><?php if( isset($_SESSION['user_name']) ) echo $_SESSION['user_name']['user_firstname'].'<br>'.$_SESSION['user_name']['user_lastname']; else echo "undefined user"; ?></h3>
+              
+                  <ul>
+                      <li><a href="Profile.php"><img src="popup/user.png" alt="">My profile</a> </li>
+                      <li><a href=""><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
+                      <li><a href=""><img src="popup/question.png" alt="">Help</a> </li>
+                      <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
+                  </ul>
+              
+               </div>
+
+              </div>
           </div>
         </div>
       </nav>
