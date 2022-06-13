@@ -204,7 +204,7 @@
                   <div class="modal-body" style="max-height: 4500px; padding: 30px;">
                     
                       <label for="nom_modif"><span>Nom :</span></label><br>
-                      <input  class="inpstyl" type="text" name="nom_modif" id="nom_modif" value="<?php print($Ens_Modif['NOM_ENS']); ?>" ><br><br><br>k
+                      <input  class="inpstyl" type="text" name="nom_modif" id="nom_modif" value="<?php print($Ens_Modif['NOM_ENS']); ?>" ><br><br><br>
 
                       <label for="prenom_modif"><span>Prenom :</span></label><br>
                       <input  class="inpstyl" type="text" name="prenom_modif" id="prenom_modif" value="<?php print($Ens_Modif['PRENOM_ENS']); ?>" ><br><br><br>

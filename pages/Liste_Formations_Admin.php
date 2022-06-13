@@ -242,8 +242,8 @@
           <?php foreach($rows as $formation) : 
               
               /// *** Enseignants de cette departement
-              $Smt = $bdd->prepare("SELECT * FROM enseignant WHERE ID_DEPART=? AND ID_ENS not in (SELECT ID_ENS FROM formation) ");
-              $Smt -> execute(array($formation['ID_DEPART']));
+              $Smt = $bdd->prepare("SELECT * FROM enseignant e,enseigner eg WHERE e.ID_ENS=eg.ID_ENS AND eg.ID_FORM=? AND e.ID_ENS not in (SELECT ID_ENS FROM formation) ");
+              $Smt -> execute(array($formation['ID_FORM']));
               $Liste_Ens = $Smt -> fetchAll(PDO::FETCH_ASSOC);
               $Smt->closeCursor();//vider le curseur (free) 
 

@@ -54,7 +54,7 @@
               </li>
               
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Liste_Depeignats_Admin.php">Depeignants</a>
+                <a class="nav-link navlink" href="Liste_Enseignats_Admin.php">Enseignants</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink " href="Liste_Entreprises_Admin.php">Entreprises</a>
