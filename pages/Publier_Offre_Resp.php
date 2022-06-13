@@ -46,9 +46,15 @@
         }
 
         // insertion d'entreprise
-        $Smt = $bdd->prepare("SELECT ID_ENTREP FROM entreprise WHERE NOM_ENTREP=? AND VILLE=?");
+        $Smt = $bdd->prepare("SELECT ID_ENTREP,EMAIL_ENTREP FROM entreprise WHERE NOM_ENTREP=? AND VILLE=?");
         $Smt -> execute(array($nom_entrep,$ville));
         $row = $Smt->fetch();
+        echo "<br><br><br><br>";
+        
+        $Email = $row['EMAIL_ENTREP'];
+        var_dump($email_entrep);
+        echo "<br><br><br><br>";
+        var_dump($Email);
         $Smt->closeCursor();//vider le curseur (free)
 
         // isertion d'entreprise s'elle n'existe pas
@@ -65,10 +71,25 @@
           $Smt->closeCursor();//vider le curseur (free)
         }
 
-        //TODO: update mail entreprise 
+        
+
+        
+        
+        
 
         // select l'id d'entreprise
         $id_entrep = $row[0];
+
+        // update mail entreprise 
+        if ( $Email != $email_entrep )
+        {
+          var_dump($Email);
+            $Smt = $bdd->prepare("UPDATE entreprise SET EMAIL_ENTREP=? WHERE ID_ENTREP=?");
+            $Smt -> execute(array($email_entrep,$id_entrep));
+            $test = $Smt->fetch();
+            var_dump($test);
+            $Smt->closeCursor();//vider le curseur (free)
+        }
 
         echo "<br><br><br><br>".$source_offre;
         
@@ -92,6 +113,8 @@
             
           }else{
             $id_private_etu = $row[0];
+            // si l'offre
+
             // publier et postuler
             $Smt = $bdd->prepare("INSERT INTO offre (ID_FORM,ID_ENTREP,STATUOFFRE,NBRCANDIDAT,POSTE,DUREE,DATEDEBUT,DATEFIN,DESCRIP,NIVEAU_OFFRE,SOURCE_OFFRE) VALUES (?,?,?,?,?,?,?,?,?,?,?)");
             $Smt -> execute(array($id_form,$id_entrep,'Completée',$nbrcandidat,$poste,$duree,$datedebut,$datefin,$descrip,$niveau,$source_offre));
@@ -167,7 +190,7 @@
                 <a class="nav-link navlink " href="Verify_Etudiant_Resp.php">Verification</a>
                 <?php 
                 /// ***Nombre de soumissions
-                $Smt =$bdd->prepare("SELECT count(u.ID_USER) as Nbr_non_Verif from etudiant e,Users u WHERE u.ID_USER=e.ID_USER AND u.VERIFIED=? AND e.ID_FORM=?  ");
+                $Smt =$bdd->prepare("SELECT count(u.ID_USER) as Nbr_non_Verif from etudiant e,users u WHERE u.ID_USER=e.ID_USER AND u.VERIFIED=? AND e.ID_FORM=?  ");
                 $Smt->execute(array('0',$id_form));
                 $row = $Smt->fetch(PDO::FETCH_ASSOC);
                 if(!empty($row)){ if($row['Nbr_non_Verif']){ ?><span class="icon-button__badge"><?php $Nb_non_verif =$row['Nbr_non_Verif'];if($Nb_non_verif)print($Nb_non_verif);}} ?></span>
@@ -452,14 +475,22 @@
                       <div class="col-4 col-md-2 elm "> 
                         <label for="duree"><span>Durée (mois)</span></label><br>
                         <label for="nbrcandidat" style="margin-top: 55px;"><span>Nombre de Condidats</span></label><br>
+                        <?php
+                          if($type_form != 0)
+                          {
+                        ?>
                         <label for="niveau" style="margin-top: 28px;"><span>Niveau</span></label><br>
+                        <?php 
+                        }
+                        ?>
+
                         <label for="type" style="margin-top: 55px;"><span>Type</span></label><br>
                       </div>
                       <div class="col-8 col-md-2 elm" >
                         <input class="inpstyl" type="number" step="1" min="0" id="duree" name="duree"><br>
                         <input class="inpstyl" type="number" step="1" min="1" style="margin-top: 45px;" id="nbrcandidat" name="nbrcandidat"><br>
                         <?php 
-                          if($row[0] == 1)
+                          if($type_form == 1)
                           {
                             echo "<div >
                             <select class='form-select' aria-label='Default select example' style='margin-top: 40px;' id='niveau' name='niveau'>
@@ -469,7 +500,7 @@
                             </select><br>
                           </div>";
                           }
-                          else if( $row[0] == 2)
+                          else if( $type_form == 2)
                           {
                             echo "<div >
                             <select class='form-select' aria-label='Default select example' style='margin-top: 40px;' id='niveau' name='niveau'>
@@ -480,22 +511,35 @@
                           }
                           ?>
                         
-
+                        <?php 
+                          if($type_form == 0)
+                          {
+                        ?>
                         <div >
-                        <select class="form-select" aria-label="Default select example" style="margin-top: 23px; " id="type" name='source_offre'>
+                        <select class="form-select" aria-label="Default select example" style="margin-top: 70px; " id="type" name='source_offre'>
                           <option value="1">Interne</option>
                           <option value="0" >Externe</option>
                         </select>
                         
                       </div>
                       
-                    
-                    
-                    
+                      <?php 
+                          }
+                          else{
+                        ?>
+                    <div >
+                        <select class="form-select" aria-label="Default select example" style="margin-top: 23px; " id="type" name='source_offre'>
+                          <option value="1">Interne</option>
+                          <option value="0" >Externe</option>
+                        </select>
+                        
+                      </div>
+                    <?php
+                          }?>
                     
                   
                 </div>
-                <div id="cne" class="col-8 col-md-2 elm" style="display: none;"><label for="" style="margin-top: 247px; margin-left: -20px;"><span>CNE</span></label><input class="inpstyl" type="text" style="margin-left: 10px;" name="cne"></div>
+                <div id="cne" class="col-8 col-md-2 elm" style="display: none;"><label for="" style="margin-top: <?php if($type_form == 0) echo "200px"; else echo "247px";?>;  margin-left: -20px;"><span>CNE</span></label><input class="inpstyl" type="text" style="margin-left: 10px;" name="cne"></div>
                 
                 
               </div>
