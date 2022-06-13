@@ -32,8 +32,8 @@
         $to = "yassinejrayfy36@gmail.com";  // mail of reciever
         $subject = "Tutorial or any subject";
         $body = "Send Mail Using PHPMailer - MS The Tech Guy";
-        $from = "abdopro202@gmail.com";  // you mail
-        $password = "abdopro200213";  // your mail password
+        $from = "fstage.media@gmail.com";  // you mail
+        $password = "rmjqxniouziiythp";  // your mail password
         //$cv = "path";
 
         // Ignore from here
