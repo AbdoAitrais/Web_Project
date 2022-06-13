@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 13 juin 2022 à 14:19
+-- Généré le : lun. 13 juin 2022 à 20:30
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -115,6 +115,37 @@ INSERT INTO `enseignant` (`ID_ENS`, `ID_DEPART`, `NOM_ENS`, `PRENOM_ENS`, `CIN_E
 (8, 1, 'EN8', 'ENS8', 'T5653358', 'ENS8@gmail.com', NULL, NULL, 1),
 (9, 1, 'EN9', 'ENS9', 'T5653359', 'ENS9@gmail.com', NULL, NULL, 1),
 (10, 2, 'EN10', 'ENS10', 'T5653360', 'ENS10@gmail.com', NULL, NULL, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `enseigner`
+--
+
+DROP TABLE IF EXISTS `enseigner`;
+CREATE TABLE IF NOT EXISTS `enseigner` (
+  `ID_FORM` int(11) NOT NULL,
+  `ID_ENS` int(11) NOT NULL,
+  PRIMARY KEY (`ID_FORM`,`ID_ENS`),
+  KEY `FK_FORM` (`ID_FORM`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `enseigner`
+--
+
+INSERT INTO `enseigner` (`ID_FORM`, `ID_ENS`) VALUES
+(1, 1),
+(1, 3),
+(1, 4),
+(1, 5),
+(2, 2),
+(2, 6),
+(2, 7),
+(2, 10),
+(3, 5),
+(3, 8),
+(3, 9);
 
 -- --------------------------------------------------------
 
@@ -233,12 +264,10 @@ CREATE TABLE IF NOT EXISTS `juri` (
 --
 
 INSERT INTO `juri` (`ID_ENS`, `ID_STAGE`, `NOTE`) VALUES
-(5, 24, NULL),
-(1, 24, NULL),
-(3, 24, NULL),
 (5, 15, NULL),
-(4, 15, NULL),
-(1, 15, NULL);
+(1, 15, NULL),
+(3, 15, NULL),
+(4, 15, NULL);
 
 -- --------------------------------------------------------
 
@@ -385,7 +414,7 @@ CREATE TABLE IF NOT EXISTS `stage` (
 --
 
 INSERT INTO `stage` (`ID_STAGE`, `ID_OFFRE`, `ID_ENS`, `ID_ETU`, `DATEDEBUT_STAGE`, `NOTENCAD_ENTREP`, `NOTENCAD`, `CONTRAT`, `NIVEAU_STAGE`) VALUES
-(15, 17, 3, 1, '2022-06-09 07:55:38', 13, 14, NULL, 3),
+(15, 17, 1, 1, '2022-06-09 07:55:38', 13, 14, NULL, 3),
 (23, 10, NULL, 3, '2022-06-10 09:42:19', NULL, NULL, 'uploads/Contracts/Contract10-3.pdf', 1),
 (24, 3, 3, 6, '2022-06-10 10:34:06', NULL, NULL, 'uploads/Contracts/Contract3-6.pdf', 0);
 

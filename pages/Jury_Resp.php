@@ -24,12 +24,16 @@
         ///Stage encours
         $id_stage = $_GET['id_stage'];
          /// *** Test access
-        $Smt =$bdd->prepare("SELECT ID_FORM FROM stage s,etudiant e WHERE s.ID_ETU=e.ID_ETU AND ID_STAGE=?");
+        $Smt =$bdd->prepare("SELECT e.ID_ETU,e.ID_FORM FROM stage s,etudiant e WHERE s.ID_ETU=e.ID_ETU AND ID_STAGE=?");
         $Smt->execute(array($id_stage));
-        $etu_form = $Smt->fetch(PDO::FETCH_ASSOC);
+        $etudiant_stg = $Smt->fetch(PDO::FETCH_ASSOC);
+
+        $id_etu =$etudiant_stg['ID_ETU'];
+        $etu_form =$etudiant_stg['ID_FORM'];
+
         $Smt->closeCursor();//vider le curseur (free) 
       
-        if($etu_form['ID_FORM'] != $_SESSION['user_id'] )
+        if($etu_form != $_SESSION['user_id'] )
             exit("You're not allowed to access for this stage");
         
         ///*** 
@@ -44,10 +48,12 @@
         
         ///Enseignants dans la modale
         $id_form = $_SESSION['user_id'];
+
         $sql3 ="SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS
-                FROM enseignant e
-                WHERE e.ID_DEPART = (SELECT e1.ID_DEPART FROM formation f, enseignant e1 WHERE f.ID_ENS = e1.ID_ENS AND f.ID_FORM = '$id_form') 
-                      AND e.ID_ENS NOT IN (SELECT ID_ENS FROM juri WHERE ID_STAGE = '$id_stage') AND e.ACTIVE_ENS='1' ORDER BY e.ID_ENS";
+                FROM enseignant e,enseigner eg 
+                WHERE e.ID_ENS=eg.ID_ENS
+                AND  eg.ID_FORM='$id_form'
+                AND e.ID_ENS NOT IN (SELECT ID_ENS FROM juri WHERE ID_STAGE = '$id_stage') AND e.ACTIVE_ENS='1' ORDER BY e.ID_ENS";
       
         $req3 =$bdd->query($sql3);
         $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
@@ -66,8 +72,8 @@
 
         
         /// Enseignants d'etre encadrants
-        $Smt =$bdd->prepare("SELECT ID_ENS,NOM_ENS,PRENOM_ENS FROM enseignant WHERE ID_DEPART=(SELECT ID_DEPART FROM enseignant e,formation f WHERE e.ID_ENS=f.ID_ENS AND f.ID_FORM=(SELECT ID_FORM FROM etudiant WHERE ID_ETU=(SELECT ID_ETU FROM STAGE WHERE ID_STAGE=?)) )");
-        $Smt->execute(array($id_stage));
+        $Smt =$bdd->prepare("SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS FROM enseignant e,enseigner eg WHERE e.ID_ENS=eg.ID_ENS AND  e.ACTIVE_ENS='1' AND eg.ID_FORM=(SELECT ID_FORM FROM etudiant WHERE ID_ETU=?)");
+        $Smt->execute(array($id_etu));
         $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
 
         
@@ -118,6 +124,12 @@
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink " href="Verify_Etudiant_Resp.php">Verification</a>
+                <?php 
+                /// ***Nombre de soumissions
+                $Smt =$bdd->prepare("SELECT count(u.ID_USER) as Nbr_non_Verif from etudiant e,Users u WHERE u.ID_USER=e.ID_USER AND u.VERIFIED=? AND e.ID_FORM=?  ");
+                $Smt->execute(array('0',$id_form));
+                $row = $Smt->fetch(PDO::FETCH_ASSOC);
+                if(!empty($row)){ if($row['Nbr_non_Verif']){ ?><span class="icon-button__badge"><?php $Nb_non_verif =$row['Nbr_non_Verif'];if($Nb_non_verif)print($Nb_non_verif);}} ?></span>
               </li>
             </ul>
             

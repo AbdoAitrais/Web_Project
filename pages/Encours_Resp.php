@@ -52,7 +52,7 @@
 
 
       /// Enseignants d'etre encadrants
-      $Smt =$bdd->prepare("SELECT ID_ENS,NOM_ENS,PRENOM_ENS FROM enseignant WHERE ID_DEPART=(SELECT ID_DEPART FROM enseignant e,formation f WHERE e.ID_ENS=f.ID_ENS AND f.ID_FORM=(SELECT ID_FORM FROM etudiant WHERE ID_ETU=?) )");
+      $Smt =$bdd->prepare("SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS FROM enseignant e,enseigner eg WHERE e.ID_ENS=eg.ID_ENS AND  e.ACTIVE_ENS='1' AND eg.ID_FORM=(SELECT ID_FORM FROM etudiant WHERE ID_ETU=?)");
       $Smt->execute(array($id_etu));
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
       ///Last visited page
@@ -104,6 +104,12 @@
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink " href="Verify_Etudiant_Resp.php">Verification</a>
+                <?php 
+                /// ***Nombre de soumissions
+                $Smt =$bdd->prepare("SELECT count(u.ID_USER) as Nbr_non_Verif from etudiant e,Users u WHERE u.ID_USER=e.ID_USER AND u.VERIFIED=? AND e.ID_FORM=?  ");
+                $Smt->execute(array('0',$id_form));
+                $row = $Smt->fetch(PDO::FETCH_ASSOC);
+                if(!empty($row)){ if($row['Nbr_non_Verif']){ ?><span class="icon-button__badge"><?php $Nb_non_verif =$row['Nbr_non_Verif'];if($Nb_non_verif)print($Nb_non_verif);}} ?></span>
               </li>
             </ul>
             
