@@ -8,7 +8,7 @@
 
     else{
         
-        if(!empty($_POST['rapport']) || !empty($_POST['contract']) )
+        if(!empty($_POST['rapport']) || !empty($_POST['contract']) || !empty($_POST['cv']) )
         {
             if(!empty($_POST['rapport'])){
                 
@@ -17,6 +17,9 @@
             }else if(!empty($_POST['contract'])){
                 $filename = basename($_POST['contract']);
                 $filepath = '../uploads/Contracts/' . $filename;
+            }else if(!empty($_POST['cv'])){
+                $filename = basename($_POST['cv']);
+                $filepath = '../uploads/cv/' . $filename;
             }
             
             if(!empty($filename) && file_exists($filepath)){
