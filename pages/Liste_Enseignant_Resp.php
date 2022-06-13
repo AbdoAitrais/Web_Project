@@ -12,7 +12,7 @@
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
     
-      $req = "SELECT * FROM enseignant WHERE ID_DEPART IN (SELECT ID_DEPART FROM enseignant e, formation f WHERE f.ID_ENS = e.ID_ENS AND ID_FORM=?)";
+      $req = "SELECT * FROM enseignant e,enseigner eg WHERE e.ID_ENS=eg.ID_ENS AND eg.ID_FORM=? AND e.ID_ENS NOT IN (SELECT ID_ENS FROM formation)";
     
       $Smt = $bdd->prepare($req);
       $Smt -> execute(array($id_form));

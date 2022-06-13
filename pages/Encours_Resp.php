@@ -52,7 +52,7 @@
 
 
       /// Enseignants d'etre encadrants
-      $Smt =$bdd->prepare("SELECT ID_ENS,NOM_ENS,PRENOM_ENS FROM enseignant WHERE ID_DEPART=(SELECT ID_DEPART FROM enseignant e,formation f WHERE e.ID_ENS=f.ID_ENS AND f.ID_FORM=(SELECT ID_FORM FROM etudiant WHERE ID_ETU=?) )");
+      $Smt =$bdd->prepare("SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS FROM enseignant e,enseigner eg WHERE e.ID_ENS=eg.ID_ENS AND  e.ACTIVE_ENS='1' AND eg.ID_FORM=(SELECT ID_FORM FROM etudiant WHERE ID_ETU=?)");
       $Smt->execute(array($id_etu));
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
       ///Last visited page
