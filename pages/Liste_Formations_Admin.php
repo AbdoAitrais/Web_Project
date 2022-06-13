@@ -67,7 +67,7 @@
                 <a class="nav-link navlink" href="Liste_Entreprises_Admin.php">Entreprises</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Départements</a>
+                <a class="nav-link navlink" href="Liste_Departement_Admin.php">Départements</a>
               </li>
             </ul>
             <div class="" style="position: fixed; margin-left: 44%;">
