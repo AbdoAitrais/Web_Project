@@ -45,8 +45,8 @@
       if(isset($_POST['Filter']) && !empty( $_POST['Filter'] )){
 
           $Filter_search = $_POST['Filter'];
-          $sql=$sql." AND( (e.VILLE = '$Filter_search' ) OR (o.POSTE = '$Filter_search' ) OR (o.DESCRIP LIKE '%$Filter_search%' ) OR (e.NOM_ENTREP LIKE '$Filter_search' ) OR (p.STATU LIKE '$Filter_search' ) )";
-        
+          $sql=$sql." AND( (e.VILLE = '$Filter_search' ) OR (o2.POSTE = '$Filter_search' ) OR (o2.DESCRIP LIKE '%$Filter_search%' ) OR (e.NOM_ENTREP LIKE '$Filter_search' ) OR (p2.STATU LIKE '$Filter_search' ) )";
+          
       }
       /// ***Order by
       $sql=$sql." ORDER BY o2.ID_OFFRE DESC";
@@ -99,7 +99,7 @@
                 <?php 
                 /// ***Nombre de soumissions
                 $Smt =$bdd->prepare("SELECT count(u.ID_USER) as Nbr_non_Verif from etudiant e,Users u WHERE u.ID_USER=e.ID_USER AND u.VERIFIED=? AND e.ID_FORM=?  ");
-                $Smt->execute(array('0',$id_form));
+                $Smt->execute(array('0',$etu_form['ID_FORM']));
                 $row = $Smt->fetch(PDO::FETCH_ASSOC);
                 if(!empty($row)){ if($row['Nbr_non_Verif']){ ?><span class="icon-button__badge"><?php $Nb_non_verif =$row['Nbr_non_Verif'];if($Nb_non_verif)print($Nb_non_verif);}} ?></span>
               </li>

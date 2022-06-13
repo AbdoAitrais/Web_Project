@@ -83,7 +83,6 @@ if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_PO
         $Smt->closeCursor();//vider le curseur (free)
 
         /// *** ID_USER
-        /// ***Insert in Users 
         $Smt = $bdd->prepare("SELECT max(ID_USER) as ID_USER FROM Users");
         $Smt -> execute();
         $row = $Smt->fetch(PDO::FETCH_ASSOC);
