@@ -61,6 +61,12 @@
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink " href="Verify_Etudiant_Resp.php">Verification</a>
+                <?php 
+                /// ***Nombre de soumissions
+                $Smt =$bdd->prepare("SELECT count(u.ID_USER) as Nbr_non_Verif from etudiant e,Users u WHERE u.ID_USER=e.ID_USER AND u.VERIFIED=? AND e.ID_FORM=?  ");
+                $Smt->execute(array('0',$id_form));
+                $row = $Smt->fetch(PDO::FETCH_ASSOC);
+                if(!empty($row)){ if($row['Nbr_non_Verif']){ ?><span class="icon-button__badge"><?php $Nb_non_verif =$row['Nbr_non_Verif'];if($Nb_non_verif)print($Nb_non_verif);}} ?></span>
               </li>
             </ul>
             

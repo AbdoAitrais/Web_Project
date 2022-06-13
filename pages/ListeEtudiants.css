@@ -575,3 +575,19 @@ th{
 {
     color: #ff5d94;
 }
+
+.icon-button__badge {
+  position: absolute;
+  top: -2px;
+  right: -2px;
+  width: 19px;
+  height: 19px;
+  background: red;
+  color: #ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  font-weight: 600;
+
+}
