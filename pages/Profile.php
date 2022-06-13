@@ -53,7 +53,12 @@
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink " href="Soumissions_Etu.php">Soumissions</a>
-                <?php if(!empty($row)){ if($row['Nbr_soums']){ ?><span class="icon-button__badge"><?php $Nb_rtn =$row['Nbr_soums'];if($Nb_rtn)print($Nb_rtn);}} ?></span>
+                <?php 
+                /// ***Nombre de soumissions
+                $Smt =$bdd->prepare("SELECT count(e.ID_ETU) as Nbr_soums FROM etudiant e,postuler p WHERE e.ID_ETU = p.ID_ETU AND e.ID_ETU=? AND p.STATU=? ");
+                $Smt->execute(array($Etu,'Retenue'));
+                $row = $Smt->fetch(PDO::FETCH_ASSOC);
+                if(!empty($row)){ if($row['Nbr_soums']){ ?><span class="icon-button__badge"><?php $Nb_rtn =$row['Nbr_soums'];if($Nb_rtn)print($Nb_rtn);}} ?></span>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="#">Stages</a>
@@ -125,7 +130,10 @@
                         <label for="imageUpload"></label>
                     </div>
                     <div class="avatar-preview">
+                        <?php if(!empty($Data['PICTURE']) ){ ?>
                         <div id="imagePreview" style="background-image: url('<?php print(strchr($Data['PICTURE'],'uploads'));?>');">
+                        <?php }else{?>
+                        <div id="imagePreview" style="background-image: url('icons/avatar.png');"><?php } ?>
                         </div>
                     </div>
                 </div>
@@ -240,8 +248,8 @@
                           <?php
                           $timestamp = strtotime($Data['DATENAISS_ETU']);
 
-                          $day = date('D', $timestamp);
-                          $month = date('M', $timestamp);
+                          $day = date('d', $timestamp);
+                          $month = date('m', $timestamp);
                           $year = date('Y', $timestamp);
                           ?>
                           <input class="inpp1" type="text" name="day" value="<?php echo $day ?>" disabled><input class="inpp2" type="text" name="month" value="<?php echo $month ?>" disabled><input class="inpp3" type="text" name="year" value="<?php echo $year ?>" disabled>

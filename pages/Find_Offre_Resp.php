@@ -107,7 +107,7 @@
 
                   <div class="tableHead" style="margin-bottom: 10px;">
                         <h4>Liste des offres</h4>
-                        <a href="Publier_Offre_Resp.php"><button>Publier Offre</button></a>   
+                        <a href="Publier_Offre_Resp.php"><i><img src="icons/plus.png" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i></a>   
                   </div>
                   
                   <?php
