@@ -29,7 +29,7 @@
         
         
         $name = "FSTAGE";  // Name of your website or yours
-        $to = "yassinejrayfy36@gmail.com";  // mail of reciever
+        $to = "abdopro202@gmail.com";  // mail of reciever
         $subject = "Tutorial or any subject";
         $body = "Send Mail Using PHPMailer - MS The Tech Guy";
         $from = "fstage.media@gmail.com";  // you mail

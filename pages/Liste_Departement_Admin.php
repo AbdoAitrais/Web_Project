@@ -119,8 +119,8 @@
                         <tr>
                           <td ><?php print($Dep['NOM_DEPART']); ?></td>
                           <td style="text-align: end; ">
-                            <i style="margin-right: 20px;"><img src="icons/edit.png" alt="" data-bs-toggle="modal" data-bs-target="#Dep<?php print($Dep['ID_DEPART']); ?>"></i>
-                            <i ><img src="icons/rubbish-bin.png" alt=""></i> 
+                            <i style="margin-right: 20px;"><img src="icons/edit.png" title="détail" alt="" data-bs-toggle="modal" data-bs-target="#Dep<?php print($Dep['ID_DEPART']); ?>"></i>
+                            
                           </td>
                         </tr>
                         <?php endforeach; ?>
