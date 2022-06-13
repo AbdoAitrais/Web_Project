@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : sam. 11 juin 2022 à 00:13
+-- Généré le : lun. 13 juin 2022 à 14:19
 -- Version du serveur :  5.7.31
 -- Version de PHP : 7.3.21
 
@@ -29,11 +29,18 @@ SET time_zone = "+00:00";
 
 DROP TABLE IF EXISTS `admin`;
 CREATE TABLE IF NOT EXISTS `admin` (
-  `ID_ADMIN` int(11) NOT NULL,
+  `ID_ADMIN` int(11) NOT NULL AUTO_INCREMENT,
   `ID_USER` int(11) NOT NULL,
   PRIMARY KEY (`ID_ADMIN`),
   KEY `FK_USER_ADMIN` (`ID_USER`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Déchargement des données de la table `admin`
+--
+
+INSERT INTO `admin` (`ID_ADMIN`, `ID_USER`) VALUES
+(1, 15);
 
 -- --------------------------------------------------------
 
@@ -49,7 +56,7 @@ CREATE TABLE IF NOT EXISTS `attente` (
   PRIMARY KEY (`ID_ETU`,`ID_OFFRE`),
   UNIQUE KEY `PR` (`PRIORITE`),
   KEY `FK_ATTENTE2` (`ID_OFFRE`)
-) ENGINE=MyISAM AUTO_INCREMENT=49 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=52 DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -85,27 +92,29 @@ CREATE TABLE IF NOT EXISTS `enseignant` (
   `NOM_ENS` varchar(25) DEFAULT NULL,
   `PRENOM_ENS` varchar(25) DEFAULT NULL,
   `CIN_ENS` varchar(15) DEFAULT NULL,
+  `EMAIL_ENS` varchar(30) DEFAULT NULL,
   `DATENAISS_ENS` date DEFAULT NULL,
   `NUMTEL_ENS` int(11) DEFAULT NULL,
   `ACTIVE_ENS` int(11) NOT NULL DEFAULT '1',
   PRIMARY KEY (`ID_ENS`),
   KEY `FK_FAIRE_PARTIE_DE` (`ID_DEPART`)
-) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `enseignant`
 --
 
-INSERT INTO `enseignant` (`ID_ENS`, `ID_DEPART`, `NOM_ENS`, `PRENOM_ENS`, `CIN_ENS`, `DATENAISS_ENS`, `NUMTEL_ENS`, `ACTIVE_ENS`) VALUES
-(1, 1, 'EN1', 'ENS1', NULL, NULL, NULL, 1),
-(2, 2, 'EN2', 'ENS2', NULL, NULL, NULL, 1),
-(3, 1, 'EN3', 'ENS3', NULL, NULL, NULL, 1),
-(4, 1, 'EN4', 'ENS4', NULL, NULL, NULL, 1),
-(5, 1, 'EN5', 'ENS5', NULL, NULL, NULL, 1),
-(6, 2, 'EN6', 'ENS6', NULL, NULL, NULL, 1),
-(7, 2, 'EN7', 'ENS7', NULL, NULL, NULL, 1),
-(8, 1, 'EN8', 'ENS8', NULL, NULL, NULL, 1),
-(9, 1, 'EN9', 'ENS9', NULL, NULL, NULL, 1);
+INSERT INTO `enseignant` (`ID_ENS`, `ID_DEPART`, `NOM_ENS`, `PRENOM_ENS`, `CIN_ENS`, `EMAIL_ENS`, `DATENAISS_ENS`, `NUMTEL_ENS`, `ACTIVE_ENS`) VALUES
+(1, 1, 'EN1', 'ENS1', 'T5653351', 'ENS1@gmail.com', NULL, NULL, 1),
+(2, 2, 'EN2', 'ENS2', 'T5653352', 'ENS2@gmail.com', NULL, NULL, 1),
+(3, 1, 'EN3', 'ENS3', 'T5653353', 'ENS3@gmail.com', NULL, NULL, 1),
+(4, 1, 'EN4', 'ENS4', 'T5653354', 'ENS4@gmail.com', NULL, NULL, 1),
+(5, 1, 'EN5', 'ENS5', 'T5653355', 'ENS5@gmail.com', NULL, NULL, 1),
+(6, 2, 'EN6', 'ENS6', 'T5653356', 'ENS6@gmail.com', NULL, NULL, 1),
+(7, 2, 'EN7', 'ENS7', 'T5653357', 'ENS7@gmail.com', NULL, NULL, 1),
+(8, 1, 'EN8', 'ENS8', 'T5653358', 'ENS8@gmail.com', NULL, NULL, 1),
+(9, 1, 'EN9', 'ENS9', 'T5653359', 'ENS9@gmail.com', NULL, NULL, 1),
+(10, 2, 'EN10', 'ENS10', 'T5653360', 'ENS10@gmail.com', NULL, NULL, 1);
 
 -- --------------------------------------------------------
 
@@ -119,22 +128,24 @@ CREATE TABLE IF NOT EXISTS `entreprise` (
   `NOM_ENTREP` varchar(25) DEFAULT NULL,
   `EMAIL_ENTREP` varchar(50) DEFAULT NULL,
   `VILLE` varchar(30) DEFAULT NULL,
+  `WEBSITE` varchar(30) DEFAULT NULL,
   PRIMARY KEY (`ID_ENTREP`)
-) ENGINE=MyISAM AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `entreprise`
 --
 
-INSERT INTO `entreprise` (`ID_ENTREP`, `NOM_ENTREP`, `EMAIL_ENTREP`, `VILLE`) VALUES
-(1, 'Inwi', NULL, 'Casablanca'),
-(2, 'Tesalate', 'Tesalate@gmail.com', 'KENITRA'),
-(7, 'ENTREP1', 'HH9@gmail.com', 'KENITRA'),
-(8, 'ENTREP3', 'HH11@gmail.com', 'SALE'),
-(9, 'ENTREP2', 'HH10@gmail.com', 'SALE'),
-(10, 'ENTREP4', 'LL9@gmail.com', 'KENITRA'),
-(11, 'ONI', 'HH0@gmail.com', 'OUJDA'),
-(12, 'MH1', 'MH1@gmail.com', 'TANGER');
+INSERT INTO `entreprise` (`ID_ENTREP`, `NOM_ENTREP`, `EMAIL_ENTREP`, `VILLE`, `WEBSITE`) VALUES
+(1, 'Inwi', 'inwi@gmail.com', 'Casablanca', 'inwi.com'),
+(2, 'Tesalate', 'Tesalate@gmail.com', 'KENITRA', 'Tesalate.com'),
+(7, 'ENTREP1', 'HH9@gmail.com', 'KENITRA', ''),
+(8, 'ENTREP3', 'HH11@gmail.com', 'SALE', NULL),
+(9, 'ENTREP2', 'HH10@gmail.com', 'SALE', NULL),
+(10, 'ENTREP4', 'LL9@gmail.com', 'KENITRA', NULL),
+(11, 'ONI', 'HH0@gmail.com', 'OUJDA', NULL),
+(12, 'MH1', 'MH1@gmail.com', 'TANGER', NULL),
+(13, 'ENTREP5', 'ENTREP5@gmail.com', NULL, 'ENTREP5.com');
 
 -- --------------------------------------------------------
 
@@ -172,7 +183,7 @@ INSERT INTO `etudiant` (`ID_ETU`, `ID_FORM`, `NOM_ETU`, `PRENOM_ETU`, `CIN_ETU`,
 (2, 1, 'ABDO', 'RAIS', 'AR1', 'R130073880', 3, 2019, '1999-06-18', 'AR1-AR1', 'AR@R', 130073840, '../uploads/cv/defiler (F).pdf', 2),
 (3, 2, 'YASSINE', 'JRAYFY', NULL, 'R130073850', 1, 2022, NULL, NULL, NULL, NULL, '../uploads/cv/03-automates.pdf', 3),
 (4, 1, 'HAMZA', 'BANA', 'BH1', 'R130073860', 3, 2019, '1999-06-10', 'BH1-BH1', 'BH@B', 130073890, '../uploads/cv/TD1.pdf', 6),
-(6, 3, 'KAMAL', 'hassan', 'BB54FF8', 'R130073800	', 0, 2022, '2000-02-02', 'casablanca-sm', NULL, 130073860, '../uploads/cv/Lutopisme_postcolonial_chez_Fouad_Laroui_La_Vieil.pdf', 13);
+(6, 3, 'KAMAL', 'hassan', 'BB54FF8', 'R130073800	', 0, 2022, '2000-02-02', 'casablanca-sm', NULL, 130073860, '../uploads/cv/010080697.pdf', 13);
 
 -- --------------------------------------------------------
 
@@ -184,22 +195,23 @@ DROP TABLE IF EXISTS `formation`;
 CREATE TABLE IF NOT EXISTS `formation` (
   `ID_FORM` int(11) NOT NULL AUTO_INCREMENT,
   `ID_ENS` int(11) NOT NULL,
+  `FULL_NAME` varchar(40) DEFAULT NULL,
   `FILIERE` varchar(30) DEFAULT NULL,
   `TYPE_FORM` int(11) DEFAULT NULL,
   `ID_USER` int(11) NOT NULL,
   PRIMARY KEY (`ID_FORM`),
   KEY `FK_GERER2` (`ID_ENS`),
   KEY `FK_USER_RESP` (`ID_USER`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `formation`
 --
 
-INSERT INTO `formation` (`ID_FORM`, `ID_ENS`, `FILIERE`, `TYPE_FORM`, `ID_USER`) VALUES
-(1, 1, 'ILISI', 1, 4),
-(2, 6, 'MQSE', 2, 5),
-(3, 9, 'IRM', 0, 14);
+INSERT INTO `formation` (`ID_FORM`, `ID_ENS`, `FULL_NAME`, `FILIERE`, `TYPE_FORM`, `ID_USER`) VALUES
+(1, 1, NULL, 'ILISI', 1, 4),
+(2, 6, NULL, 'MQSE', 2, 5),
+(3, 9, NULL, 'IRM', 0, 14);
 
 -- --------------------------------------------------------
 
@@ -221,11 +233,12 @@ CREATE TABLE IF NOT EXISTS `juri` (
 --
 
 INSERT INTO `juri` (`ID_ENS`, `ID_STAGE`, `NOTE`) VALUES
-(1, 24, NULL),
 (5, 24, NULL),
+(1, 24, NULL),
 (3, 24, NULL),
-(1, 15, 12),
-(3, 15, NULL);
+(5, 15, NULL),
+(4, 15, NULL),
+(1, 15, NULL);
 
 -- --------------------------------------------------------
 
@@ -283,7 +296,7 @@ INSERT INTO `offre` (`ID_OFFRE`, `ID_FORM`, `ID_ENTREP`, `STATUOFFRE`, `NBRCANDI
 (11, 1, 2, 'Completée', 2, 'BI', 60, '2022-05-24', '2022-06-21', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 3, 1),
 (10, 2, 2, 'Nouveau', 10, 'Cloud', 30, '2022-05-31', '2022-06-21', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl.', 1, 1),
 (16, 1, 7, 'Nouveau', 10, 'Hacker', 2700, '2022-06-05', '2022-07-07', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec rhoncus convallis purus, at elementum ligula egestas quis. Duis sed dolor quam. Vivamus vitae hendrerit magna. Nam lacinia tellus placerat luctus rutrum. Nam consectetur justo velit, ac vulputate justo ultrices eget. Nunc ut convallis tortor, at tempor nisl', 3, 1),
-(17, 1, 11, 'Nouveau', 10, 'Engineer', 81000, '2022-06-06', '2022-07-07', 'Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem LoremLorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem  Lorem  Lorem', 3, 1),
+(17, 1, 11, 'Nouveau', 10, 'Engineer', 120, '2022-06-06', '2022-07-07', 'Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem LoremLorem Lorem Lorem Lorem Lorem Lorem Lorem Lorem  Lorem  Lorem', 3, 1),
 (18, 2, 12, 'Nouveau', 14, 'MH1', 90, '2022-06-10', '2023-01-01', 'LOREM LOREM LOREM', 1, 1);
 
 -- --------------------------------------------------------
@@ -311,7 +324,6 @@ INSERT INTO `postuler` (`ID_ETU`, `ID_OFFRE`, `STATU`, `DATEREPONS`, `DATEPOST`)
 (2, 7, 'Postulée', '2022-06-10 07:20:31', '2022-06-10 01:29:43'),
 (2, 16, 'Non Acceptée', '2022-06-10 07:20:27', '2022-06-10 01:29:41'),
 (2, 17, 'Postulée', '2022-06-10 07:20:26', '2022-06-10 01:29:40'),
-(4, 17, 'Postulée', NULL, '2022-06-11 11:47:15'),
 (6, 3, 'Acceptée', '2022-06-10 10:34:01', '2022-06-10 10:33:52'),
 (3, 10, 'Acceptée', '2022-06-10 09:42:15', '2022-06-10 09:42:01'),
 (1, 17, 'Acceptée', '2022-06-09 07:55:35', '2022-06-09 07:55:31');
@@ -373,9 +385,9 @@ CREATE TABLE IF NOT EXISTS `stage` (
 --
 
 INSERT INTO `stage` (`ID_STAGE`, `ID_OFFRE`, `ID_ENS`, `ID_ETU`, `DATEDEBUT_STAGE`, `NOTENCAD_ENTREP`, `NOTENCAD`, `CONTRAT`, `NIVEAU_STAGE`) VALUES
-(15, 17, 5, 1, '2022-06-09 07:55:38', 13, 14, NULL, 3),
+(15, 17, 3, 1, '2022-06-09 07:55:38', 13, 14, NULL, 3),
 (23, 10, NULL, 3, '2022-06-10 09:42:19', NULL, NULL, 'uploads/Contracts/Contract10-3.pdf', 1),
-(24, 3, NULL, 6, '2022-06-10 10:34:06', NULL, NULL, 'uploads/Contracts/Contract3-6.pdf', 0);
+(24, 3, 3, 6, '2022-06-10 10:34:06', NULL, NULL, 'uploads/Contracts/Contract3-6.pdf', 0);
 
 -- --------------------------------------------------------
 
@@ -392,7 +404,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `ACTIVE` int(11) NOT NULL,
   `VERIFIED` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`ID_USER`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=18 DEFAULT CHARSET=latin1;
 
 --
 -- Déchargement des données de la table `users`
@@ -406,7 +418,8 @@ INSERT INTO `users` (`ID_USER`, `LOGIN`, `PASSWORD`, `PICTURE`, `ACTIVE`, `VERIF
 (5, 'hh2123', 'haha2123', NULL, 1, 1),
 (6, 'hamza123', 'bana123', NULL, 1, 1),
 (14, 'hh3123', 'haha3123', NULL, 1, 1),
-(13, 'Hassan@gmail.com', 'hehe111', '../uploads/pdp/302340_257908.jpg', 1, 1);
+(13, 'Hassan@gmail.com', 'hehe111', '../uploads/pdp/302340_257908.jpg', 1, 1),
+(15, 'admin1', 'admin1123', NULL, 1, 1);
 
 DELIMITER $$
 --
