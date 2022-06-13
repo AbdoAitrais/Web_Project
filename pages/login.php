@@ -43,10 +43,10 @@
               <form action="back_end/authentification.php" method="post">
                 <div>
                   <label class="inptit" for="username">Username</label><br>
-                  <input type="text" id="username" name="username" style="padding-left:1rem;"><br>
+                  <input type="text" id="username" name="username" style="padding-left:1rem;" required><br>
                   <div style="margin-top: 10px;">
                     <label class="inptit" for="password">Password</label><br>
-                    <input type="password" id="password" name="password" style="padding-left:1rem;">
+                    <input type="password" id="password" name="password" style="padding-left:1rem;" required>
                   </div>
                 </div><br>
                 <?php 

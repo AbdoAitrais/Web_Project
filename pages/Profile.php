@@ -99,7 +99,7 @@
             require('back_end/connexion.php');
             $id_etu = $_SESSION['user_id'];
            
-            $Smt = $bdd->prepare("SELECT * FROM etudiant e, formation f WHERE e.ID_FORM=f.ID_FORM AND ID_ETU=?");
+            $Smt = $bdd->prepare("SELECT * FROM etudiant e, formation f,Users u WHERE e.ID_FORM=f.ID_FORM AND e.ID_USER=u.ID_USER AND ID_ETU=?");
             $Smt -> execute(array($id_etu));
             $Data = $Smt -> fetch();
             $Smt->closeCursor();//vider le curseur (free)
@@ -125,7 +125,7 @@
                         <label for="imageUpload"></label>
                     </div>
                     <div class="avatar-preview">
-                        <div id="imagePreview" style="background-image: url('icons/faker.jpg');">
+                        <div id="imagePreview" style="background-image: url('<?php print(strchr($Data['PICTURE'],'uploads'));?>');">
                         </div>
                     </div>
                 </div>
@@ -140,15 +140,21 @@
                 </div>
 
                 <div class="twobutt">
+                  
+                <form action="back_end/Cv_Upload_Etu.php" method="post" style="display:inline;" id="upload_form" enctype="multipart/form-data">
+                  <input type="hidden" name="id_etu" value="<?php print($Data['ID_ETU']); ?>">  
                   <button type = "button" class = "btn-warnin" style="margin-left: 1%; margin-bottom: 10px;">
                     <i class = "fa fa-upload"></i> Upload File
-                    <input type="file">
-                  </button>
-
-                  <button type = "button" class = "btn-warnin">
-                    <i class = "fa fa-upload"></i> Mon Cv
-                    <input type="file">
-                  </button>
+                    <input type="file" name="cv" id="upload_file" >
+                    </button>
+                  </form>
+                  
+                  <form action="back_end/PDFDownLoad.php" method="post" style="display:inline;" >
+                    <button type = "submit" class = "btn-warnin" <?php if(!$Data['CV']){ ?> disabled <?php }?> >
+                      <i class = "fa fa-upload"></i> Mon Cv
+                    </button>
+                    <input type="hidden" name="cv" value="<?php print($Data['CV']); ?>">
+                  </form>
                 </div>
               </div>
 
@@ -313,6 +319,10 @@
   $("#flip").click(function(){
     $("#panel").slideToggle("slow");
   });
+});
+
+$('#upload_file').change(function() {
+  $('#upload_form').submit();
 });
 
 </script>
