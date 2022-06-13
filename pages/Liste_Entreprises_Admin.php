@@ -11,16 +11,11 @@
     {
       require('back_end/connexion.php');
   
-      /// *** Enseignats
-      $Smt = $bdd->prepare("SELECT * FROM enseignant e,departement d WHERE e.ID_DEPART=d.ID_DEPART ");
+      $Smt = $bdd->prepare("SELECT * FROM entreprise ");
       $Smt -> execute();
 	    $rows = $Smt -> fetchAll(PDO::FETCH_ASSOC);
-      $Smt->closeCursor();//vider le curseur (free) 
-      ///*** 
-      $Smt = $bdd->prepare("SELECT * FROM departement ");
-      $Smt -> execute();
-	    $deps = $Smt->fetchAll(PDO::FETCH_ASSOC);
-      $Smt->closeCursor();//vider le curseur (free) 
+
+
 ?>
 
 
@@ -40,7 +35,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 	<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <title>Enseignants</title>
+    <title>Entreprises</title>
     
     
 </head>
@@ -55,36 +50,39 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Formations_Admin.php">Formations</a>
+                <a class="nav-link navlink " href="Liste_Formations_Admin.php">Formations</a>
               </li>
               
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="Enseignats_Admin.php">Enseignants</a><span class="active_link_line"></span>
+                <a class="nav-link navlink" href="Liste_Enseignats_Admin.php">Enseignants</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Entreprises_Admin.php">Entreprises</a>
+                <a class="nav-link navlink active_link_color" href="Liste_Entreprises_Admin.php">Entreprises</a><span class="active_link_line"></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Départements</a>
+                <a class="nav-link navlink" href="Liste_Departement_Admin.php">Départements</a>
               </li>
             </ul>
             <div class="" style="position: fixed; margin-left: 44%;">
             <a class="navbar-brand navt d-none d-lg-block" href="#"><img src="icons/weblog.png" alt="" width="150" height="35"></a>
           </div>
-            <ul class="navbar-nav ms-auto margin ">
-              <li class="nav-item back">
-                <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink blue" href="#">Contact Us</a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink blue " href="#">Log out</a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
-              </li>
-            </ul>
+            <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
+              
+              <img class="profile" onclick="menuToggle()" src="<?php if( !empty($_SESSION['user_pdp']) ) echo $_SESSION['user_pdp']; else echo 'icons/avatar.png'; ?>" alt="">
+              
+              <div class="menu" style="margin:5px;">
+                  <h3><?php if( isset($_SESSION['user_name']) ) echo $_SESSION['user_name']['user_firstname'].'<br>'.$_SESSION['user_name']['user_lastname']; else echo "undefined user"; ?></h3>
+              
+                  <ul>
+                      <li><a href="Profile.php"><img src="popup/user.png" alt="">My profile</a> </li>
+                      <li><a href=""><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
+                      <li><a href=""><img src="popup/question.png" alt="">Help</a> </li>
+                      <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
+                  </ul>
+              
+               </div>
+
+              </div>
           </div>
         </div>
       </nav>
@@ -99,7 +97,7 @@
 
 
           <div class="row" >
-            <div class="col-12 col-md-8 elm pub_col" style=" background: #FFFFFF !important;
+            <div class="col-12 col-md-6 elm pub_col" style=" background: #FFFFFF !important;
                         border-radius: 35px !important; padding: 5%;">
 
                   <div class="tableHead" style="margin-bottom: 10px;">
@@ -111,117 +109,83 @@
                 <table class="table" id="Table_Etu">
                     <thead>
                       <tr>
-                         <th scope="col">Nom</th>
-                         <th scope="col">Prenom</th>
-                         <th scope="col">CIN</th>
-                         <th scope="col">Departement</th>
+                         <th scope="col">Entreprise</th>
+                         <th scope="col">Email</th>
                         <th scope="col"></th>
                         
                       </tr>
                     </thead>
                     <tbody>
-                    <?php foreach($rows as $Ens) : ?>
+
+                   
+                      <?php foreach($rows as $Entrep) : ?>
                         <tr>
-                          <td ><?php print($Ens['NOM_ENS']); ?></td>
-                          <td><?php print($Ens['PRENOM_ENS']); ?></td>
-                          <td style="color: #7096FF; font-weight: 600;"><?php print($Ens['CIN_ENS']); ?></td>
-                          <td><?php print($Ens['NOM_DEPART']); ?></td>
+                          <td style="color: #7096FF;"><?php print($Entrep['NOM_ENTREP']); ?></td>
+                          <td><?php print($Entrep['EMAIL_ENTREP']); ?></td>
                           <td style="text-align: end; ">
-                            <i style="margin-right: 20px;"><img src="icons/edit.png" alt="" data-bs-toggle="modal" data-bs-target="#ens<?php print($Ens['ID_ENS']); ?>"></i>
-                            <i ><img src="icons/rubbish-bin.png" alt=""></i> 
+                            <i ><img src="icons/edit.png" alt="" data-bs-toggle="modal" data-bs-target="#entrep<?php print($Entrep['ID_ENTREP']); ?>"></i>
                           </td>
                         </tr>
-                        <?php endforeach; ?>
-                    <tfoot>
-                        <tr>
-                          <th scope="col">Nom</th>
-                          <th scope="col">Prenom</th>
-                          <th scope="col">CIN</th>
-                          <th scope="col">Departement</th>
-                          <th scope="col"></th>
-                        </tr>
-                    </tfoot>
-
+                        <?php endforeach; ?>             
                     </tbody>
                     
                   </table>
               </div>
           </div>
-
-          <!-- Add -->
-          <form action="back_end/Enseignant_gestion_Admin.php" method="post">
-           <div class="modal fade"  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <?php foreach($rows as $Ent_Modif) : ?>
+        <form action="back_end/Entreprise_gestion_Admin.php" method="post">
+          <div class="modal fade"  id="entrep<?php print($Ent_Modif['ID_ENTREP']); ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
               <div class="modal-content" >
                 <div class="modal-header">
-                  <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Nouvelle Enseignant</h3>
+                  <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Modifier Entreprise</h3>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="max-height: 4500px; padding: 30px;">
-                  
-                    <label for="nom_add"><span>Nom :</span></label><br>
-                    <input  class="inpstyl" type="text" name="nom_add" id="nom_add" required><br><br><br>
+                
+                    <label for="nom_modif"><span>Nom :</span></label><br>
+                    <input  class="inpstyl" type="text" id="nom_modif" name="nom_modif" value="<?php print($Ent_Modif['NOM_ENTREP']); ?>"><br><br><br>
 
-                    <label for="prenom_add"><span>Prenom :</span></label><br>
-                    <input  class="inpstyl" type="text" name="prenom_add" id="prenom_add" required><br><br><br>
+                    <label for="email_modif"><span>Email :</span></label><br>
+                    <input  class="inpstyl" type="text" id="email_modif"  name="email_modif" value="<?php print($Ent_Modif['EMAIL_ENTREP']); ?>" ><br><br><br>
 
-                    <label for="cin_add"><span>CIN :</span></label><br>
-                    <input  class="inpstyl" type="text" name="cin_add" id="cin_add" required><br>  
-                    
-                    <label for="email_add"><span>EMAIL :</span></label><br>
-                    <input  class="inpstyl" type="text" name="email_add" id="email_add" required><br>
-
-                    <label for="dep_add"><span>Departement :</span></label><br>
-                    <select class="form-select" name="dep_add" id="dep_add" required>
-                    <?php foreach($deps as $dep) : ?>
-                      <option value="<?php print($dep['ID_DEPART']); ?>"><?php print($dep['NOM_DEPART']); ?></option>
-                      <?php endforeach; ?>
-                    </select>
+                    <label for="website_modif"><span>Website :</span></label><br>
+                    <input  class="inpstyl" type="text" id="website_modif" name="website_modif" value="<?php print($Ent_Modif['WEBSITE']); ?>"><br>
               </div>
                 
                 <div class="modal-footer">
+                  <input type="hidden" name="id_modif" value="<?php print($Ent_Modif['ID_ENTREP']); ?>">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                   <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
               </div>
             </div>
           </div>
-          </form>
+        </form>
+          <?php endforeach; ?>  
+            
 
-          <!-- Modification -->
-          <?php foreach($rows as $Ens_Modif) : ?>
-          <form action="back_end/Enseignant_gestion_Admin.php" method="post">
-            <div class="modal fade"  id="ens<?php print($Ens_Modif['ID_ENS']); ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <form action="back_end/Entreprise_gestion_Admin.php" method="post">
+            <div class="modal fade"  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
                 <div class="modal-content" >
                   <div class="modal-header">
-                    <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Modifier Enseignant</h3>
+                    <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Nouvelle Entreprise</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body" style="max-height: 4500px; padding: 30px;">
                     
-                      <label for="nom_modif"><span>Nom :</span></label><br>
-                      <input  class="inpstyl" type="text" name="nom_modif" id="nom_modif" value="<?php print($Ens_Modif['NOM_ENS']); ?>" ><br><br><br>k
+                      <label for="nom_add"><span>Nom :</span></label><br>
+                      <input  class="inpstyl" type="text" id="nom_add" name="nom_add" required><br><br><br>
 
-                      <label for="prenom_modif"><span>Prenom :</span></label><br>
-                      <input  class="inpstyl" type="text" name="prenom_modif" id="prenom_modif" value="<?php print($Ens_Modif['PRENOM_ENS']); ?>" ><br><br><br>
+                      <label for="email_add"><span>Email :</span></label><br>
+                      <input  class="inpstyl" type="text" id="email_add" name="email_add" required><br><br><br>
 
-                      <label for="cin_modif"><span>CIN :</span></label><br>
-                      <input  class="inpstyl" type="text" name="cin_modif" id="cin_modif" value="<?php print($Ens_Modif['CIN_ENS']); ?>" ><br><br>  
-                      
-                      <label for="email_modif"><span>EMAIL :</span></label><br>
-                      <input  class="inpstyl" type="text" name="email_modif" id="email_modif" value="<?php print($Ens_Modif['EMAIL_ENS']); ?>" ><br>
-                      
-                      <label for="dep_modif"><span>Departement :</span></label><br>
-                      <select class="form-select" name="dep_modif" id="dep_modif" >
-                      <?php foreach($deps as $dep) : ?>
-                        <option  value="<?php print($dep['ID_DEPART']); ?>" <?php if($dep['ID_DEPART'] == $Ens_Modif['ID_DEPART']){ ?> selected <?php } ?>><?php print($dep['NOM_DEPART']); ?></option>
-                        <?php endforeach; ?>
-                      </select>   
+                      <label for="website_add"><span>Website :</span></label><br>
+                      <input  class="inpstyl" type="text" id="website_add" name="website_add" required><br>   
                 </div>
                   
                   <div class="modal-footer">
-                    <input type="hidden" name="id_modif" value="<?php print($Ens_Modif['ID_ENS']); ?>">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                   </div>
@@ -229,7 +193,9 @@
               </div>
             </div>
           </form>
-          <?php endforeach ?>
+
+
+          
 
 
 

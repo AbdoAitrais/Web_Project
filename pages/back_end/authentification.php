@@ -62,7 +62,7 @@
 		else if ($type_user == "Admin")
 		{
 			$result = get_user_id_type_mainPage('admin','ID_ADMIN',
-										'Formations_Admin.php','Admin',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
+										'Liste_Formations_Admin.php','Admin',htmlspecialchars($_POST['username']),htmlspecialchars($_POST['password']));
 		}
 
 		var_dump($result);

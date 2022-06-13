@@ -11,11 +11,11 @@
     {
       require('back_end/connexion.php');
   
-      $Smt = $bdd->prepare("SELECT * FROM entreprise ");
-      $Smt -> execute();
-	    $rows = $Smt -> fetchAll(PDO::FETCH_ASSOC);
-
-
+        
+        $Smt = $bdd->prepare("SELECT * FROM departement ");
+        $Smt -> execute();
+	    $Deps = $Smt->fetchAll(PDO::FETCH_ASSOC);
+        $Smt->closeCursor();//vider le curseur (free) 
 ?>
 
 
@@ -35,7 +35,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 	<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <title>Entreprises</title>
+    <title>Départements</title>
     
     
 </head>
@@ -50,36 +50,39 @@
           <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav ">
               <li class="nav-item underline">
-                <a class="nav-link navlink " href="Formations_Admin.php">Formations</a>
+                <a class="nav-link navlink " href="Liste_Formations_Admin.php">Formations</a>
               </li>
               
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="Enseignats_Admin.php">Enseignants</a>
+                <a class="nav-link navlink " href="Liste_Depeignats_Admin.php">Depeignants</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink active_link_color" href="Entreprises_Admin.php">Entreprises</a><span class="active_link_line"></span>
+                <a class="nav-link navlink " href="Liste_Entreprises_Admin.php">Entreprises</a>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Départements</a>
+                <a class="nav-link navlink active_link_color" href="Liste_Departement_Admin.php">Départements</a><span class="active_link_line"></span>
               </li>
             </ul>
             <div class="" style="position: fixed; margin-left: 44%;">
             <a class="navbar-brand navt d-none d-lg-block" href="#"><img src="icons/weblog.png" alt="" width="150" height="35"></a>
           </div>
-            <ul class="navbar-nav ms-auto margin ">
-              <li class="nav-item back">
-                <a class="nav-link navlink" href="#"><img src="icons/notification.png"></a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink blue" href="#">Contact Us</a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink blue " href="#">Log out</a>
-              </li>
-              <li class="nav-item back">
-                <a class="nav-link navlink" href="#"><img src="icons/account.png"></a>
-              </li>
-            </ul>
+            <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
+              
+              <img class="profile" onclick="menuToggle()" src="<?php if( !empty($_SESSION['user_pdp']) ) echo $_SESSION['user_pdp']; else echo 'icons/avatar.png'; ?>" alt="">
+              
+              <div class="menu" style="margin:5px;">
+                  <h3><?php if( isset($_SESSION['user_name']) ) echo $_SESSION['user_name']['user_firstname'].'<br>'.$_SESSION['user_name']['user_lastname']; else echo "undefined user"; ?></h3>
+              
+                  <ul>
+                      <li><a href="Profile.php"><img src="popup/user.png" alt="">My profile</a> </li>
+                      <li><a href=""><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
+                      <li><a href=""><img src="popup/question.png" alt="">Help</a> </li>
+                      <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
+                  </ul>
+              
+               </div>
+
+              </div>
           </div>
         </div>
       </nav>
@@ -94,11 +97,11 @@
 
 
           <div class="row" >
-            <div class="col-12 col-md-6 elm pub_col" style=" background: #FFFFFF !important;
+            <div class="col-12 col-md-8 elm pub_col" style=" background: #FFFFFF !important;
                         border-radius: 35px !important; padding: 5%;">
 
                   <div class="tableHead" style="margin-bottom: 10px;">
-                        <h4>Liste des Entreprises</h4> 
+                        <h4>Liste des Départements</h4> 
                         <i><img src="icons/plus.png" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
                   </div>
                   
@@ -106,83 +109,78 @@
                 <table class="table" id="Table_Etu">
                     <thead>
                       <tr>
-                         <th scope="col">Entreprise</th>
-                         <th scope="col">Email</th>
+                         <th scope="col">Nom Départements</th>
                         <th scope="col"></th>
                         
                       </tr>
                     </thead>
                     <tbody>
-
-                   
-                      <?php foreach($rows as $Entrep) : ?>
+                    <?php foreach($Deps as $Dep) : ?>
                         <tr>
-                          <td style="color: #7096FF;"><?php print($Entrep['NOM_ENTREP']); ?></td>
-                          <td><?php print($Entrep['EMAIL_ENTREP']); ?></td>
+                          <td ><?php print($Dep['NOM_DEPART']); ?></td>
                           <td style="text-align: end; ">
-                            <i ><img src="icons/edit.png" alt="" data-bs-toggle="modal" data-bs-target="#entrep<?php print($Entrep['ID_ENTREP']); ?>"></i>
+                            <i style="margin-right: 20px;"><img src="icons/edit.png" alt="" data-bs-toggle="modal" data-bs-target="#Dep<?php print($Dep['ID_DEPART']); ?>"></i>
+                            <i ><img src="icons/rubbish-bin.png" alt=""></i> 
                           </td>
                         </tr>
-                        <?php endforeach; ?>             
+                        <?php endforeach; ?>
+                    <tfoot>
+                        <tr>
+                          <th scope="col">Nom Départements</th>
+                          <th scope="col"></th>
+                        </tr>
+                    </tfoot>
+
                     </tbody>
                     
                   </table>
               </div>
           </div>
-          <?php foreach($rows as $Ent_Modif) : ?>
-        <form action="back_end/Entreprise_gestion_Admin.php" method="post">
-          <div class="modal fade"  id="entrep<?php print($Ent_Modif['ID_ENTREP']); ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+
+          <!-- Add -->
+          <form action="back_end/Departement_gestion_Admin.php" method="post">
+           <div class="modal fade"  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
               <div class="modal-content" >
                 <div class="modal-header">
-                  <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Modifier Entreprise</h3>
+                  <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Nouvelle Depeignant</h3>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="max-height: 4500px; padding: 30px;">
-                
-                    <label for="nom_modif"><span>Nom :</span></label><br>
-                    <input  class="inpstyl" type="text" id="nom_modif" name="nom_modif" value="<?php print($Ent_Modif['NOM_ENTREP']); ?>"><br><br><br>
-
-                    <label for="email_modif"><span>Email :</span></label><br>
-                    <input  class="inpstyl" type="text" id="email_modif"  name="email_modif" value="<?php print($Ent_Modif['EMAIL_ENTREP']); ?>" ><br><br><br>
-
-                    <label for="website_modif"><span>Website :</span></label><br>
-                    <input  class="inpstyl" type="text" id="website_modif" name="website_modif" value="<?php print($Ent_Modif['WEBSITE']); ?>"><br>
+                  
+                    <label for="nom_add"><span>Nom Département :</span></label><br>
+                    <input  class="inpstyl" type="text" name="nom_add" id="nom_add" required><br><br><br>
               </div>
                 
                 <div class="modal-footer">
-                  <input type="hidden" name="id_modif" value="<?php print($Ent_Modif['ID_ENTREP']); ?>">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                   <button type="submit" class="btn btn-primary">Enregistrer</button>
                 </div>
               </div>
             </div>
           </div>
-        </form>
-          <?php endforeach; ?>  
-            
+          </form>
 
-          <form action="back_end/Entreprise_gestion_Admin.php" method="post">
-            <div class="modal fade"  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <!-- Modification -->
+          <?php foreach($Deps as $Dep_Modif) : ?>
+          <form action="back_end/Departement_gestion_Admin.php" method="post">
+            <div class="modal fade"  id="Dep<?php print($Dep_Modif['ID_DEPART']); ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
               <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
                 <div class="modal-content" >
                   <div class="modal-header">
-                    <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Nouvelle Entreprise</h3>
+                    <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Modifier Depeignant</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body" style="max-height: 4500px; padding: 30px;">
                     
-                      <label for="nom_add"><span>Nom :</span></label><br>
-                      <input  class="inpstyl" type="text" id="nom_add" name="nom_add" required><br><br><br>
+                      <label for="nom_modif"><span>Nom :</span></label><br>
+                      <input  class="inpstyl" type="text" name="nom_modif" id="nom_modif" value="<?php print($Dep_Modif['NOM_DEPART']); ?>" ><br><br><br>
 
-                      <label for="email_add"><span>Email :</span></label><br>
-                      <input  class="inpstyl" type="text" id="email_add" name="email_add" required><br><br><br>
 
-                      <label for="website_add"><span>Website :</span></label><br>
-                      <input  class="inpstyl" type="text" id="website_add" name="website_add" required><br>   
                 </div>
                   
                   <div class="modal-footer">
+                    <input type="hidden" name="id_modif" value="<?php print($Dep_Modif['ID_DEPART']); ?>">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                     <button type="submit" class="btn btn-primary">Enregistrer</button>
                   </div>
@@ -190,9 +188,7 @@
               </div>
             </div>
           </form>
-
-
-          
+          <?php endforeach ?>
 
 
 

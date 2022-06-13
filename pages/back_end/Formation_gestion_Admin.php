@@ -19,7 +19,7 @@
                 $Smt->execute(array($resp_modif,$id_form) );
                 
 
-                header('location:../Formations_Admin.php');
+                header('location:../Liste_Formations_Admin.php');
                
             }else if( !empty($_POST['nom_add']) && !empty($_POST['abv_add']) && !empty($_POST['type_add']) && !empty($_POST['resp_add']) ){
                 
@@ -52,7 +52,7 @@
                 $Smt->execute(array($resp_add,$nom_add , $abv_add ,$type_add,$id_user));
                 
 
-               header('location:../Enseignats_Admin.php');
+               header('location:../Liste_Enseignats_Admin.php');
             }
         }
         else

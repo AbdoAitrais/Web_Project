@@ -23,7 +23,7 @@
                 $Smt->execute(array($dep_modif , $nom_modif, $prenom_modif ,$cin_modif,$email_modif,$id_modif) );
                 
 
-                header('location:../Enseignats_Admin.php');
+                header('location:../Liste_Enseignats_Admin.php');
                
             }else if(!empty($_POST['nom_add']) && !empty($_POST['prenom_add']) && !empty($_POST['cin_add']) && !empty($_POST['dep_add']) && !empty($_POST['email_add']) ){
                 
@@ -37,7 +37,7 @@
                 $Smt->execute(array($dep_add,$nom_add,$prenom_add,$cin_add));
                 
 
-               header('location:../Enseignats_Admin.php');
+               header('location:../Liste_Enseignats_Admin.php');
             }
         }
         else
