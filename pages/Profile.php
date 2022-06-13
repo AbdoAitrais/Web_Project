@@ -6,15 +6,18 @@
     $_SESSION['page'] = $_SERVER['REQUEST_URI'];
     header('location: login.php');
   }
+
+  if($_SESSION['user_type'] == "Etudiant")
+  {
+
+      require('back_end/connexion.php');
+      $id_etu = $_SESSION['user_id'];
+           
+      $Smt = $bdd->prepare("SELECT * FROM etudiant e, formation f,Users u WHERE e.ID_FORM=f.ID_FORM AND e.ID_USER=u.ID_USER AND ID_ETU=?");
+      $Smt -> execute(array($id_etu));
+      $Data = $Smt -> fetch();
+      $Smt->closeCursor();//vider le curseur (free)
   
-    
-      
-      
-    
-
-
-
-
 ?>
 
 <!DOCTYPE html>
@@ -57,7 +60,7 @@
                 /// ***Nombre de soumissions
               
                 $Smt =$bdd->prepare("SELECT count(e.ID_ETU) as Nbr_soums FROM etudiant e,postuler p WHERE e.ID_ETU = p.ID_ETU AND e.ID_ETU=? AND p.STATU=? ");
-                $Smt->execute(array($Etu,'Retenue'));
+                $Smt->execute(array($id_etu,'Retenue'));
                 $row = $Smt->fetch(PDO::FETCH_ASSOC);
                 if(!empty($row)){ if($row['Nbr_soums']){ ?><span class="icon-button__badge"><?php $Nb_rtn =$row['Nbr_soums'];if($Nb_rtn)print($Nb_rtn);}} ?></span>
               </li>
@@ -94,25 +97,6 @@
 
     <div class="container-fluid ">
       <div class="" style="margin-top: 70px; padding: 30px;">
-        
-
-
-        
-         <?php 
-          if($_SESSION['user_type'] == "Etudiant")
-          {
-
-            require('back_end/connexion.php');
-            $id_etu = $_SESSION['user_id'];
-           
-            $Smt = $bdd->prepare("SELECT * FROM etudiant e, formation f,Users u WHERE e.ID_FORM=f.ID_FORM AND e.ID_USER=u.ID_USER AND ID_ETU=?");
-            $Smt -> execute(array($id_etu));
-            $Data = $Smt -> fetch();
-            $Smt->closeCursor();//vider le curseur (free)
-
-         ?>
-
-
           <div class="row" >
             <div class="col-12 col-md-6 elm title">
                         Informations generale
@@ -302,11 +286,6 @@
                   
             
           </div>
-
-            <?php
-          }
-            ?>
-
         </div>
         </div>
           
@@ -340,4 +319,11 @@ $('#upload_file').change(function() {
     
 </body>
 </html>
+<?php
+  
+  }else
+  {
+    echo "<h1> ERROR 301:</h1> <p>Unauthorized Access !</p>";
+  }
 
+?>
