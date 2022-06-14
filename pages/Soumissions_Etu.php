@@ -221,6 +221,9 @@
                             case 5:
                                 echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;">Non Retenue</label>';
                                 break;
+                            case 6:
+                                echo'<label style="text-align:end;text-decoration:underline;color: cornflowerblue;"> Retenue en attente</label>';
+                                break;
                         }
                     ?>
                 </div>
@@ -257,6 +260,12 @@
             $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
             Create_Offres($result3 , 3);
             
+            /// *** Retenue en attente
+            $sql1 =$select_join." AND P.STATU='Retenue en attente'".$Filter_sql;             
+            $req1 =$bdd->query($sql1);
+            $result1 = $req1->fetchAll(PDO::FETCH_ASSOC);
+            Create_Offres($result1 , 6);
+
             /// *** Acceptée
             $sql1 =$select_join." AND P.STATU='Acceptée'".$Filter_sql;             
             $req1 =$bdd->query($sql1);
