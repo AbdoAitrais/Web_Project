@@ -298,8 +298,10 @@ thead{
 }
 
 .select{
-  width: 10%;
-  height: 1.8rem;
+  background-image: url("icons/filter.png") !important;
+  font-size: smaller !important;
+  width: 10rem !important;
+  height: 1.8rem ;
 }
 @media all and (max-width: 800px)
 {
