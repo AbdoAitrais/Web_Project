@@ -151,6 +151,8 @@
                     $sql_niveau->execute(array($Etu));
                     $result_niveau = $sql_niveau->fetch(PDO::FETCH_ASSOC);
                     $NIVEAU = $result_niveau['NIVEAU'];
+
+                    /// *** TODO
                     
                     /// *** Generate contract
                    require_once __DIR__ . '/Mpdf/vendor/autoload.php';
