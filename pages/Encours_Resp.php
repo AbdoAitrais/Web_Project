@@ -267,10 +267,12 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body" style="max-height: 300px;">
-                      
-                        <label class="file">
-                          <input type="file" class="form-control" id="rapport" name="rapport" >
-                        </label>
+                        <div>
+                          <button type = "button" class = "btn-warnin">
+                              <i class = "fa fa-upload"></i> Upload File
+                                <input type="file" class="form-control" id="rapport" name="rapport" required >
+                          </button>
+                        </div>
                         <div style="display: flex;">
                           <h5 style="border-bottom: 1px solid #717171; color: #717171; font-weight: 600; margin-top: 25px; border-bottom: none; text-decoration: underline;">Mots clés :</h5>
                           <div id="inp" style="margin-top: 20px; margin-left: 20px;">

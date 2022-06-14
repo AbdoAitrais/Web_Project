@@ -15,6 +15,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 	<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+
+  <style>
+    table td{
+      border:none;
+    }
+    
+    table tbody{
+      border-bottom: none ;
+   }
+   table.table thead th {
+      border-bottom: none;
+      
+    }
+
+  table.table tfoot th {
+    border-top: none;
+  }
+  .dataTables_filter, .dataTables_info { display: none; }
+
+  </style>
 </head>
 <body>
 
@@ -74,7 +94,7 @@
 
 
               <div class="input-group rounded">
-                <input type="search" class="form-control rounded" placeholder="Type a Keyword, Title, City" aria-label="Search" aria-describedby="search-addon" />
+                <input type="search" class="form-control rounded" id="filter" placeholder="Type a Keyword, Title, City" aria-label="Search" aria-describedby="search-addon" />
                 <span class="input-group-text border-0" id="search-addon">
                   <i class="fas fa-search"><img src="icons/search.png"></i>
                 </span>
@@ -129,9 +149,7 @@
             <table class="table" id="Table_Etu" >
                 <thead>
                   <tr>
-                    
                     <th scope="col"></th>
-                    
                   </tr>
                 </thead>
                 <tbody>
@@ -142,7 +160,8 @@
                   
                     <tr>
                      
-                      <td> <div class="brd">
+                      <td> 
+                        <div class="brd">
 
                         <div class="greenc" > </div> 
                         <div class="edit" ><i onclick="menuToggle(0)"><img src="icons/edt.png" alt=""></i></div>
@@ -180,12 +199,15 @@
                           </div>
                         </div>
           
-                      </div></td>
+                      </div>
+                    </td>
                       
                     </tr>
+                    
                     <tr>
                      
-                      <td><div class="brd">
+                      <td>
+                        <div class="brd">
 
                         <div class="greenc" > </div> 
                         <div class="edit" ><i onclick="menuToggle(0)"><img src="icons/edt.png" alt=""></i></div>
@@ -223,12 +245,14 @@
                           </div>
                         </div>
           
-                      </div></td>
+                      </div>
+                    </td>
                       
                     </tr>
                 
 
                 </tbody>
+                <tfoot><th></th></tfoot>
                 
               </table>
           
@@ -257,27 +281,25 @@
 <script>
   
     $(document).ready( function () {
-      var dataTable = $('#Table_Etu').DataTable();
-  
-  
-  
-      $('#Table_Etu tfoot tr th').each(function () {
-      var title = $('#Table_Etu thead tr th').eq($(this).index()).text();
-      if(title != "")
-      {
-        $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
-      }
       
-      });
-  
-      dataTable.columns().every(function () {
-          var dataTableColumn = this;
-  
-          $(this.footer()).find('input').on('keyup change', function () {
-              dataTableColumn.search(this.value).draw();
+      var table = $('#Table_Etu').DataTable(
+                {dom: 'lrtip' ,"bPaginate": false,"ordering":false,
+                columnDefs: [
+                              {orderable: false, targets: -1 }
+                            ]
           });
-      });
-      
+
+        
+        $('#filter').keyup( function(){
+            val = this.value;
+            
+              table.columns(0).search( val ).draw();
+
+
+            
+        })
+
+         
       }
       )
   

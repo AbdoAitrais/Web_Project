@@ -102,13 +102,12 @@
         <div class="row">
             <div class="col-md-11 elm pub_col" style=" background: #FFFFFF !important;
                         border-radius: 35px !important; padding: 5%;">
-
+                  <input type="text" id="search"><button id="hh">click me</button>
                   <div class="tableHead" >
                         <h4>Liste des Mes Stages</h4>
-                        Search<input type="text"  id="search">
                         <select  id="table-filter0" >
                           <option value="">nom</option>
-                            <option value="g">g</option>
+                            <option value="z">z</option>
                             <option value="hh2">hh2</option>
                             <option value="n">n</option>
                             <option value="hh1">hh1</option>
@@ -130,23 +129,23 @@
                     
                         <tr>                          
                           <td>ggggg</td>
-                          <td>kkkkkk</td>
-                          <td style="color: #7096FF;">lllll</td>
-                          <td style="color: #7096FF;">ttttt</td>
+                          <td></td>
+                          <td style="color: #7096FF;"></td>
+                          <td style="color: #7096FF;"></td>
                           
                         </tr>
                         <tr>                          
                           <td>ggzzzg</td>
-                          <td>mmmmmmmmmmm</td>
-                          <td style="color: #7096FF;">lllll</td>
-                          <td style="color: #7096FF;">ttttt</td>
+                          <td></td>
+                          <td style="color: #7096FF;"></td>
+                          <td style="color: #7096FF;"></td>
                           
                         </tr>
                         <tr >                          
                           <td>bbbbbbbbbbb</td>
-                          <td>pppppppppp</td>
-                          <td style="color: #7096FF;">lllll</td>
-                          <td style="color: #7096FF;">ttttt</td>
+                          <td></td>
+                          <td style="color: #7096FF;"></td>
+                          <td style="color: #7096FF;"></td>
                           
                         </tr>
                         <tfoot>
@@ -203,27 +202,17 @@
 
       
       var table = $('#Table_Histo').DataTable(
-                {dom: 'lrtip' ,"bPaginate": false,"ordering":false,
+                {dom: 'lrtip' ,"bPaginate": false,"ordering":false,"search":{regex:true},
                 columnDefs: [
                               {orderable: false, targets: -1 }
                             ]
           });
 
+          
+      
+
         
-        $('#search').keyup( function(){
-            val = this.value;
-            if(val)
-              table.columns(0).search( val ).draw();
-            else
-              table.columns(0).search( $('#table-filter0').val() ).draw();
-
-            
-        })
-
-        $('#table-filter0').on('change', function(){
-           
-          table.columns(0).search( this.value ).draw();
-        });
+      
 
         
 
