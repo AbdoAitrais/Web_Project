@@ -16,6 +16,27 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 	<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
     <title>Historique</title>
+
+
+    <style>
+      table td{
+        border:none;
+      }
+      
+      table tbody{
+        border-bottom: none ;
+     }
+     table.table thead th {
+        border-bottom: none;
+        
+      }
+ 
+    table.table tfoot th {
+      border-top: none;
+    }
+    .dataTables_filter, .dataTables_info { display: none; }
+
+    </style>
 </head>
 <body>
      
@@ -83,32 +104,24 @@
                         border-radius: 35px !important; padding: 5%;">
 
                   <div class="tableHead" >
-                        <h4>Liste des stages</h4>
+                        <h4>Liste des Mes Stages</h4>
+                        Search<input type="text"  id="search">
                         <select  id="table-filter0" >
                           <option value="">nom</option>
                             <option value="g">g</option>
                             <option value="hh2">hh2</option>
                             <option value="n">n</option>
                             <option value="hh1">hh1</option>
-                        </select>
-                        <select  id="table-filter1" >
-                          <option value="">Prenom</option>
-                          <option value="k">k</option>
-                          <option value="hh2">hh2</option>
-                          <option value="n">n</option>
-                          <option value="hh1">hh1</option>
-                      </select>
-                        
+                        </select> 
                   </div>                  
                 
                 <table class="table" id="Table_Histo">
                     <thead>
                       <tr>
-                      
-                        <th scope="col">Nom</th>
-                        <th scope="col">Prénom</th>
-                        <th scope="col">Poste</th>
-                        <th scope="col">Entreprise</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -123,15 +136,29 @@
                           
                         </tr>
                         <tr>                          
+                          <td>ggzzzg</td>
+                          <td>mmmmmmmmmmm</td>
+                          <td style="color: #7096FF;">lllll</td>
+                          <td style="color: #7096FF;">ttttt</td>
+                          
+                        </tr>
+                        <tr >                          
                           <td>bbbbbbbbbbb</td>
                           <td>pppppppppp</td>
                           <td style="color: #7096FF;">lllll</td>
                           <td style="color: #7096FF;">ttttt</td>
                           
                         </tr>
+                        <tfoot>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                          <th></th>
+                        </tfoot>
                    
 
                     </tbody>
+                    
                   </table>
                   
               </div>
@@ -176,19 +203,30 @@
 
       
       var table = $('#Table_Histo').DataTable(
-                {dom: 'lrtip' ,
+                {dom: 'lrtip' ,"bPaginate": false,"ordering":false,
                 columnDefs: [
-                              { orderable: false, targets: -1 }
+                              {orderable: false, targets: -1 }
                             ]
           });
 
+        
+        $('#search').keyup( function(){
+            val = this.value;
+            if(val)
+              table.columns(0).search( val ).draw();
+            else
+              table.columns(0).search( $('#table-filter0').val() ).draw();
+
+            
+        })
+
         $('#table-filter0').on('change', function(){
-            table.columns(0).search( this.value ).draw();
+           
+          table.columns(0).search( this.value ).draw();
         });
 
-        $('#table-filter1').on('change', function(){
-            table.columns(1).search( this.value ).draw();
-        });
+        
+
       
 
 

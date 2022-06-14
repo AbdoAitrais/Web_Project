@@ -65,7 +65,7 @@
                 if(!empty($row)){ if($row['Nbr_soums']){ ?><span class="icon-button__badge"><?php $Nb_rtn =$row['Nbr_soums'];if($Nb_rtn)print($Nb_rtn);}} ?></span>
               </li>
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="#">Stages</a>
+                <a class="nav-link navlink" href="#">Mes Stages</a>
               </li>
             </ul>
             <div class="" style="position: fixed; margin-left: 44%;">
