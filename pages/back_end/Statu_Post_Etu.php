@@ -134,39 +134,78 @@
                     $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=? ");
                     $Smt->execute(array('Acceptée',$Etu,$Offre_ID));  
                     $Smt->closeCursor();//vider le curseur (free)
+                    
+                    //*** tous les offres  retenues de cet etudiant
+                    $Smt=$bdd->prepare("SELECT ID_OFFRE from postuler WHERE ID_ETU=? AND STATU=? AND ID_OFFRE!=?");
+                    $Smt->execute(array($Etu,'Retenue',$Offre_ID));
+                    $List_No_Accept =$Smt->fetchAll(PDO::FETCH_ASSOC);
+                    $Smt->closeCursor();//vider le curseur (free)
+                    
+            
                     /// *** Mettre non acceptée dans tous les offres retenues
                     $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND STATU=? ");
                     $Smt->execute(array('Non Acceptée',$Etu,'Retenue'));  
                     $Smt->closeCursor();//vider le curseur (free)
+                    
                     /// *** Annuler postulation d'autres offres
-                    $Smt=$bdd->prepare("DELETE FROM postuler WHERE ID_ETU=? AND STATU=? OR STATU=? ");
+                    $Smt=$bdd->prepare("DELETE FROM postuler WHERE ID_ETU=? AND (STATU=? OR STATU=?) ");
                     $Smt->execute(array($Etu,'Postulée','Retenue en attente'));
                     $Smt->closeCursor();//vider le curseur (free)
+                    
                     /// *** Supprimer de la liste d'attente
                     $Smt=$bdd->prepare("DELETE FROM attente WHERE ID_ETU=?");
                     $Smt->execute(array($Etu));
                     $Smt->closeCursor();//vider le curseur (free)
-                    /// ***ID DE NIVEAU DE L'ETUDIANT
-                    $sql_niveau = $bdd->prepare("SELECT NIVEAU FROM etudiant WHERE ID_ETU=? ");
-                    $sql_niveau->execute(array($Etu));
-                    $result_niveau = $sql_niveau->fetch(PDO::FETCH_ASSOC);
-                    $NIVEAU = $result_niveau['NIVEAU'];
-
-                    /// *** TODO
                     
-                    /// *** Generate contract
-                   require_once __DIR__ . '/Mpdf/vendor/autoload.php';
-
-                   $mpdf = new mPDF();
-                   $Contract_Form = "<div style='color:red;'>
-                                 ".$Etu." A un stage dans l'entreprise de L'Offre ".$Offre_ID."
-                                </div>";
-                   $mpdf->WriteHTML($Contract_Form);
-                   $Contract = '../uploads/Contracts/Contract'.$Offre_ID.'-'.$Etu.'.pdf';
-                   $mpdf->Output($Contract,"F");
-                   $Contract = strchr($Contract,'uploads') ;
-                   
+                    /// *** Take from liste d'attente
+                        foreach($List_No_Accept as $No_Accept)
+                        {   
+                            
+                            /// *** Nombre condidat
+                            $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE  AND p.ID_OFFRE=? AND o.STATUOFFRE=? AND (STATU=? OR STATU=?)");
+                            $Smt1->execute(array($No_Accept['ID_OFFRE'],'Completée','Retenue','Acceptée'));
+                            $row1 = $Smt1->fetch(PDO::FETCH_ASSOC);
+                            $Smt1->closeCursor();//vider le curseur (free)
+                            
+                            if(!empty($row1))
+                            {
+                                
+                                $NbrReste = $row1['NbrReste'];   
+                                if($NbrReste > 0)
+                                {
+                                    $Smt2=$bdd->prepare("UPDATE offre SET STATUOFFRE=? WHERE ID_OFFRE=? ");
+                                    $Smt2->execute(array('Nouveau',$No_Accept['ID_OFFRE']) );
+                                    $Smt2->closeCursor();//vider le curseur (free)
+                                }
+                            }
+                            
+                            /// *** Select etudiant de liste d'attente
+                            $Smt=$bdd->prepare("SELECT ID_ETU FROM attente WHERE ID_OFFRE= ? AND PRIORITE=(SELECT min(PRIORITE) FROM attente WHERE ID_OFFRE=?)");
+                            $Smt->execute(array($No_Accept['ID_OFFRE'],$No_Accept['ID_OFFRE'])); 
+                            $row = $Smt->fetch(PDO::FETCH_ASSOC);
+                            $id_etu_att = $row['ID_ETU'];
+                            $Smt->closeCursor();//vider le curseur (free)
+                            
+                            if($id_etu_att)
+                            {
+                                ///Update in postuler with Retenue
+                                $Smt = $bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=?");
+                                $Smt->execute(array('Retenue',$id_etu_att,$No_Accept['ID_OFFRE']) );
+                                $Smt->closeCursor();//vider le curseur (free)
+                                
+                                ///Delete from liste attente 
+                                $Smt = $bdd->prepare("DELETE FROM attente WHERE ID_ETU=? AND ID_OFFRE=? ");
+                                $Smt->execute(array($id_etu_att,$No_Accept['ID_OFFRE']));
+                                $Smt->closeCursor();//vider le curseur (free)
+                            }
+                        }
+                   /// ***ID DE NIVEAU DE L'ETUDIANT
+                   $sql_niveau = $bdd->prepare("SELECT NIVEAU FROM etudiant WHERE ID_ETU=? ");
+                   $sql_niveau->execute(array($Etu));
+                   $result_niveau = $sql_niveau->fetch(PDO::FETCH_ASSOC);
+                   $NIVEAU = $result_niveau['NIVEAU'];
                    /// *** Inserer stage 
+                   $Contract=NULL;
                    $sql_stage = $bdd->prepare("INSERT INTO stage(ID_OFFRE,ID_ETU,DATEDEBUT_STAGE,NIVEAU_STAGE,CONTRAT) VALUES(?,?,?,?,?)  ");
                    $sql_stage->execute(array($Offre_ID,$Etu,$curdate,$NIVEAU,$Contract));
 
