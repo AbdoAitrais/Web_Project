@@ -97,8 +97,10 @@ if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_PO
         
         /// ***Insert pdp
         $pdp = Insert_file("pdp","imageUpload");
+        echo "<br><br><br>".$pdp."<br><br>";
         /// ***Insert cv
         $cv=Insert_file("cv","cvUpload");
+        echo "<br><br><br>".$cv;
 
         /// ***Insert in Users 
         $Smt = $bdd->prepare("INSERT INTO Users(LOGIN,PASSWORD,PICTURE,ACTIVE,VERIFIED)  VALUES(?,?,?,?,?)");
