@@ -26,8 +26,11 @@
                     $Smt->closeCursor();//vider le curseur (free)
 
                     /// *** Update statu to Retenue en attente
-                    $Smt = $bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=?");
-                    $Smt->execute(array('Retenue en attente',$id_etu,$id_offre));
+                    $timestamp = time()+60*60;
+                    $curdate = date("Y-m-d h:i:s",$timestamp);
+                    
+                    $Smt = $bdd->prepare("UPDATE postuler SET STATU=?,DATEREPONS=? WHERE ID_ETU=? AND ID_OFFRE=?");
+                    $Smt->execute(array('Retenue en attente',$curdate,$id_etu,$id_offre));
                     $Smt->closeCursor();//vider le curseur (free)
                 }
 
@@ -40,9 +43,9 @@
                     $Smt->execute(array($id_etu,$id_offre));
                     $Smt->closeCursor();//vider le curseur (free)
 
-                    /// *** Update statu to Retenue en attente
-                    $Smt = $bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=?");
-                    $Smt->execute(array('Postulée',$id_etu,$id_offre));
+                    /// *** Update statu to Postulée
+                    $Smt = $bdd->prepare("UPDATE postuler SET STATU=?,DATEREPONS=? WHERE ID_ETU=? AND ID_OFFRE=?");
+                    $Smt->execute(array('Postulée',NULL,$id_etu,$id_offre));
                     $Smt->closeCursor();//vider le curseur (free)
                 }
 

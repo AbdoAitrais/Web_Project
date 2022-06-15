@@ -72,7 +72,7 @@
         $mail->addAddress($to); // enter email address whom you want to send
         $mail->Subject = ("$subject");
         $mail->Body = $body;
-        $mail->addAttachment($cv);
+        //$mail->addAttachment($cv);
         if ($mail->send()) {
             echo "Email is sent!";
         } else {
