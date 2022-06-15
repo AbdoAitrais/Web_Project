@@ -111,13 +111,22 @@
       </nav>
 
     <div class="container-fluid ">
-      <div class="" style="margin-top: 150px;">
+      <div class="" style="margin-top:5%;">
 
           <div class="row" >
-            <div class="col-md-8 elm pub_col" style=" background: #FFFFFF !important;
-                        border-radius: 35px !important; padding: 5%;">
-
-                  <div class="tableHead" style="margin-bottom: 10px;">
+            
+            <div class="col-md-8 col-12 pub_col" style="border-radius: 35px !important; ">
+            <div class="col-md-6 col-12 pub_col" style="display:flex; justify-content:center;z-index:9 !important;">
+              <div class="search">
+                  <div class="input-group rounded">
+                      <input type="search" class="form-control rounded" name='Filter' placeholder="Type a Keyword, Title, City" aria-label="Search" aria-describedby="search-addon" />
+                      <span class="input-group-text border-0" id="search-addon">
+                          <button type='submit' style="border:none;background:none;"><i class="fas fa-search"><img src="icons/search.png"></i></button>
+                      </span>
+                  </div>
+                </div>
+              </div>
+                  <div class="tableHead" style="margin-bottom: 10px; margin-top:10px;">
                         <h4>Liste des offres</h4>
                         <a href="Publier_Offre_Resp.php"><i><img src="icons/plus.png" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i></a>   
                   </div>
@@ -145,28 +154,28 @@
                         foreach ($rows as $row): 
                     ?>
                         <tr>
-                            <?php if( $type_form){ ?><th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU_OFFRE']; ?></th><?php } ?>
+                            <?php if( $type_form){ ?><td scope="row" > <p style="color: #7096FF;"><?php echo $row['NIVEAU_OFFRE']; ?></p></td><?php } ?>
                             <?php
                               switch ($row['STATUOFFRE']) {
                                 case 'Nouveau':
-                                  $color = '#6FF5B5';
+                                  $class = 'status status-paid';
                                   break;
                                 case 'Completée':
-                                  $color = '#CAD2CE';
+                                  $class = 'status status-pending';
                                   break;
                                 case 'Closed':
-                                  $color = '#E160B5';
+                                  $class = 'status status-unpaid';
                                   break;
                                 
-                                default:
-                                  $color = '#7096FF';
-                                  break;
+                                // default:
+                                //   $class = '#7096FF';
+                                //   break;
                               }
                             ?>
-                            <td style="color: <?php echo $color; ?>;"><?php echo $row['STATUOFFRE']; ?></td>
+                            <td ><p class="<?php echo $class; ?>"><?php echo $row['STATUOFFRE']; ?></p></td>
                           <td><?php echo $row['NOM_ENTREP']; ?></td>
                           <td><?php echo $row['VILLE']; ?></td>
-                          <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
+                          <td ><p style="color: #7096FF;"><?php echo $row['POSTE']; ?></p></td>
                           <td style="text-align: end; ">
                             
                             <a href="#" data-bs-toggle="modal" data-bs-target="#offre<?php print($row['ID_OFFRE']);?>" title="detail" ><i style="margin-right: 15px;"><img src="icons/loupe.png" alt=""></i></a>
@@ -271,15 +280,22 @@
 <script>
   
   $(document).ready( function () {
-    var dataTable = $('#Table_Offre').DataTable();
+    var dataTable = $('#Table_Offre').DataTable({
+      columnDefs: [
+                              {targets: -1 }
+                            ],
+      responsive: true
+    });
 
-
+    
+    //dataTable.columns(1).search('ALTEN').draw();
 
     $('#Table_Offre tfoot tr th').each(function () {
     var title = $('#Table_Offre thead tr th').eq($(this).index()).text();
     if(title != "")
     {
-      $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+      $(this).html('<select  id="table-filter0" class="form-select select" placeholder="placeholder="Search ' + title + '"" ><option value="">nom</option><option value="Nouveau">Nouveau</option><option value="ALTEN">ALTEN</option><option value="n">n</option><option value="hh1">hh1</option></select>');
+      //$(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
     }
     
     });
@@ -287,16 +303,21 @@
     dataTable.columns().every(function () {
         var dataTableColumn = this;
 
+        $(this.footer()).find('select').on('change', function () {
+            dataTableColumn.search(this.value).draw();
+        });
+
         $(this.footer()).find('input').on('keyup change', function () {
             dataTableColumn.search(this.value).draw();
         });
+
     });
     
     
     }
     )
 
-
+    
 
 
   
