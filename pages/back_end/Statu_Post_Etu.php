@@ -249,18 +249,93 @@
                                 $Smt->closeCursor();//vider le curseur (free)
                             }
                         }
-                   /// ***ID DE NIVEAU DE L'ETUDIANT
-                   $sql_niveau = $bdd->prepare("SELECT NIVEAU FROM etudiant WHERE ID_ETU=? ");
-                   $sql_niveau->execute(array($Etu));
-                   $result_niveau = $sql_niveau->fetch(PDO::FETCH_ASSOC);
-                   $NIVEAU = $result_niveau['NIVEAU'];
+
+
+                
+                   /// ***Contract informations
+                   $cntract_infos = $bdd->prepare("SELECT * FROM etudiant e,postuler p,offre o,entreprise ent,formation f WHERE e.ID_ETU=p.ID_ETU 
+                                               AND o.ID_OFFRE=p.ID_OFFRE  AND ent.ID_ENTREP=o.ID_ENTREP  AND e.ID_FORM=f.ID_FORM AND e.ID_ETU=? ");
+                   $cntract_infos->execute(array($Etu));
+                   $result_infos = $cntract_infos->fetch(PDO::FETCH_ASSOC);
+                   
+                   $NIVEAU = $result_infos['NIVEAU'];
+                   
+                   $Nom_ENTREP=$result_infos['NOM_ENTREP'];
+                   $Ville_Entrep = $result_infos['VILLE'];
+                   $Poste=$result_infos['POSTE'];
+                   $Duree=$result_infos['DUREE']/30;
+                   $Nom_Etu=$result_infos['NOM_ETU'];
+                   $Prenom_Etu=$result_infos['PRENOM_ETU'];
+                   $CIN_ETU=$result_infos['CIN_ETU'];
+                   $Nom_Form = $result_infos['FULL_NAME'];
+                  
+                   /// *** 
+                   switch($result_infos['TYPE_FORM']){
+                        case 0:
+                            $Type_Form = "licence" ;
+                            break;
+                        case 1:
+                            $Type_Form = "cycle d'ingenieur" ;
+                            break;
+                        case 2:
+                            $Type_Form = "laster" ;
+                            break;
+                        
+                   }
+
+                   ///****
+                   $Niveau_String = ""; 
+                   switch($NIVEAU)
+                   {
+                        case 1:
+                            $Niveau_String="premiere";
+                            break;
+                        case 2:
+                            $Niveau_String="deuxieme";
+                            break;
+                        case 3:
+                            $Niveau_String="troisieme";
+                            break;
+                   }
+                   
+                   /// *** Insert Contract
+                     $Contract=NULL;
+                   // Instanciation of inherited class
+                    require("Fpdf/contract.php");
+                    $pdf = new PDF();
+
+                    $pdf->AddPage();
+
+                    $pdf->tit("Stage Infos :");
+
+                    $pdf->leftinf("Entreprise :",$Nom_ENTREP,10);
+                    $pdf->leftinf("Ville :",$Ville_Entrep,-80);
+                    $pdf->Ln(20);
+
+                    $pdf->leftinf("Poste :",$Poste,10);
+                    $pdf->leftinf("Duree de stage :",$Duree." mois",-80);
+
+                    $pdf->Ln(40);
+                    $pdf->tit("Stagiaire Infos :");
+                    $pdf->leftinf("Nom :",$Nom_Etu,10);
+                    $pdf->leftinf("Prenom :",$Prenom_Etu,-135);
+                    $pdf->leftinf("CIN :",$CIN_ETU,-65);
+
+                    $pdf->Ln(20);
+                    $pdf->desc("Etudiant en ".$Niveau_String." annee ".$Type_Form);
+                    $pdf->Ln(10);
+                    $pdf->desc("(".$Nom_Form.")");
+                    $Contract="../uploads/Contracts/Contract".$Etu."-".$Offre_ID.".pdf";
+                    $pdf->Output($Contract,"F");
+                    
+                    
                    /// *** Inserer stage 
-                   $Contract=NULL;
                    $sql_stage = $bdd->prepare("INSERT INTO stage(ID_OFFRE,ID_ETU,DATEDEBUT_STAGE,NIVEAU_STAGE,CONTRAT) VALUES(?,?,?,?,?)  ");
                    $sql_stage->execute(array($Offre_ID,$Etu,$curdate,$NIVEAU,$Contract));
-
+                  
+                   header('location:../Soumissions_Etu.php');
             
-                  header('location:../Soumissions_Etu.php');
+                   //
                 }
             
             }
