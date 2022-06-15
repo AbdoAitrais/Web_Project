@@ -1,3 +1,22 @@
+<?php require('back_end/connexion.php');
+
+
+    ///*** Formations
+    // lst
+    $Smt=$bdd->prepare("SELECT ID_FORM,FILIERE FROM formation WHERE TYPE_FORM=?");
+    $Smt->execute(array('0')); 
+    $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+    // cycle
+    $Smt1=$bdd->prepare("SELECT ID_FORM,FILIERE FROM formation WHERE TYPE_FORM=?");
+    $Smt1->execute(array('1')); 
+    $rows1 = $Smt1->fetchAll(PDO::FETCH_ASSOC);
+    // Mst
+    $Smt2=$bdd->prepare("SELECT ID_FORM,FILIERE FROM formation WHERE TYPE_FORM=?");
+    $Smt2->execute(array('2')); 
+    $rows2 = $Smt2->fetchAll(PDO::FETCH_ASSOC);
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -121,43 +140,29 @@
                                 <option value="0">Liscence</option>
                             </select>
                             <label for="filière" style="margin-left: 25px;">Filière</label>
-                            <select name="filière" id="filiere_Cycle" >
+                            <select name="filière_cyc" id="filiere_Cycle" >
                                 <option value="">Select Cycle</option>
-                                <option value="1">ILISI</option>
-                                <option value="2">GET</option>
-                                <option value="3">GE</option>
-                                <option value="4">GMI</option>
-                                <option value="5">GPE</option>    
+                                <?php foreach($rows1 as $cycle): ?>
+                                <option value="<?php print($cycle['ID_FORM']); ?>"><?php print($cycle['FILIERE']); ?></option> 
+                                <?php endforeach; ?>  
                             </select>
-                            <select name="filière" id="filiere_LST" style="display:none;" >
+                            <select name="filière_lst" id="filiere_LST" style="display:none;" >
                                 <option value="">Select LST</option>
-                                <option value="1">GT</option>
-                                <option value="2">GE2I</option>
-                                <option value="3">IRM</option>
-                                <option value="4">MA</option>
-                                <option value="5">PA</option>
-                                <option value="6">GM</option>
-                                <option value="7">ABCQ</option>
-                                <option value="8">TB</option>
-                                <option value="9">TACQ</option>
-                                <option value="10">CA</option>
-                                <option value="11">GEE</option>
+                                <?php foreach($rows as $lst): ?>
+                                <option value="<?php print($lst['ID_FORM']); ?>"><?php print($lst['FILIERE']); ?></option> 
+                                <?php endforeach; ?>  
                             </select>
-                            <select name="filière" id="filiere_Master" style="display:none;" >
+                            <select name="filière_mst" id="filiere_Master" style="display:none;" >
                                 <option value="">Select Master</option>
-                                <option value="1">MQSA</option>
-                                <option value="2">MAGBio</option>
-                                <option value="3">ISERT</option>
-                                <option value="4">PCAM</option>
-                                <option value="5">SGE</option>
-                                <option value="6">IPMA</option>
-                                <option value="7">MQSE</option>
+                                <?php foreach($rows2 as $Mst): ?>
+                                <option value="<?php print($Mst['ID_FORM']); ?>"><?php print($Mst['FILIERE']); ?></option> 
+                                <?php endforeach; ?>  
                             </select>
                         </div>
                         <div id="niv_cycle">
                             <label for="niveau">Niveau</label>
-                            <select name="niveau" id="niveau_cycle" >
-                                <option value="">Please select</option>
+                            <select name="niveau_cyc" id="niveau_cycle" >
+                                <option >Please select</option>
                                 <option value="1">1er anneé</option>
                                 <option value="2">2ème anneé</option>
                                 <option value="3">3ème anneé</option>
@@ -165,8 +170,8 @@
                         </div>  
                         <div style="display:none;" id="niv_master">
                             <label for="niveau">Niveau</label>
-                            <select name="niveau" id="niveau_master" >
-                                <option value="">Please select</option>
+                            <select name="niveau_mst" id="niveau_master" >
+                                <option >Please select</option>
                                 <option value="1">1er anneé</option>
                                 <option value="2">2ème anneé</option>
                             </select>
@@ -174,10 +179,10 @@
                         <div>
                             <label for="promo">Promotion</label>
                             <select name="promo" id="promo" >
-                                <option value="">Please select</option>
-                                <option value="2022">2022</option>
-                                <option value="2023">2023</option>
-                                <option value="2024">2024</option>
+                                <option >Please select</option>
+                                <option value="<?php print(date("Y")-2);?>"><?php print(date("Y")-2);?></option>
+                                <option value="<?php print(date("Y")-1);?>"><?php print(date("Y")-1);?></option>
+                                <option value="<?php print(date("Y"));?>"><?php print(date("Y"));?></option>
                             </select>
                         </div>       
                     </div>

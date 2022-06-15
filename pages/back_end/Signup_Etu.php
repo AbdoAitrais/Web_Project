@@ -1,11 +1,13 @@
 <?php
 
-if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_POST['day'])) && (isset($_POST['month'])) && (isset($_POST['year'])) && (isset($_POST['cin'])) && (isset($_POST['number'])) && (isset($_POST['adress'])) && (isset($_POST['city'])) && (isset($_POST['cne'])) && (isset($_POST['type'])) && (isset($_POST['niveau'])) && (isset($_POST['filière'])) && (isset($_POST['promo'])) && (isset($_POST['user_mail'])) && (isset($_POST['pass']))  ) ||  (isset($_POST['imageUpload'])) ||  (isset($_POST['cvUpload'])))
+if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_POST['day'])) && (isset($_POST['month'])) && (isset($_POST['year'])) && (isset($_POST['cin'])) && (isset($_POST['number'])) && (isset($_POST['adress'])) && (isset($_POST['city'])) && (isset($_POST['cne'])) && (isset($_POST['type'])) &&  (isset($_POST['promo'])) && (isset($_POST['user_mail'])) && (isset($_POST['pass']))  ) ||  (isset($_POST['imageUpload'])) ||  (isset($_POST['cvUpload'])))
 {
 
         require('connexion.php');
-        //$formation=htmlspecialchars($_POST['filière']);
-        $formation=htmlspecialchars($_POST['filière']);
+        
+        $formation=NULL;
+        $niveau=NULL;
+        $type_form = htmlspecialchars($_POST['type']);
         $nom_etu = htmlspecialchars($_POST['nom_etu']);
         $prenom_etu = htmlspecialchars($_POST['prenom_etu']);
         $user_mail = htmlspecialchars($_POST['user_mail']);
@@ -14,7 +16,6 @@ if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_PO
         $cne = htmlspecialchars($_POST['cne']);
         $adress = htmlspecialchars($_POST['adress']);
         $numtel = htmlspecialchars($_POST['number']);
-        $niveau = htmlspecialchars($_POST['niveau']);
         $promotion = htmlspecialchars($_POST['promo']);
         $day = htmlspecialchars($_POST['day']);
         $month = htmlspecialchars($_POST['month']);
@@ -23,8 +24,30 @@ if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_PO
         $cv=NULL;
         $pdp=NULL;
         
+        /// *** 
+        switch($type_form)
+        {
+            case 0:
+                
+                if(isset($_POST['filière_lst']))
+                    $formation=htmlspecialchars($_POST['filière_lst']);
+                    $niveau = 0;
+
+                break;
+            case 1:
+                if(isset($_POST['filière_cyc']) && isset($_POST['niveau_cyc'])){
+                    $formation=htmlspecialchars($_POST['filière_cyc']);
+                    $niveau =htmlspecialchars($_POST['niveau_cyc']);
+                }
+                break;
+            case 2:
+                if(isset($_POST['filière_mst']) && isset($_POST['niveau_mst'])){
+                    $formation=htmlspecialchars($_POST['filière_mst']);
+                    $niveau =htmlspecialchars($_POST['niveau_mst']);
+                }
+                break;
+        }
         //// ***Insert file
-       
         function Insert_file($folder ,$name)
         {
             
@@ -89,7 +112,7 @@ if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_PO
         $Smt->closeCursor();//vider le curseur (free)
         $id_user = $row['ID_USER'];
         
-        /// ***Insert  eetudiant data in database
+        // /// ***Insert  eetudiant data in database
         $Smt = $bdd->prepare("INSERT INTO etudiant(ID_FORM,NOM_ETU,PRENOM_ETU,CIN_ETU,CNE,NIVEAU,PROMOTION,DATENAISS_ETU,ADRESSE_ETU,NUMTEL_ETU,CV,ID_USER)  VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
         $Smt -> execute(array($formation,$nom_etu,$prenom_etu,$cin,$cne,$niveau,$promotion,$date_naiss,$adress,$numtel,$cv,$id_user));
         $Smt->closeCursor();//vider le curseur (free)
