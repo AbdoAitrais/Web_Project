@@ -105,13 +105,12 @@
       </nav>
 
     <div class="container-fluid ">
-      <div class="" style="margin-top: 100px; background-color:  #E5E5E5 !important;">
+      <div class="" style="margin-top: 100px;">
         
 
 
         <div class="row" >
-            <div class="col-md-11 elm pub_col" style=" background: #FFFFFF !important;
-                        border-radius: 35px !important; padding: 5%;">
+            <div class="col-md-11 pub_col">
 
                   <div class="tableHead" >
                         <h4>Liste des etudiants à verifier</h4>   
@@ -141,7 +140,7 @@
                     
                       ?>
                         <tr>
-                        <?php if( $type_form){ ?><th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU']; ?></th><?php } ?>
+                        <?php if( $type_form){ ?><td scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU']; ?></td><?php } ?>
                           <td><?php echo $row['NOM_ETU']; ?></td>
                           <td><?php echo $row['PRENOM_ETU']; ?></td>
                           <td style="color: #7096FF;"><?php echo $row['CNE']; ?></td>
@@ -227,7 +226,15 @@
 <script>
   
   $(document).ready( function () {
-    var dataTable = $('#Table_Etu').DataTable();
+    var dataTable = $('#Table_Etu').DataTable({
+      responsive: true
+      ,
+      // remove label for search and add placeholder
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Search..."
+    }
+    });
 
 
 
@@ -247,9 +254,15 @@
             dataTableColumn.search(this.value).draw();
         });
     });
+
+    // search style class
+    $('.dataTables_filter').addClass('rounded search_custom');
+    
     
     }
     )
+
+
 
     function menuToggle(){
             const toggleMenu = document.querySelector(".menu");

@@ -52,7 +52,7 @@
                 $Smt->execute(array($resp_add,$nom_add , $abv_add ,$type_add,$id_user));
                 
 
-               header('location:../Liste_Enseignats_Admin.php');
+               header('location:../Liste_Enseignants_Admin.php');
             }
         }
         else
