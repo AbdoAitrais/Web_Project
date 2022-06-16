@@ -1,7 +1,7 @@
 
-html,body{
+/* html,body{
     background-color: #E5E5E5 !important;
-}
+} */
 
 body,nav {
     font-family: 'Poppins' !important;
@@ -73,8 +73,8 @@ body,nav {
     color: #7196FF !important;
   }
 
-  
-  
+
+
   .underline:hover::after {
     width: 100%;
   }
@@ -85,12 +85,12 @@ body,nav {
 
   .elm {
     background-color: #FFFEFB;
-    padding: 1rem; 
+    padding: 1rem;
   }
 
   .dish{
     pointer-events: none !important;
-    
+
   }
 
   .back:hover {
@@ -111,7 +111,7 @@ body,nav {
     padding: 12px;
     font-family: 'inter';
     margin-top: 0px;
-    
+
 }
 
 .poste{
@@ -157,81 +157,81 @@ body,nav {
   color: #1E1D1D;
   font-family: 'Poppins';
   margin-left: 120%;
-  
+
 }
 
 .greenc{
   width: 23px;
-  height: 23px; 
-  left: 566px; 
-  top: 278px; 
-  background: #6FF5B5; 
+  height: 23px;
+  left: 566px;
+  top: 278px;
+  background: #6FF5B5;
   border-radius: 20px;
 }
 
 .grayc{
   width: 23px;
-  height: 23px; 
-  left: 566px; 
-  top: 278px; 
-  background: #CAD2CE; 
+  height: 23px;
+  left: 566px;
+  top: 278px;
+  background: #CAD2CE;
   border-radius: 20px;
 }
 
 .redc{
   width: 23px;
-  height: 23px; 
-  left: 566px; 
-  top: 278px; 
-  background: #E160B5; 
+  height: 23px;
+  left: 566px;
+  top: 278px;
+  background: #E160B5;
   border-radius: 20px;
 }
 
 .content{
-  margin-left: 40px; 
+  margin-left: 40px;
   margin-right: 40px;
 }
 
 .pub_col{
-  margin-left: auto; 
-  margin-right: auto; 
-  left: 0; 
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
   right: 0;
 }
 
 .butt_align{
-   
+
   margin-right: 40px;
 }
 
 .butt_style{
-  font-weight: 700; 
-  background: #7096FF; 
-  border-radius: 16px; 
-  color: #FFFFFF; 
-  width: 143px; 
-  height: 44px; 
-  border: 0px; 
+  font-weight: 700;
+  background: #7096FF;
+  border-radius: 16px;
+  color: #FFFFFF;
+  width: 143px;
+  height: 44px;
+  border: 0px;
 }
 
 .blank_col{
-  position:fixed; 
-  right: 0; 
+  position:fixed;
+  right: 0;
   height: 100%;
 }
 
 .guid1_col{
-  position:fixed; 
-  height: 100%; 
+  position:fixed;
+  height: 100%;
   bottom: 0;
 }
 
 .guid2_col{
-  left: 25px; 
-  position: absolute; 
+  left: 25px;
+  position: absolute;
   bottom: 0;
 }
-  
+
 .time{
   color: #616161;
   font-style: normal;
@@ -261,7 +261,7 @@ body,nav {
   .input-group .rounded{
     background-color: #FFFFFF !important;
     border: 1px solid #FFFFFF;
-    
+
   }
 /********************/
 
@@ -272,9 +272,9 @@ body,nav {
     margin-right: 5% !important;
 }
 
-.table{
+/* .table{
   margin-top: 40px !important;
-}
+} */
 
 .tableHead{
   border-bottom: 2px solid #A5A7AE;
@@ -287,9 +287,9 @@ body,nav {
   font-weight: 600;
 }
 
-thead{
+/* thead{
   border-color: #BFBFBF !important;
-}
+}  */
 
 /** Select **/
 
@@ -327,8 +327,8 @@ th{
 }
 
 .opt {
-  text-align: end; 
-  text-decoration: underline; 
+  text-align: end;
+  text-decoration: underline;
   color: #7196FF;
   font-weight: 500;
 }
@@ -351,13 +351,13 @@ th{
     background-color: #FFFFFF;
     border-radius: 15px;
     border: 1px solid #D6D6D6;
-box-shadow: -4px 0px 5px rgba(0, 0, 0, 0.05);
-    
+    box-shadow: -4px 0px 5px rgba(0, 0, 0, 0.05);
+
     transition: 0.3s;
     text-align: start;
     visibility: hidden;
     opacity: 0;
-    
+
 }
 
 .menu.active{
@@ -374,7 +374,7 @@ box-shadow: -4px 0px 5px rgba(0, 0, 0, 0.05);
   width: 20px;
   height: 20px;
   background-color: #FFFFFF;
- 
+
   transform: rotate(45deg);
 }
 
@@ -384,13 +384,13 @@ box-shadow: -4px 0px 5px rgba(0, 0, 0, 0.05);
   padding: 10px 0;
   border-top: 1px solid rgba(0,0,0,0.05);
   direction: flex;
-  
-  
+
+
 }
 
 
 .menu ul li img{
-  
+
   margin-right: 10px;
   opacity: 0.5;
   transition: 0.5s;
@@ -415,7 +415,7 @@ box-shadow: -4px 0px 5px rgba(0, 0, 0, 0.05);
 }
 
 i img{
-  
+
   opacity: 0.6;
   transition: 0.5s;
   cursor: pointer;
@@ -423,7 +423,7 @@ i img{
 
 i img:hover{
   opacity: 1;
- 
+
 }
 
 .hovtr
@@ -461,7 +461,7 @@ i img:hover{
 }
 
 .action .profile img{
-    
+
     top: 0;
     left: 0;
     object-fit: cover;
@@ -483,7 +483,7 @@ i img:hover{
 }
 
 .action .menu.active{
-    top: 50px;
+    top: 80px;
     visibility: visible;
     opacity: 1;
 }
@@ -514,8 +514,8 @@ i img:hover{
     padding: 10px 0;
     border-top: 1px solid rgba(0,0,0,0.05);
     direction: flex;
-    
-    
+
+
 }
 
 .action .menu ul li img{
@@ -560,3 +560,136 @@ i img:hover{
 
 }
 
+
+/** css tables **/
+/*   color variables */
+:root {
+  --clr-primary: #81d4fa;
+--clr-primary-light: #e1f5fe;
+--clr-primary-dark: #4fc3f7;
+--clr-gray100: #f9fbff;
+--clr-gray150: #f4f6fb;
+--clr-gray200: #eef1f6;
+--clr-gray300: #e1e5ee;
+--clr-gray400: #767b91;
+--clr-gray500: #4f546c;
+--clr-gray600: #2a324b;
+--clr-gray700: #161d34;
+--clr-pending: #fff0c2;
+--clr-pending-font: #a68b00;
+--clr-unpaid: #ffcdd2;
+--clr-unpaid-font: #c62828;
+--clr-paid: #c8e6c9;
+--clr-paid-font: #388e3c;
+--clr-link: #2962ff;
+
+/*   border radius */
+--radius: 0.2rem;
+
+}
+
+*,
+*::before,
+*::after {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+
+body {
+
+background-color: var(--clr-gray100) !important;
+}
+
+table {
+border-collapse: collapse;
+box-shadow: 0 5px 10px var(--clr-gray300);
+background-color: white;
+text-align: left;
+overflow: hidden;
+
+
+}
+
+thead {
+  box-shadow: 0 5px 10px var(--clr-gray300);
+}
+
+th {
+  padding: 1rem 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1rem;
+  font-size: 0.7rem;
+  font-weight: 900;
+}
+
+td {
+  padding: 1rem 2rem;
+}
+
+a {
+  text-decoration: none;
+  color: var(--clr-link);
+}
+
+.status {
+  border-radius: var(--radius);
+  background-color: red;
+  padding: 0.2rem 1rem;
+  text-align: center;
+
+
+}
+
+.status-pending {
+  background-color: var(--clr-pending);
+  color: var(--clr-pending-font);
+}
+
+.status-paid {
+  background-color: var(--clr-paid);
+  color: var(--clr-paid-font);
+}
+
+.status-unpaid {
+  background-color: var(--clr-unpaid);
+  color: var(--clr-unpaid-font);
+}
+
+.amount {
+  text-align: right;
+}
+
+/*Color alternating rows*/
+tr:nth-child(even) {
+  background-color: var(--clr-gray150) !important;
+}
+
+/** remove data table style **/
+
+table td{
+  border:none;
+}
+
+table tbody{
+  border-bottom: none ;
+}
+table.table thead th {
+  border-bottom: none;
+
+}
+
+table.table tfoot th {
+border-top: none;
+}
+.dataTables_info { display: none; }
+
+.dataTables_filter{
+  display: none;
+  position: absolute;
+  top: -25%;
+  left: 25%;
+  width: 80%;
+    background-color: #FFFFFF;
+    border-radius: 0.25em;
+}

@@ -1,8 +1,57 @@
 <?php
-    $array = array(12, 19, 3, 5, 2, 3, 2,3,1,2,4,5);
-    $color = array('Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange');
-    $json = json_encode($array);
-    $json2 = json_encode($color);
+    require('../back_end/connexion.php');
+
+    $Smt = $bdd->prepare("SELECT ID_FORM,count(*) as NBR_ETU FROM etudiant WHERE ID_ETU IN ( SELECT ID_ETU FROM postuler) GROUP BY ID_FORM");
+	$Smt -> execute();
+    $postule_etu = $Smt->fetchAll();
+    $Smt->closeCursor();//vider le curseur (free)
+
+    $Smt = $bdd->prepare("SELECT ID_FORM,count(*) as NBR_ETU FROM etudiant GROUP BY ID_FORM");
+	$Smt -> execute();
+    $all_etu = $Smt->fetchAll();
+    $Smt->closeCursor();//vider le curseur (free)
+
+    $Smt = $bdd->prepare("SELECT FILIERE FROM formation WHERE ID_FORM IN (SELECT ID_FORM FROM etudiant)");
+	$Smt -> execute();
+    $all_form = $Smt->fetchAll();
+    $Smt->closeCursor();//vider le curseur (free)
+
+    // var_dump($all_form);
+    // echo "<BR><BR><BR>";
+    // var_dump($postule_etu);
+
+    //$array = array(12, 19, 3, 5, 2, 3, 2,3,1,2,4,5);
+    //$labels = array('Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange');
+/*
+    $array = array($postule_etu[0]['NBR_ETU'],$postule_etu[1]['NBR_ETU'],$postule_etu[2]['NBR_ETU']);  
+    $labels = array($postule_etu[0]['ID_FORM'],$postule_etu[1]['ID_FORM'],$postule_etu[2]['ID_FORM']);
+*/
+
+    $array1 = array();
+    $array2 = array();
+    $labels = array();
+
+    foreach ($all_form as $value) {
+        //echo $value[0];
+        array_push($labels,$value[0]);
+
+    }
+
+    foreach ($all_etu as $value) {
+
+        array_push($array1,$value[1]);
+
+    }
+
+    foreach ($postule_etu as $value) {
+
+        array_push($array2,$value[1]);
+
+    }
+
+    $json_all_etu = json_encode($array1);
+    $json_postule_etu = json_encode($array2);
+    $json_labels = json_encode($labels);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -15,7 +64,9 @@
     <title>Document</title>
 </head>
 <body>
-    <canvas id="myChart" width="100" height="25"></canvas>
+    <div style="width:50%; height:50vh; ">
+        <canvas id="myChart" width="100%" height="50vh"></canvas>
+    </div>
 <script>
 const ctx = document.getElementById('myChart');
 const myChart = new Chart(ctx, {
@@ -24,14 +75,18 @@ const myChart = new Chart(ctx, {
     data: {
         //the number of labels must match the number of elements inside the data attribute in the datasets structure
         //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-        labels: <?php echo $json2; ?>,
-        datasets: [{
-            label: '# of Votes',
+        labels: <?php echo $json_labels; ?>,
+        datasets: [
+            //label: '# of Votes',
             /*
             this is how u can specify x and y axes
             data: [{x:'2016-12-25', y:20}, {x:'2016-12-26', y:10}]
             */
-            data: <?php echo $json; ?>,
+
+
+            {
+                label: '# Tous',
+            data: <?php echo $json_all_etu; ?>,
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -49,7 +104,28 @@ const myChart = new Chart(ctx, {
                 'rgba(255, 159, 64, 1)'
             ],
             borderWidth: 1
-        }]
+        },
+        {
+            label: '# Postulé',
+            data: <?php echo $json_postule_etu; ?>,
+            
+        },
+        
+            /**/
+        ]
+        
+    
+        
+    
+        /*datasets: [{
+            type: 'bar',
+            label: 'Bar Dataset',
+            data: [10, 20, 30, 40]
+        }, {
+            type: 'line',
+            label: 'Line Dataset',
+            data: [50, 50, 50, 50],
+        }],*/
     },
     options: {
         scales: {
@@ -61,7 +137,7 @@ const myChart = new Chart(ctx, {
             title: {
                 // title for the chart
                 display: true,//show
-                text: 'Color votes',
+                text: 'Statistique sur les taux de postulation',
                 font: {//font attributes
                         size: 40
                     }
