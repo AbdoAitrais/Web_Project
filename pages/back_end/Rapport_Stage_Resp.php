@@ -74,9 +74,29 @@
                 /// *** Insert rapport
                 if($rapport)
                 {
+                    /// *** Inserer rapport
                     $Smt = $bdd->prepare("INSERT INTO rapport(fichier,id_stage) values(?,?)");
                     $Smt -> execute(array($rapport,$id_stage));
                     $Smt->closeCursor();//vider le curseur (free)
+
+                    /// *** Finir le stage
+                    $Smt=$bdd->prepare("UPDATE stage SET STATUSTG=? WHERE ID_STAGE=? ");
+                    $Smt->execute(array('2',$id_stage));  
+                    $Smt->closeCursor();//vider le curseur (free)
+                    /// *** OFFRE ET ETUDIANT DE CET STAGE
+                    $Smt=$bdd->prepare("SELECT ID_OFFRE,ID_ETU from stage WHERE ID_STAGE=?");
+                    $Smt->execute(array($id_stage));
+                    $row=$Smt->fetch(PDO::FETCH_ASSOC);
+                    $Smt->closeCursor();//vider le curseur (free)
+                    $id_etu = $row['ID_ETU'];
+                    $id_offre=$row['ID_OFFRE'];
+
+                    /// ***
+                    $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=? ");
+                    $Smt->execute(array('Fini',$id_etu,$id_offre));  
+                    $Smt->closeCursor();//vider le curseur (free)
+
+
                 }
                 ///Insert motcles
                 if( !empty($_POST['motscle']) )

@@ -24,8 +24,8 @@
         ///Stage encours
         $id_stage = $_GET['id_stage'];
          /// *** Test access
-        $Smt =$bdd->prepare("SELECT e.ID_ETU,e.ID_FORM FROM stage s,etudiant e WHERE s.ID_ETU=e.ID_ETU AND ID_STAGE=?");
-        $Smt->execute(array($id_stage));
+        $Smt =$bdd->prepare("SELECT e.ID_ETU,e.ID_FORM FROM stage s,etudiant e WHERE s.ID_ETU=e.ID_ETU AND ID_STAGE=? AND STATUSTG=?");
+        $Smt->execute(array($id_stage,'1'));
         $etudiant_stg = $Smt->fetch(PDO::FETCH_ASSOC);
 
         $id_etu =$etudiant_stg['ID_ETU'];
@@ -203,6 +203,10 @@
                                 <li><img src="icons/jury.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Jury</a> </li>
                                 <li><img src="icons/certificate.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop2">Notes</a> </li>
                                 <li><img src="icons/application.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">Rapport</a> </li>
+                                <form action="back_end/CancelStage_Resp.php" method="post">
+                                  <input type="hidden" name="id_stage" value="<?php print($result1['ID_STAGE']);?>">
+                                  <li><img src="" alt=""><a href=""><button type="submit">Cancel</button></a> </li>
+                                </form>
                               </ul>
                             </div>
                           </td>

@@ -40,7 +40,7 @@
                                                              AND o.ID_OFFRE=o1.ID_OFFRE AND p.ID_ETU=p1.ID_ETU	
                                                             )
                 ) j,postuler p2,offre o2,entreprise e WHERE p2.ID_ETU = j.ID_ETU AND p2.ID_OFFRE = j.ID_OFFRE 
-                  AND p2.ID_OFFRE = o2.ID_OFFRE AND o2.ID_ENTREP =e.ID_ENTREP AND o2.ID_FORM='$Resp' AND p2.ID_ETU='$id_etu'";
+                  AND p2.ID_OFFRE = o2.ID_OFFRE AND o2.ID_ENTREP =e.ID_ENTREP AND o2.ID_FORM='$Resp' AND p2.ID_ETU='$id_etu' AND p2.STATU!='Annulée' AND p2.STATU!='Fini' ";
       ///***Search bar
       if(isset($_POST['Filter']) && !empty( $_POST['Filter'] )){
 

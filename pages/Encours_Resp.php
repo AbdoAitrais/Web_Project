@@ -33,7 +33,7 @@
           exit("You're not allowed to access for this student");
 
       ///Stage
-      $sql1 = "SELECT * FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND etu.ID_ETU='$id_etu' AND s.DATEDEBUT_STAGE =(SELECT max(DATEDEBUT_STAGE) FROM stage WHERE ID_ETU='$id_etu')";
+      $sql1 = "SELECT * FROM entreprise ent,offre o,stage s,etudiant etu  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND etu.ID_ETU='$id_etu' AND s.STATUSTG='1' ";
       $req1 =$bdd->query($sql1);
       $result1 = $req1->fetch(PDO::FETCH_ASSOC);
       
@@ -182,6 +182,10 @@
                                 <li><img src="icons/jury.png" alt=""><a href="Jury_Resp.php?id_stage=<?php print($result1['ID_STAGE']);?>">Jury</a> </li>
                                 <li><img src="icons/certificate.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Notes</a> </li>
                                 <li><img src="icons/application.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">Rapport</a> </li>
+                                <form action="back_end/CancelStage_Resp.php" method="post">
+                                  <input type="hidden" name="id_stage" value="<?php print($result1['ID_STAGE']);?>">
+                                  <li><img src="" alt=""><a href=""><button type="submit">Cancel</button></a> </li>
+                                </form>
                               </ul>
                             </div>
                           </td>
@@ -267,7 +271,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                   </div>
                   <div class="modal-body" style="max-height: 300px;">
-                        <div>
+                        <div style="margin-left:130px">
                           <button type = "button" class = "btn-warnin">
                               <i class = "fa fa-upload"></i> Upload File
                                 <input type="file" class="form-control" id="rapport" name="rapport" required >
