@@ -8,27 +8,56 @@
   }
   
     
-      require('back_end/connexion.php');
-      $id_form = $_SESSION['user_id'];
+      if(!empty($_GET['id_stage']))
+      {
       
-      /// *** Type formation
-      $Smt = $bdd->prepare("SELECT TYPE_FORM FROM formation WHERE ID_FORM=?");
-      $Smt -> execute(array($id_form));
-      $row = $Smt->fetch(PDO::FETCH_ASSOC);
-      $type_form = $row['TYPE_FORM'];  
+        require('back_end/connexion.php');
+        $id_form = $_SESSION['user_id'];
+        $id_stage=$_GET['id_stage'];
+        /// *** formation de stage
+        $Smt=$bdd->prepare("SELECT ID_FORM from etudiant e,stage s WHERE s.ID_ETU=e.ID_ETU AND  s.ID_STAGE=?");
+        $Smt->execute(array($id_stage));
+        $row =$Smt->fetch(PDO::FETCH_ASSOC);
+        $Smt->closeCursor();//vider le curseur (free)
+        $form_stage=$row['ID_FORM'];
+        
+        if($_SESSION['user_type'] == "Etudiant"){
+          //*** formation de etudiant user
+          $Smt=$bdd->prepare("SELECT ID_FORM from etudiant WHERE ID_ETU=?");
+          $Smt->execute(array($_SESSION['user_id']));
+          $row =$Smt->fetch(PDO::FETCH_ASSOC);
+          $Smt->closeCursor();//vider le curseur (free)
+          $id_form=$row['ID_FORM'];
+        }
+        /// *** Test d'acces
+        if($id_form != $form_stage )
+            exit("You're not allowed to access for this page");
+        
+        /// *** Detail de stage
+        /// *** Offre et entreprise
+        $Smt=$bdd->prepare("SELECT POSTE,NOM_ENTREP,DUREE,DESCRIP from entreprise e,offre o,stage s WHERE e.ID_ENTREP=o.ID_ENTREP AND s.ID_OFFRE=o.ID_OFFRE AND s.ID_STAGE=? ");
+        $Smt->execute(array($id_stage));
+        $row1 =$Smt->fetch(PDO::FETCH_ASSOC);
+        $Smt->closeCursor();//vider le curseur (free)
 
-      if($_SESSION['user_type'] == "Etudiant"){
-         
-        $sql = "SELECT ID_FORM,NIVEAU FROM etudiant WHERE ID_ETU='$id_form' ";
-        $req = $bdd->query($sql); 
-        $result = $req->fetch(PDO::FETCH_ASSOC);
-        $id_form = $result['ID_FORM'];
-        $type_form = $result['NIVEAU'];
-      }
+        /// *** rapport
+        $Smt=$bdd->prepare("SELECT FICHIER from rapport r,stage s WHERE r.ID_STAGE=s.ID_STAGE AND s.ID_STAGE=? ");
+        $Smt->execute(array($id_stage));
+        $row2 =$Smt->fetch(PDO::FETCH_ASSOC);
+        $Smt->closeCursor();//vider le curseur (free)
 
-      $req = "SELECT s.ID_STAGE,NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,POSTE,NOM_ENTREP,r.FICHIER FROM entreprise ent,offre o,stage s,etudiant etu,rapport r  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND r.ID_STAGE=s.ID_STAGE AND o.ID_FORM='$id_form' ";    
-      $Smt = $bdd->query($req);
-      $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+        /// *** Encadrants
+        $Smt=$bdd->prepare("SELECT e.NOM_ENS,e.PRENOM_ENS,s.NOTENCAD_ENTREP,s.NOTENCAD  from stage s,enseignant e WHERE s.ID_ENS=e.ID_ENS AND s.ID_STAGE=?");
+        $Smt->execute(array($id_stage));
+        $row3 =$Smt->fetch(PDO::FETCH_ASSOC);
+        $Smt->closeCursor();//vider le curseur (free)
+
+        /// *** Jury
+        $Smt=$bdd->prepare("SELECT e.NOM_ENS,e.PRENOM_ENS,j.NOTE from enseignant e,juri j WHERE j.ID_ENS=e.ID_ENS AND j.ID_STAGE=? ");
+        $Smt->execute(array($id_stage));
+        $rows4 =$Smt->fetchAll(PDO::FETCH_ASSOC);
+        $Smt->closeCursor();//vider le curseur (free)
+
 
       
     
@@ -165,134 +194,148 @@
           <?php }?>
         </div>
       </nav>
-  
 
-    <div class="container-fluid " >
-      <div class="" style="margin-top: 100px; background-color:  #E5E5E5 !important;">        
-        <div class="row">
-            <div class="col-md-11 elm pub_col" style=" background: #FFFFFF !important;
-                        border-radius: 35px !important; padding: 5%;">
+    <div class="container-fluid contpad">
+      <div class="" style="margin-top: 150px;">
+        
 
-                  <div class="tableHead" >
-                        <h4>Liste des Mes Stages</h4>
-                  </div>                  
-                <?php 
-                if( !empty($rows) )
-                {
-                ?>
-                <table class="table" id="Table_Histo">
-                    <thead>
-                      <tr>
-                      <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Prénom</th>
-                        <th scope="col">Poste</th>
-                        <th scope="col">Entreprise</th>
-                        <th scope="col"></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-
-                   
-                    <?php 
-                    
-                    foreach ($rows as $row): 
-                    
-                      ?>
-                        <tr>
-                        <?php if( $type_form){ ?><th scope="row" style="color: #7096FF;"><?php echo $row['NIVEAU_STAGE'] ; ?></th><?php } ?>
-                          
-                          <td><?php echo $row['NOM_ETU']; ?></td>
-                          <td><?php echo $row['PRENOM_ETU']; ?></td>
-                          <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
-                          <td style="color: #7096FF;"><?php echo $row['NOM_ENTREP']; ?></td>
-                          <td style="text-align: end;">
-                          <form action="back_end/PDFDownLoad.php" method="post" style="display: inline-block;">
-                            <input type="hidden" name="rapport" value="<?php print($row['FICHIER']);?>">
-                            <button type="submit" class="btn btn-outline-primary">Rapport</button>
-                          </form>
-                            <a href="Detail_Stage.php?id_stage=<?php print($row['ID_STAGE']); ?>"><button type="button" class="btn btn-outline-primary">Detail</button></a>
-                          </td>
-                        </tr>
-                    <?php 
-                    endforeach; 
-                    
-                    ?>
-
-                    </tbody>
-                    <tfoot>
-                    <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
-                        <th scope="col">Nom</th>
-                        <th scope="col">Prénom</th>
-                        <th scope="col">Poste</th>
-                        <th scope="col">Entreprise</th>
-                        <th scope="col"></th>
-                    </tfoot>
-                  </table>
-                  <?php
-                  }
-                  else
-                  {
-                    echo '<div class="alert alert-primary" role="alert">
-                            No data found !
-                          </div>';
-                  }
-                  ?>
-              </div>
-          </div>
-          
-
-
-
-        </div>
-        </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
-        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
-        crossorigin="anonymous"></script>
-          
 
         
-</body>
-</html>
+         
 
-<script>
-  function menuToggle(){
+
+          <div class="row" style="display: flex !important; justify-content: center !important; ">
+
+           
+
+           
+            <div class="col-12 col-md-7 fircol " 
+                      >
+
+                  <div class="tableHead" style="margin-bottom: 10px;">
+                        <h4>Informations de Stage</h4> 
+                       
+                        
+                  </div><br>
+                  <div style="display: flex; justify-content: space-between;">
+                    <label for="" ><span>Poste :</span></label>
+                  <input class="inpstyl" type="text"  value="<?php print($row1['POSTE']);?>" disabled>
+                  </div><br>
+                  <div style="display: flex; justify-content: space-between;">
+                    <label for="" ><span>Entreprise :</span></label>
+                  <input class="inpstyl" type="text" value="<?php print($row1['NOM_ENTREP']);?>" disabled>
+                  </div><br>
+                  <div style="display: flex; justify-content: space-between;">
+                    <label for="" ><span>Dureé :</span></label>
+                  <input class="inpstyl" type="text" value="<?php print($row1['DUREE']/30);?> mois" disabled>
+                  </div><br><br>
+
+                  <div style="display: flex; justify-content: space-between;">
+                    <label for="" style="margin-top: 8px;"><span>Rapport :</span></label>
+                  <div class="links">
+                        <form action="back_end/PDFDownLoad.php" method="post" style="display: inline-block;">
+                            <input type="hidden" name="rapport" value="<?php print($row2['FICHIER']);?>">
+                            <button type="submit" class="btn btn-outline-primary">Télécharger</button>
+                            <a href=""><img src="icons/download.png" alt=""></a>
+                        </form>
+                   
+                  </div>
+                  </div><br><br>
+                  
+                  
+                  <div class="tableHead" style="margin-bottom: 10px;">
+                    <h4>Notes</h4> 
+                    
+              </div><br>
+              <div style="text-align: center;"><label for="" class="nt"><span style="font-weight: 500 !important;">Encadrants :</span></label></div><br>
+
+              <div style="display: flex; justify-content: space-evenly;">
+                  <?php if($row3['NOM_ENS']){ ?>
+                  <div style="display: flex; justify-content: space-between; width: 30% !important;">
+                    <label for="" ><span><?php print($row3['NOM_ENS']); ?> <?php print($row3['PRENOM_ENS']); ?> :</span></label>
+                    <input class="inpsty2" type="text" value="<?php print($row3['NOTENCAD']);?>" disabled>
+                  </div>
+                  <?php } ?>
+
+                  <div style="display: flex; justify-content: space-between; width: 30%;">
+                    <label for="" ><span>Entreprise :</span></label>
+                  <input class="inpsty2" type="text" value="<?php print($row3['NOTENCAD_ENTREP']);?>" disabled>
+                  </div>
+
+              </div><br><br>
+
+              <?php if(!empty($rows4)){ ?>
+              <div style="text-align: center; "><label for="" class="nt"><span style="font-weight: 500 !important;">Jury :</span></label></div><br>
+              <?php foreach($rows4 as $row4): ?>
+              <div style="display: flex; justify-content: space-evenly;">
+                  <div style="display: flex; justify-content: space-between; width: 30% !important;">
+                    <label for="" ><span><?php print($row4['NOM_ENS']); ?> <?php print($row4['PRENOM_ENS']); ?> :</span></label>
+                    <input class="inpsty2" type="text" value="<?php print($row4['NOTE']); ?>" disabled>
+                  </div>
+              </div><br>
+              <?php endforeach;} ?>
+
+              </div>
+
+              <div class="col-12 col-md-5 secol" 
+                      >
+
+                  <div class="tableHead" style="margin-bottom: 10px;">
+                        <h4>Déscription</h4> 
+
+                       
+                        
+                  </div>
+
+                  <div style="font-weight: 500; font-size: 18px;">
+                    <?php print($row1['DESCRIP']); ?>
+                  </div>
+
+                
+              
+            </div>
+          </div>
+
+
+        
+
+
+         
+
+
+
+         
+          
+
+          
+          
+
+
+
+        </div>
+        </div>
+          
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 
+        crossorigin="anonymous">
+      
+      
+      </script>
+      <script>
+        function menuToggle(){
             const toggleMenu = document.querySelector(".menu");
             toggleMenu.classList.toggle('active');
         }
-  $(document).ready( function () {
-      var dataTable = $('#Table_Histo').DataTable();
-
-      
-
-      $('#Table_Histo tfoot tr th').each(function () {
-      var title = $('#Table_Histo thead tr th').eq($(this).index()).text();
-      if(title != "")
-      {
-        $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
-      }
-      
-      });
-
-      dataTable.columns().every(function () {
-          var dataTableColumn = this;
-
-          $(this.footer()).find('input').on('keyup change', function () {
-              dataTableColumn.search(this.value).draw();
-          });
-      });
-      
-
-
-    })
+      </script>
 
     
- 
+</body>
+</html>
+<?php
+  
+}else
+  {
+    echo "<h1>ERROR 301</h1> <p>Unauthorized Access !</p>";
+  }
 
-
-
-
-
-
-</script>
+?>
