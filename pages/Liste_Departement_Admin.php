@@ -54,7 +54,7 @@
               </li>
               
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="Liste_Enseignats_Admin.php">Enseignants</a>
+                <a class="nav-link navlink" href="Liste_Enseignants_Admin.php">Enseignants</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink " href="Liste_Entreprises_Admin.php">Entreprises</a>
@@ -97,8 +97,7 @@
 
 
           <div class="row" >
-            <div class="col-12 col-md-8 elm pub_col" style=" background: #FFFFFF !important;
-                        border-radius: 35px !important; padding: 5%;">
+            <div class="col-12 col-md-8 pub_col">
 
                   <div class="tableHead" style="margin-bottom: 10px;">
                         <h4>Liste des Départements</h4> 
@@ -219,7 +218,13 @@
 <script>
   
   $(document).ready( function () {
-    var dataTable = $('#Table_Etu').DataTable();
+    var dataTable = $('#Table_Etu').DataTable({
+      // remove label for search and add placeholder
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Search..."
+    }
+    });
 
 
 
@@ -227,7 +232,20 @@
     var title = $('#Table_Etu thead tr th').eq($(this).index()).text();
     if(title != "")
     {
-      $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+      switch (title) {
+        case 'Formation':
+          $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de FORMATION</option><option value="MQSE">MQSE</option><option value="IRM">IRM</option><option value="ILISI">ILISI</option></select>');
+          break;
+        case 'Type':
+          $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de TYPE</option><option value="LST">LST</option><option value="MST">MST</option><option value="Cycle">Cycle</option></select>');
+          break;
+        case 'Départements':
+          $(this).html('<select  id="table-filter1" class="form-select DEPARTEMENT" ><option value="">Choix de TYPE</option><option value="INFO">INFO</option><option value="ELECTRIQUE">ELECTRIQUE</option><option value="MATH">MATH</option></select>');
+          break;
+        default:
+        $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+          break;
+      }
     }
     
     });
@@ -239,6 +257,9 @@
             dataTableColumn.search(this.value).draw();
         });
     });
+
+    // search style class
+    $('.dataTables_filter').addClass('rounded search_custom');
     
     }
     )

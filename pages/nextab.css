@@ -299,9 +299,9 @@ body,nav {
 
 .select{
   background-image: url("icons/filter.png") !important;
-  font-size: smaller !important;
+  font-size: 0.9rem !important;
   width: 10rem !important;
-  height: 1.8rem ;
+  height: 2.5rem ;
 }
 @media all and (max-width: 800px)
 {
@@ -685,11 +685,10 @@ border-top: none;
 .dataTables_info { display: none; }
 
 .dataTables_filter{
-  display: none;
-  position: absolute;
-  top: -25%;
-  left: 25%;
-  width: 80%;
-    background-color: #FFFFFF;
-    border-radius: 0.25em;
+  /* display: none; */
+}
+
+/** data table all search css **/
+.search_custom{
+  background-color: #ffffff !important;
 }

@@ -18,7 +18,8 @@
     $Smt = $bdd->prepare("SELECT TYPE_FORM FROM formation WHERE ID_FORM=?");
 		$Smt -> execute(array($id_form));
     $row = $Smt->fetch(PDO::FETCH_ASSOC);
-    $type_form = $row['TYPE_FORM'];                 
+    $type_form = $row['TYPE_FORM'];   
+    $json_type_form = json_encode($type_form);              
     ///Tous les offres de cette formation
     $Smt = $bdd->prepare("SELECT * FROM offre O,entreprise E WHERE E.ID_ENTREP=O.ID_ENTREP AND O.ID_FORM=? ORDER BY O.ID_OFFRE DESC");
     $Smt -> execute(array($id_form));
@@ -116,16 +117,16 @@
           <div class="row" >
             
             <div class="col-md-8 col-12 pub_col" style="border-radius: 35px !important; ">
-            <div class="col-md-6 col-12 pub_col" style="display:flex; justify-content:center;z-index:9 !important;">
+            <!-- <div class="col-md-6 col-12 pub_col" style="display:flex; justify-content:center;z-index:9 !important;">
               <div class="search">
                   <div class="input-group rounded">
-                      <input type="search" class="form-control rounded" name='Filter' placeholder="Type a Keyword, Title, City" aria-label="Search" aria-describedby="search-addon" />
+                      <input type="search" class="form-control rounded" id="search_filter" name='Filter' placeholder="Type a Keyword, Title, City" aria-label="Search" aria-describedby="search-addon" />
                       <span class="input-group-text border-0" id="search-addon">
                           <button type='submit' style="border:none;background:none;"><i class="fas fa-search"><img src="icons/search.png"></i></button>
                       </span>
                   </div>
                 </div>
-              </div>
+              </div> -->
                   <div class="tableHead" style="margin-bottom: 10px; margin-top:10px;">
                         <h4>Liste des offres</h4>
                         <a href="Publier_Offre_Resp.php"><i><img src="icons/plus.png" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i></a>   
@@ -140,7 +141,7 @@
                     <thead>
                       <tr>
                          <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
-                        <th scope="col">Statut</th>
+                        <th scope="col">Statu</th>
                         <th scope="col">Entreprise</th>
                         <th scope="col">Ville</th>
                         <th scope="col">Poste</th>
@@ -187,8 +188,8 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                        <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
-                          <th scope="col">Statut</th>
+                        <?php if( $type_form ){ ?><th scope="col">N</th><?php } ?>
+                          <th scope="col">Statu</th>
                           <th scope="col">Entreprise</th>
                           <th scope="col">Ville</th>
                           <th scope="col">Poste</th>
@@ -278,28 +279,70 @@
       </script>
 
 <script>
-  
-  $(document).ready( function () {
+
+  var type_form = <?php echo $json_type_form; ?>;
+console.log(type_form)
+
+// jquery main function
+$(document).ready( function () {
+  //data table init and props
     var dataTable = $('#Table_Offre').DataTable({
       columnDefs: [
                               {targets: -1 }
                             ],
       responsive: true
+      ,
+      // remove label for search and add placeholder
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Search..."
+    }
     });
-
     
-    //dataTable.columns(1).search('ALTEN').draw();
-
+    
+    // add input or select for column filter 
     $('#Table_Offre tfoot tr th').each(function () {
     var title = $('#Table_Offre thead tr th').eq($(this).index()).text();
     if(title != "")
     {
-      $(this).html('<select  id="table-filter0" class="form-select select" placeholder="placeholder="Search ' + title + '"" ><option value="">nom</option><option value="Nouveau">Nouveau</option><option value="ALTEN">ALTEN</option><option value="n">n</option><option value="hh1">hh1</option></select>');
-      //$(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+      switch (title) {
+        case 'N':
+          switch (type_form) {
+            case 1 :
+              $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>');
+              break;
+            case 2 :
+              $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option></select>');
+              break;
+          }
+          break;
+        case 'Statu':
+          $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de STATU</option><option value="Nouveau">Nouveau</option><option value="Closed">Closed</option><option value="Completée">Completée</option></select>');
+          break;
+        default:
+        $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+          break;
+      }
+      
+      
     }
-    
+
     });
 
+
+    //console.log($('thead tr th').length) 
+      // dataTable.column(0).every( function () {
+      //   var dataTableColumn = this;
+      //   //console.log(dataTableColumn);
+      //   $('#search_filter').on('keyup change', function () {
+      //       // console.log(this.value);
+      //         dataTableColumn.search(this.value).draw();
+      //     });
+      // })
+
+      
+      
+    // column filter function
     dataTable.columns().every(function () {
         var dataTableColumn = this;
 
@@ -311,15 +354,15 @@
             dataTableColumn.search(this.value).draw();
         });
 
+        
+
     });
-    
+
+    // search style class
+    $('.dataTables_filter').addClass('rounded search_custom');
     
     }
     )
-
-    
-
-
   
 
 </script>

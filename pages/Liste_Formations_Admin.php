@@ -17,12 +17,26 @@
 	    $rows = $Smt -> fetchAll(PDO::FETCH_ASSOC);
       $Smt->closeCursor();//vider le curseur (free) 
 
+      // $info_form = array();
+
+      // echo "<br><br><br><br>";
+      
+      // array_push($info_form,$rows['FILIERE']);
+      // array_push($info_form,$rows['TYPE_FORM']);
+      // array_push($info_form,$rows['NOM_DEPART']);
+  
+      // var_dump($rows);
+  
+      
+
 
       /// *** Departements
       $Smt = $bdd->prepare("SELECT * FROM departement ");
       $Smt -> execute();
 	    $deps = $Smt->fetchAll(PDO::FETCH_ASSOC);
       $Smt->closeCursor();//vider le curseur (free) 
+
+      //$json_all_etu = json_encode($info_form);
       
 ?>
 
@@ -42,7 +56,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
 	<script type="text/javascript" language="javascript" src="//cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
-    <title>Jury</title>
+    <title>Formations</title>
     
     
 </head>
@@ -61,7 +75,7 @@
               </li>
               
               <li class="nav-item underline">
-                <a class="nav-link navlink" href="Liste_Enseignats_Admin.php">Enseignants</a>
+                <a class="nav-link navlink" href="Liste_Enseignants_Admin.php">Enseignants</a>
               </li>
               <li class="nav-item underline">
                 <a class="nav-link navlink" href="Liste_Entreprises_Admin.php">Entreprises</a>
@@ -104,8 +118,7 @@
 
 
           <div class="row" >
-            <div class="col-12 col-md-8 elm pub_col" style=" background: #FFFFFF !important;
-                        border-radius: 35px !important; padding: 5%;">
+            <div class="col-12 col-md-8 pub_col">
 
                   <div class="tableHead" style="margin-bottom: 10px;">
                         <h4>Liste des Formations</h4> 
@@ -128,12 +141,22 @@
                         <?php foreach($rows as $formation) : ?>
                         <tr>
                           <td style="color: #7096FF;"><?php print($formation['FILIERE']); ?></td>
-                          <?php switch($formation['TYPE_FORM']) {
-                                case 0:echo'<td style="color: #CAD2CE;">LST</td>';break;
-                                case 1:echo'<td style="color: #6FF5B5;">Cycle</td>';break;
-                                case 2:echo'<td style="color: #E160B5;">MST</td>';break;
-                                }
-                          ?>
+                          <td>
+                          <?php
+                              switch ($formation['TYPE_FORM']) {
+                                case 1:
+                                  echo '<p class = "status status-paid">Cycle</p>';
+                                  break;
+                                case 0:
+                                  echo '<p class = "status status-pending">MST</p>';
+                                  break;
+                                case 2:
+                                  echo '<p class = "status status-unpaid">LST</p>';
+                                  break;
+                                
+                              }
+                            ?>
+                          </td>
                           <td ><?php print($formation['NOM_DEPART']); ?></td>
                           <td><?php print($formation['NOM_ENS']); ?></td>
                           <td style="text-align: end; ">
@@ -303,9 +326,16 @@
       </script>
 
 <script>
+
   
   $(document).ready( function () {
-    var dataTable = $('#Table_Etu').DataTable();
+    var dataTable = $('#Table_Etu').DataTable({
+      // remove label for search and add placeholder
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Search..."
+    }
+    });
 
 
 
@@ -313,7 +343,20 @@
     var title = $('#Table_Etu thead tr th').eq($(this).index()).text();
     if(title != "")
     {
-      $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+      switch (title) {
+        case 'Formation':
+          $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de FORMATION</option><option value="MQSE">MQSE</option><option value="IRM">IRM</option><option value="ILISI">ILISI</option></select>');
+          break;
+        case 'Type':
+          $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de TYPE</option><option value="LST">LST</option><option value="MST">MST</option><option value="Cycle">Cycle</option></select>');
+          break;
+        case 'Departement':
+          $(this).html('<select  id="table-filter1" class="form-select DEPARTEMENT" ><option value="">Choix de DEPARTEMENT</option><option value="INFO">INFO</option><option value="ELECTRIQUE">ELECTRIQUE</option><option value="MATH">MATH</option></select>');
+          break;
+        default:
+        $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+          break;
+      }
     }
     
     });
@@ -321,10 +364,17 @@
     dataTable.columns().every(function () {
         var dataTableColumn = this;
 
+        $(this.footer()).find('select').on('change', function () {
+            dataTableColumn.search(this.value).draw();
+        });
+
         $(this.footer()).find('input').on('keyup change', function () {
             dataTableColumn.search(this.value).draw();
         });
     });
+
+    // search style class
+    $('.dataTables_filter').addClass('rounded search_custom');
     
     }
     )

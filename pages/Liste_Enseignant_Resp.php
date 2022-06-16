@@ -95,10 +95,9 @@
       </nav>
 
     <div class="container-fluid ">
-      <div class="" style="margin-top: 100px; background-color:  #E5E5E5 !important;">
+      <div class="" style="margin-top: 100px;">
         <div class="row" >
-            <div class="col-md-11 elm pub_col" style=" background: #FFFFFF !important;
-                        border-radius: 35px !important; padding: 5%;">
+            <div class="col-md-11 pub_col">
 
                   <div class="tableHead" >
                         <h4>Liste des enseignants</h4>
@@ -190,7 +189,15 @@
 <script>
   
   $(document).ready( function () {
-    var dataTable = $('#Table_Ens').DataTable();
+    var dataTable = $('#Table_Ens').DataTable({
+      responsive: true
+      ,
+      // remove label for search and add placeholder
+      language: {
+        search: "_INPUT_",
+        searchPlaceholder: "Search..."
+    }
+    });
 
 
 
@@ -211,6 +218,9 @@
         });
     });
     
+    // search style class
+    $('.dataTables_filter').addClass('rounded search_custom');
+
     }
     )
     
