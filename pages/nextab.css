@@ -7,6 +7,16 @@ body,nav {
     font-family: 'Poppins' !important;
 }
 
+:root {
+  --main-color: #7096FF;
+  --secondary-color: #9eb8ff;
+  --lighter-color: #e0e0e7;
+  --light-color: #b0b0c0;
+  --dark-color: #52505e;
+
+  --font-smaller: 14px;
+  --font-bigger: 20px;
+}
 
 
 .postxt{
@@ -564,7 +574,7 @@ i img:hover{
 /** css tables **/
 /*   color variables */
 :root {
-  --clr-primary: #81d4fa;
+--clr-primary: #81d4fa;
 --clr-primary-light: #e1f5fe;
 --clr-primary-dark: #4fc3f7;
 --clr-gray100: #f9fbff;
@@ -684,11 +694,120 @@ border-top: none;
 }
 .dataTables_info { display: none; }
 
-.dataTables_filter{
-  /* display: none; */
-}
+
 
 /** data table all search css **/
 .search_custom{
   background-color: #ffffff !important;
 }
+
+
+/***detail***/
+.inpsty1{
+  background-color: #f2f2fa !important;
+  border: none !important;
+  border-radius: 26px !important;
+  width: 70%;
+  margin-right: 10% !important;
+  
+}
+
+.inpsty2{
+  background-color: #f2f2fa !important;
+  border: none !important;
+  border-radius: 5px !important;
+  width: 60px;
+  margin-right: 0% !important;
+  
+}
+
+input{
+height: 35px;
+}
+
+
+
+select{
+outline: none !important;
+}
+
+
+
+.row {
+  
+  border: 8px solid var(--lighter-color);
+  border-radius: 10px;
+  background-color: #faf9ff;
+  
+}
+
+.contpad {
+  padding: 0 15em !important;
+}
+
+
+.secol {
+  width: 100%;
+  padding: 3em 1em;
+
+
+}
+
+.fircol {
+  padding: 3em 1em;
+  background-color: white;
+  border-radius: 0px 15px 15px 0px !important;
+}
+
+
+
+.nt {
+  color: white !important;
+  background-color: #7196FF;
+  border: 4px solid var(--secondary-color);
+  height: 45px !important;
+  text-align: center;
+  padding: 5px;
+  width: 200px;
+  border-radius: 5px;
+  font-weight: 400 !important;
+}
+
+.nt span {
+  color: white;
+}
+
+/**download style**/
+.links {
+  display: flex;
+  align-items: center;
+  /*margin: 20px 0;*/
+  margin-right: 45% !important;
+}
+
+.links a {
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  height: 50px;
+  background-color: #7096FF;
+  color: #fff;
+  border-radius: 5px;
+  border: 2px solid #7096FF;
+  padding: 10px 30px;
+  font-size: 12;
+  transition: 0.2s;
+  letter-spacing: 0.05em; 
+}
+
+.links a:hover {
+  color: #fff;
+}
+
+.links a:hover {
+  background-color: #4675f8 !important;
+  letter-spacing: 0.1em;
+  box-shadow: 0 0 8px #4675f8;
+}
+
+/**************************************/

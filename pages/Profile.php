@@ -304,28 +304,28 @@
                   
                      
 
-                      <div id="flip1"><i  style="margin-right: 5px;"><img id="rt1" src="../icons/right-arrow.png" alt="" ></i>Phone</div>
+                      <div id="flip1"><i  style="margin-right: 5px;"><img id="rt1" src="icons/right-arrow.png" alt="" ></i>Phone</div>
                       <div id="panel1">
                           <div class="inputBox">
                             <input type="text" required>
                             <span>Phone</span>
                           </div>
                       </div>
-                      <div id="flip2"><i  style="margin-right: 5px;"><img id="rt2" src="../icons/right-arrow.png" alt="" ></i>Adresse</div>
+                      <div id="flip2"><i  style="margin-right: 5px;"><img id="rt2" src="icons/right-arrow.png" alt="" ></i>Adresse</div>
                       <div id="panel2">
                         <div class="inputBox">
                           <input type="text" required>
                           <span>Adresse</span>
                         </div>
                       </div>
-                      <div id="flip3"><i  style="margin-right: 5px;"><img id="rt3" src="../icons/right-arrow.png" alt="" ></i>Ville</div>
+                      <div id="flip3"><i  style="margin-right: 5px;"><img id="rt3" src="icons/right-arrow.png" alt="" ></i>Ville</div>
                       <div id="panel3">
                         <div class="inputBox">
                           <input type="text" required>
                           <span>Ville</span>
                         </div>
                       </div>
-                      <div id="flip4"><i  style="margin-right: 5px;"><img id="rt4" src="../icons/right-arrow.png" alt="" ></i>Password</div>
+                      <div id="flip4"><i  style="margin-right: 5px;"><img id="rt4" src="icons/right-arrow.png" alt="" ></i>Password</div>
                       <div id="panel4">
                         <div class="inputBox">
                           <input type="text" required>
@@ -360,7 +360,91 @@
 
 <script>
   
-  
+  $(document).ready(function(){
+  $("#flip1").click(function(){
+    $("#panel1").slideToggle("slow");
+    if ($("#panel2").is(":visible")) { 
+      $("#panel2").slideToggle("slow");
+      $("#rt2").toggleClass("rot");
+} 
+
+if ($("#panel3").is(":visible")) { 
+      $("#panel3").slideToggle("slow");
+      $("#rt3").toggleClass("rot");
+} 
+
+if ($("#panel4").is(":visible")) { 
+      $("#panel4").slideToggle("slow");
+      $("#rt4").toggleClass("rot");
+} 
+
+    $("#rt1").toggleClass("rot");
+  });
+});
+
+$(document).ready(function(){
+  $("#flip2").click(function(){
+    $("#panel2").slideToggle("slow");
+    $("#rt2").toggleClass("rot");
+    if ($("#panel1").is(":visible")) { 
+      $("#panel1").slideToggle("slow");
+      $("#rt1").toggleClass("rot");
+} 
+
+if ($("#panel3").is(":visible")) { 
+      $("#panel3").slideToggle("slow");
+      $("#rt3").toggleClass("rot");
+} 
+
+if ($("#panel4").is(":visible")) { 
+      $("#panel4").slideToggle("slow");
+      $("#rt4").toggleClass("rot");
+} 
+  });
+});
+
+$(document).ready(function(){
+  $("#flip3").click(function(){
+    $("#panel3").slideToggle("slow");
+    $("#rt3").toggleClass("rot");
+    if ($("#panel2").is(":visible")) { 
+      $("#panel2").slideToggle("slow");
+      $("#rt2").toggleClass("rot");
+} 
+
+if ($("#panel1").is(":visible")) { 
+      $("#panel1").slideToggle("slow");
+      $("#rt1").toggleClass("rot");
+} 
+
+if ($("#panel4").is(":visible")) { 
+      $("#panel4").slideToggle("slow");
+      $("#rt4").toggleClass("rot");
+} 
+  });
+});
+
+$(document).ready(function(){
+  $("#flip4").click(function(){
+    $("#panel4").slideToggle("slow");
+    $("#rt4").toggleClass("rot");
+    if ($("#panel2").is(":visible")) { 
+      $("#panel2").slideToggle("slow");
+      $("#rt2").toggleClass("rot");
+} 
+
+if ($("#panel3").is(":visible")) { 
+      $("#panel3").slideToggle("slow");
+      $("#rt3").toggleClass("rot");
+} 
+
+if ($("#panel1").is(":visible")) { 
+      $("#panel1").slideToggle("slow");
+      $("#rt1").toggleClass("rot");
+} 
+  });
+});
+
 
     $(document).ready(function(){
   $("#flip").click(function(){

@@ -1045,3 +1045,119 @@ cursor: pointer;
   
   }
 
+
+  /**************** from hna **********************/
+
+  .rot {
+    transform: rotate(90deg);
+  }
+
+  #flip1{
+    color: #9C9A9A;
+    font-size: 18px;
+    font-weight: 600 !important;
+    margin-top: 30px;
+  }
+
+  #panel1 {
+    display: none;
+  }
+
+  #flip2{
+    color: #9C9A9A;
+    font-size: 18px;
+    font-weight: 600 !important;
+    margin-top: 30px;
+  }
+
+  #panel2 {
+    display: none;
+  }
+
+  #flip3{
+    color: #9C9A9A;
+    font-size: 18px;
+    font-weight: 600 !important;
+    margin-top: 30px;
+  }
+
+  #panel3 {
+    display: none;
+  }
+
+  #flip4{
+    color: #9C9A9A;
+    font-size: 18px;
+    font-weight: 600 !important;
+    margin-top: 30px;
+  }
+
+  #panel4 {
+    display: none;
+  }
+
+  i img{
+  
+    opacity: 0.6;
+    transition: 0.5s;
+    cursor: pointer;
+  }
+  
+  i img:hover{
+    opacity: 1;
+   
+  }
+
+  
+
+.form-check-input{
+  margin-right: 5px;
+}
+
+.inputBox {
+  width: 250px !important;
+  position: relative;
+  margin-top: 15px;
+}
+
+.inputBox input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #9C9A9A;
+  background: #fff;
+  border-radius: 5px;
+  outline: none;
+  color: #9C9A9A;
+  font-size: 1em;
+  transition: 0.5s;
+}
+
+.inputBox span {
+  position: absolute;
+  left: 0;
+  padding: 10px;
+  pointer-events: none;
+  font-size: 1em;
+  color: #9C9A9A;
+  text-transform: uppercase;
+  transition: 0.5s;
+}
+
+.inputBox input:valid ~ span,
+.inputBox input:focus ~ span
+{
+  color: #7096FF;
+  transform: translateX(10px) translateY(-7px);
+  font-size: 0.65em;
+  padding: 0 10px;
+  background: #fff;
+  border-left: 1px solid #7096FF;
+  border-right: 1px solid #7096FF;
+  letter-spacing: 0.2em;
+}
+
+.inputBox input:valid,
+.inputBox input:focus
+{
+  border: 1px solid #7096FF;
+}

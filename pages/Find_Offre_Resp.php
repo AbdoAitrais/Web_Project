@@ -307,11 +307,12 @@ $(document).ready( function () {
     {
       switch (title) {
         case 'N':
+          console.log(type_form);
           switch (type_form) {
-            case 1 :
+            case '1' :
               $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>');
               break;
-            case 2 :
+            case '2' :
               $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option></select>');
               break;
           }

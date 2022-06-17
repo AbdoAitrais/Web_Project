@@ -219,15 +219,15 @@
                   </div><br>
                   <div style="display: flex; justify-content: space-between;">
                     <label for="" ><span>Poste :</span></label>
-                  <input class="inpstyl" type="text"  value="<?php print($row1['POSTE']);?>" disabled>
+                  <input class="inpsty1" type="text"  value="<?php print($row1['POSTE']);?>" disabled>
                   </div><br>
                   <div style="display: flex; justify-content: space-between;">
                     <label for="" ><span>Entreprise :</span></label>
-                  <input class="inpstyl" type="text" value="<?php print($row1['NOM_ENTREP']);?>" disabled>
+                  <input class="inpsty1" type="text" value="<?php print($row1['NOM_ENTREP']);?>" disabled>
                   </div><br>
                   <div style="display: flex; justify-content: space-between;">
                     <label for="" ><span>Dureé :</span></label>
-                  <input class="inpstyl" type="text" value="<?php print($row1['DUREE']/30);?> mois" disabled>
+                  <input class="inpsty1" type="text" value="<?php print($row1['DUREE']/30);?> mois" disabled>
                   </div><br><br>
 
                   <div style="display: flex; justify-content: space-between;">
@@ -235,8 +235,8 @@
                   <div class="links">
                         <form action="back_end/PDFDownLoad.php" method="post" style="display: inline-block;">
                             <input type="hidden" name="rapport" value="<?php print($row2['FICHIER']);?>">
-                            <button type="submit" class="btn btn-outline-primary">Télécharger</button>
-                            <a href=""><img src="icons/download.png" alt=""></a>
+                            <button type="submit" style="border:none;background:none;"><a><img src="icons/download.png" alt="">Télécharger</a></button>
+                            
                         </form>
                    
                   </div>
