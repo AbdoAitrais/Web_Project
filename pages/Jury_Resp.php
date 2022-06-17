@@ -361,7 +361,7 @@
                   </div>
                   <div class="modal-body" style="max-height: 300px;">
                       
-                        <div>
+                        <div style="margin-left:130px">
                           <button type = "button" class = "btn-warnin">
                               <i class = "fa fa-upload"></i> Upload File
                                 <input type="file" class="form-control" id="rapport" name="rapport" required >
