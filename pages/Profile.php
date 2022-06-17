@@ -280,13 +280,72 @@
                     </div>
                     </div>
 
-                    <button class="update">Update Profile</button>
+                    <button class="update" data-bs-toggle="modal" data-bs-target="#staticBackdrop">Update Profile</button>
                   </div>
 
                   
             
           </div>
         </div>
+        </div>
+
+        <div class="modal fade"  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
+            <div class="modal-content" >
+              <div class="modal-header">
+                <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Nouveau Formation</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" style="max-height: 4500px; padding: 30px;">
+                
+                 
+                 
+                 
+                  
+                     
+
+                      <div id="flip1"><i  style="margin-right: 5px;"><img id="rt1" src="../icons/right-arrow.png" alt="" ></i>Phone</div>
+                      <div id="panel1">
+                          <div class="inputBox">
+                            <input type="text" required>
+                            <span>Phone</span>
+                          </div>
+                      </div>
+                      <div id="flip2"><i  style="margin-right: 5px;"><img id="rt2" src="../icons/right-arrow.png" alt="" ></i>Adresse</div>
+                      <div id="panel2">
+                        <div class="inputBox">
+                          <input type="text" required>
+                          <span>Adresse</span>
+                        </div>
+                      </div>
+                      <div id="flip3"><i  style="margin-right: 5px;"><img id="rt3" src="../icons/right-arrow.png" alt="" ></i>Ville</div>
+                      <div id="panel3">
+                        <div class="inputBox">
+                          <input type="text" required>
+                          <span>Ville</span>
+                        </div>
+                      </div>
+                      <div id="flip4"><i  style="margin-right: 5px;"><img id="rt4" src="../icons/right-arrow.png" alt="" ></i>Password</div>
+                      <div id="panel4">
+                        <div class="inputBox">
+                          <input type="text" required>
+                          <span>Password</span>
+                        </div>
+                        <div class="inputBox">
+                          <input type="text" required>
+                          <span>CONFIRM Password</span>
+                        </div>
+                      </div>
+                      
+                 
+            </div>
+              
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary">Enregistrer</button>
+              </div>
+            </div>
+          </div>
         </div>
           
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
