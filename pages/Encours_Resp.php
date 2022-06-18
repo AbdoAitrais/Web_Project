@@ -78,6 +78,7 @@
     rel="stylesheet" 
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
     crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>Encours</title>
 </head>
 <body>
@@ -118,9 +119,9 @@
             </div>
             <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
               
-              <!-- <img class="profile" onclick="menuToggle()" src="<?php if( !empty($_SESSION['user_pdp']) ) echo $_SESSION['user_pdp']; else echo 'icons/avatar.png'; ?>" alt="">
+              <img class="profile" onclick="toggle1();" src="<?php if( !empty($_SESSION['user_pdp']) ) echo $_SESSION['user_pdp']; else echo 'icons/avatar.png'; ?>" alt="">
               
-              <div class="menu" style="margin:5px;">
+              <div class="menu" id="profile_pop" style="margin:5px;">
                   <h3><?php if( isset($_SESSION['user_name']) ) echo $_SESSION['user_name']['user_firstname'].'<br>'.$_SESSION['user_name']['user_lastname']; else echo "undefined user"; ?></h3>
               
                   <ul>
@@ -132,7 +133,7 @@
               
                </div>
 
-              </div> -->
+              </div>
           </div>
         </div>
       </nav>
@@ -173,8 +174,8 @@
                           <td style="color: #7196FF;"><?php print($result1['CNE'])?></td>
                           <td style="color: #616161;"><?php print($result1['POSTE'])?>-<?php print($result1['NOM_ENTREP'])?></td>
                           <td class="opt">
-                            <span onclick="menuToggle()">Options</span>
-                            <div class="menu" id="mn1">
+                            <span id="option_pop" onclick="toggle2()">Options</span>
+                            <div class="menu" id="mn1" >
             
                               <ul>
                                 <li><img src="icons/loupe.png" alt="" ><a href="" data-bs-toggle="modal" data-bs-target="#stage_offre">Details</a> </li>
@@ -388,10 +389,26 @@
       </script>
       
       <script>
-        function menuToggle(){
-            const toggleMenu = document.querySelector(".menu");
-            toggleMenu.classList.toggle('active');
+        const profile_pop = document.getElementById("profile_pop");
+        const option_pop = document.getElementById("mn1");
+
+        // $(document).ready( function () {
+        //   $('#profile_pop').on('click', function() {
+        //     console.log('haha');
+        //     this.toggleClass('active');
+        //   } )
+        // })
+
+        function toggle1() {
+          profile_pop.classList.toggle('active');
         }
+
+        function toggle2() {
+          option_pop.classList.toggle('active');
+        }
+        
+
+        
         
         function add()
         {
