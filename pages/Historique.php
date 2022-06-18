@@ -15,12 +15,17 @@
     
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
-      
+      //echo "<br><br><br><br><br>";
       /// *** Type formation
       $Smt = $bdd->prepare("SELECT TYPE_FORM FROM formation WHERE ID_FORM=?");
       $Smt -> execute(array($id_form));
       $row = $Smt->fetch(PDO::FETCH_ASSOC);
-      $type_form = $row['TYPE_FORM'];  
+      //var_dump($row);
+      if( !empty($row['TYPE_FORM']) )
+        $type_form = $row['TYPE_FORM']; 
+      else
+        $type_form = NULL;
+       
       $json_type_form = json_encode($type_form);              
 
       if($_SESSION['user_type'] == "Etudiant"){

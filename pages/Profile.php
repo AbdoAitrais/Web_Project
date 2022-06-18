@@ -109,6 +109,7 @@
               <div class="pic">
                 
                 <div>
+                <form action="back_end/Image_Upload_Etu.php" method="post" id="upload_image" enctype="multipart/form-data">
                   <div class="avatar-upload">
                     <div class="avatar-edit">
                         <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" name="picture" />
@@ -123,10 +124,8 @@
                     </div>
                 </div>
 
-               
-
-                
                 </div>
+                  </form>
 
                 <div class="nomdiv">
                   <span class="nom"><?php echo $Data['NOM_ETU'].' '.$Data['PRENOM_ETU'];  ?></span><br><a href="" style="text-decoration: none;"><span class="reperror">Report error</span></a>
@@ -568,6 +567,11 @@ function verifier(regularExp,inputValue,class_name)
  
             })
 
+
+            $('#imageUpload').on('change', function () {
+              document.getElementById("upload_image").submit();
+
+            })
 
 </script>
 

@@ -137,21 +137,7 @@
                     $Smt=$bdd->prepare("UPDATE postuler SET STATU=? WHERE ID_ETU=? AND ID_OFFRE=? ");
                     $Smt->execute(array('Non Acceptée',$Etu,$Offre_ID));               
                     
-                    /// *** Nombre condidat
-                    $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE  AND p.ID_OFFRE=? AND o.STATUOFFRE=? AND (STATU=? OR STATU=?)");
-                    $Smt1->execute(array($Offre_ID,'Completée','Retenue','Acceptée'));
-                    $row1 = $Smt1->fetch(PDO::FETCH_ASSOC);
                     
-                    if(!empty($row1))
-                    {
-                        
-                        $NbrReste = $row1['NbrReste'];   
-                        if($NbrReste > 0)
-                        {
-                            $Smt2=$bdd->prepare("UPDATE offre SET STATUOFFRE=? WHERE ID_OFFRE=? ");
-                            $Smt2->execute(array('Nouveau',$Offre_ID) );
-                        }
-                    }
                     
 
                     /// *** Prendre du liste d'attente
@@ -172,6 +158,23 @@
                         $Smt->execute(array($id_etu_att,$Offre_ID));
                         $Smt->closeCursor();//vider le curseur (free)
                     }
+
+                    /// *** Nombre condidat
+                    $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE  AND p.ID_OFFRE=? AND o.STATUOFFRE=? AND (STATU=? OR STATU=?)");
+                    $Smt1->execute(array($Offre_ID,'Completée','Retenue','Acceptée'));
+                    $row1 = $Smt1->fetch(PDO::FETCH_ASSOC);
+                    
+                    if(!empty($row1))
+                    {
+                        
+                        $NbrReste = $row1['NbrReste'];   
+                        if($NbrReste > 0)
+                        {
+                            $Smt2=$bdd->prepare("UPDATE offre SET STATUOFFRE=? WHERE ID_OFFRE=? ");
+                            $Smt2->execute(array('Nouveau',$Offre_ID) );
+                        }
+                    }
+
                     header('location:../Soumissions_Etu.php');
 
                      
@@ -211,23 +214,7 @@
                         foreach($List_No_Accept as $No_Accept)
                         {   
                             
-                            /// *** Nombre condidat
-                            $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE  AND p.ID_OFFRE=? AND o.STATUOFFRE=? AND (STATU=? OR STATU=?)");
-                            $Smt1->execute(array($No_Accept['ID_OFFRE'],'Completée','Retenue','Acceptée'));
-                            $row1 = $Smt1->fetch(PDO::FETCH_ASSOC);
-                            $Smt1->closeCursor();//vider le curseur (free)
                             
-                            if(!empty($row1))
-                            {
-                                
-                                $NbrReste = $row1['NbrReste'];   
-                                if($NbrReste > 0)
-                                {
-                                    $Smt2=$bdd->prepare("UPDATE offre SET STATUOFFRE=? WHERE ID_OFFRE=? ");
-                                    $Smt2->execute(array('Nouveau',$No_Accept['ID_OFFRE']) );
-                                    $Smt2->closeCursor();//vider le curseur (free)
-                                }
-                            }
                             
                             /// *** Select etudiant de liste d'attente
                             $Smt=$bdd->prepare("SELECT ID_ETU FROM attente WHERE ID_OFFRE= ? AND PRIORITE=(SELECT min(PRIORITE) FROM attente WHERE ID_OFFRE=?)");
@@ -247,6 +234,23 @@
                                 $Smt = $bdd->prepare("DELETE FROM attente WHERE ID_ETU=? AND ID_OFFRE=? ");
                                 $Smt->execute(array($id_etu_att,$No_Accept['ID_OFFRE']));
                                 $Smt->closeCursor();//vider le curseur (free)
+                            }
+                            /// *** Nombre condidat
+                            $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE  AND p.ID_OFFRE=? AND o.STATUOFFRE=? AND (STATU=? OR STATU=?)");
+                            $Smt1->execute(array($No_Accept['ID_OFFRE'],'Completée','Retenue','Acceptée'));
+                            $row1 = $Smt1->fetch(PDO::FETCH_ASSOC);
+                            $Smt1->closeCursor();//vider le curseur (free)
+                            
+                            if(!empty($row1))
+                            {
+                                
+                                $NbrReste = $row1['NbrReste'];   
+                                if($NbrReste > 0)
+                                {
+                                    $Smt2=$bdd->prepare("UPDATE offre SET STATUOFFRE=? WHERE ID_OFFRE=? ");
+                                    $Smt2->execute(array('Nouveau',$No_Accept['ID_OFFRE']) );
+                                    $Smt2->closeCursor();//vider le curseur (free)
+                                }
                             }
                         }
 

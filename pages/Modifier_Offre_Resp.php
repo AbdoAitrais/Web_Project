@@ -6,7 +6,7 @@
     $_SESSION['page'] = $_SERVER['REQUEST_URI'];
     header('location: login.php');
   }
-  
+
     if($_SESSION['user_type'] == "Responsable")
     {
       require('back_end/connexion.php');
@@ -34,7 +34,7 @@
         if($Data['ID_FORM'] != $_SESSION['user_id'] )
             exit("You're not allowed to access to modify this Offre");
 
-        $_SESSION['NBRCANDIDAT'] = $Data['NBRCANDIDAT'];
+        
         $Smt->closeCursor();//vider le curseur (free)
         $existeOffre = true;
       }
@@ -54,6 +54,7 @@
         $niveau = htmlspecialchars( $_POST['niveau'] );
         $id_entrep = htmlspecialchars( $_POST['id_entrep'] );
 
+        
 
         // Update d'entreprise si elle existe
         if( !empty($id_entrep) )
@@ -67,12 +68,25 @@
             $Smt->closeCursor();//vider le curseur (free)
         }
 
+        /// ***Nbr de Candidats
+        $Smt1 =$bdd->prepare("SELECT count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE AND o.ID_OFFRE=? AND (p.STATU=? OR p.STATU=?)");
+        $Smt1->execute(array($id_offre,'Retenue','Acceptée'));
+        $row1 = $Smt1->fetch(PDO::FETCH_ASSOC);
+        $Smt->closeCursor();//vider le curseur (free)
+        
+        if(!empty($row1))
+        {
+            $NbrCand_in_db = $row1['NbrReste'];
+            echo $NbrCand_in_db;
+            var_dump($NbrCand_in_db);
+            $NbrReste = $nbrcandidat - $NbrCand_in_db;
+            echo $NbrReste;
+        
+
         // Update Statu Offre based on new expiration date
         if( date("Y-m-d") < $datefin )
-        {
-          if( !empty( $_SESSION['NBRCANDIDAT'] ) )
-          {
-            if( $nbrcandidat > $_SESSION['NBRCANDIDAT'] )
+        {    
+            if( $NbrReste > 0 )
             {
               $statuoffre = "Nouveau";
             }
@@ -80,14 +94,16 @@
             {
               $statuoffre = "Completée";
             }
-            unset($_SESSION['NBRCANDIDAT']);
-          }
-          
-          $Smt = $bdd->prepare("UPDATE offre SET STATUOFFRE=? WHERE ID_OFFRE=?");
+        }
+        else
+        {
+          $statuoffre = "Closed";
+        }
+
+        $Smt = $bdd->prepare("UPDATE offre SET STATUOFFRE=? WHERE ID_OFFRE=?");
           $Smt -> execute(array($statuoffre,$id_offre));
           $Smt->closeCursor();//vider le curseur (free)
         }
-
         //echo "<br><br><br><br>".$source_offre;
         
         // le type de stage (interne/externe)
@@ -474,58 +490,7 @@
 
          
 
-          <div class="modal fade"  id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" >
-              <div class="modal-content" >
-                <div class="modal-header">
-                  <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Enseignants</h3>
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body" style="max-height: 300px;">
-                  <table class="hovtr">
-                    <tr style="height: 50px;">
-                      <td>test</td>
-                      <td>test</td>
-                      <td style="text-align: end;">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                  </td>
-                    </tr>
-                    <tr style="height: 50px;">
-                      <td>test</td>
-                      <td>test</td>
-                      <td style="text-align: end;"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                    </tr>
-                    <tr style="height: 50px;">
-                      <td>test</td>
-                      <td>test</td>
-                      <td style="text-align: end;"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                    </tr>
-                    <tr style="height: 50px;">
-                      <td>test</td>
-                      <td>test</td>
-                      <td style="text-align: end;"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                    </tr>
-                    <tr style="height: 50px;">
-                      <td>test</td>
-                      <td>test</td>
-                      <td style="text-align: end;"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                    </tr>
-                    <tr style="height: 50px;">
-                      <td>test</td>
-                      <td>test</td>
-                      <td style="text-align: end;"><input class="form-check-input" type="checkbox" value="" id="flexCheckDefault"></td>
-                    </tr>
-                  </table>
-              </div>
-                
-                <div class="modal-footer">
-                  <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                  <button type="submit" class="btn btn-primary" >Enregistrer</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+          
 
         <?php
         }

@@ -8,7 +8,7 @@ class PDF extends FPDF
     function Header()
     {
         // Logo
-        $this->Image('C:\wamp64\www\ILISI1\WebProject\Web_Project\pages\images\FSTAGEl.png',90,15);
+        $this->Image('../images/FSTAGEl.png',90,15);
         // Line break
         $this->Ln(40);
     }

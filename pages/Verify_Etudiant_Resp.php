@@ -379,6 +379,10 @@
     dataTable.columns().every(function () {
         var dataTableColumn = this;
 
+        $(this.footer()).find('select').on('change', function () {
+            dataTableColumn.search(this.value).draw();
+        });
+
         $(this.footer()).find('input').on('keyup change', function () {
             dataTableColumn.search(this.value).draw();
         });
