@@ -155,10 +155,10 @@
                               {
                             ?>
                             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detail<?php echo $row['ID_ETU']; ?>">Detail</a>
-                            
-                              <!-- <input type="hidden" name="id_etu_refus" value="</?php echo $row['ID_ETU']; ?>"> -->
-                              <a href="back_end/Refuser_Account_Resp.php?id_etu_refus=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" id="verify" >Refuser</button></a>
-                            
+                            <form action="back_end/Refuser_Account_Resp.php" method="post" style="display: inline-block;"  >
+                              <input type="hidden" name="id_etu_refus" value="<?php echo $row['ID_ETU']; ?>">
+                              <button type="submit" class="btn btn-outline-primary" id="verify" >Refuser</button>
+                            </form>
                             <?php
                               }
                             ?>
@@ -173,10 +173,10 @@
                                     else if( $row['VERIFIED'] == 1 )
                                     {
                                         echo '<label style="text-align:end;text-decoration:underline;color: cornflowerblue; margin-left:1rem; margin-right:1rem;">Verifié</label>
-                                        </form>';
+                                        ';
                                     }
                                 ?>
-                                
+                                </form>
                                 
                           </td>
                         </tr>
@@ -299,7 +299,7 @@
                         <div class="col-4">
                             <div>
                                 <label for="poste"><span>Ville :</span></label><br>
-                                <input class="inpstyy" type="text" id="inpp" value="<?php print($detail['VILLE_ETU']); ?>"  disabled>
+                                <input class="inpstyy" type="text" id="inpp" value="<?php print($detail['VILLE']); ?>"  disabled>
                             </div><br>
                             <div>
                                 <label for="poste"><span>Adresse :</span></label><br>
