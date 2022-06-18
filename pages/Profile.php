@@ -276,7 +276,7 @@
                     </div>
                     <div id="sec">
                     <label  for="">Ville</label><br>
-                    <input type="text" class="inpp" disabled>
+                    <input type="text" class="inpp" value="<?php echo $Data['VILLE_ETU'] ?>" disabled>
                     </div>
                     </div>
 
@@ -296,6 +296,7 @@
                 <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Nouveau Formation</h3>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
+              <form id="form_updateProfile" action="back_end/Update_profile.php" method="post">
               <div class="modal-body" style="max-height: 4500px; padding: 30px;">
                 
                  
@@ -307,32 +308,32 @@
                       <div id="flip1"><i  style="margin-right: 5px;"><img id="rt1" src="icons/right-arrow.png" alt="" ></i>Phone</div>
                       <div id="panel1">
                           <div class="inputBox">
-                            <input type="text" required>
+                            <input type="text" name="numtel_etu" id="numtel_etu" value="<?php echo $Data['NUMTEL_ETU'] ?>" required>
                             <span>Phone</span>
                           </div>
                       </div>
                       <div id="flip2"><i  style="margin-right: 5px;"><img id="rt2" src="icons/right-arrow.png" alt="" ></i>Adresse</div>
                       <div id="panel2">
                         <div class="inputBox">
-                          <input type="text" required>
+                          <input type="text" name="adresse_etu" id="adresse_etu" value="<?php echo $Data['ADRESSE_ETU'] ?>" required>
                           <span>Adresse</span>
                         </div>
                       </div>
                       <div id="flip3"><i  style="margin-right: 5px;"><img id="rt3" src="icons/right-arrow.png" alt="" ></i>Ville</div>
                       <div id="panel3">
                         <div class="inputBox">
-                          <input type="text" required>
+                          <input type="text" name="ville_etu" id="ville_etu" value="<?php echo $Data['VILLE_ETU'] ?>" required>
                           <span>Ville</span>
                         </div>
                       </div>
                       <div id="flip4"><i  style="margin-right: 5px;"><img id="rt4" src="icons/right-arrow.png" alt="" ></i>Password</div>
                       <div id="panel4">
                         <div class="inputBox">
-                          <input type="text" required>
-                          <span>Password</span>
+                          <input type="password" name="password" id="password" required>
+                          <span id="pass1_msg">Password</span>
                         </div>
                         <div class="inputBox">
-                          <input type="text" required>
+                          <input type="password" name="confirm_password" id="confirm_password" required>
                           <span>CONFIRM Password</span>
                         </div>
                       </div>
@@ -341,9 +342,11 @@
             </div>
               
               <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary">Enregistrer</button>
+                <input type="hidden" name="id_etu" value="<?php echo $_SESSION['user_id'] ?>" >
+                <button type="reset" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="submit" class="btn btn-primary" id="submit">Enregistrer</button>
               </div>
+                    </form>
             </div>
           </div>
         </div>
@@ -455,6 +458,116 @@ if ($("#panel1").is(":visible")) {
 $('#upload_file').change(function() {
   $('#upload_form').submit();
 });
+
+/** verification des donnees */
+
+var submit = (document).getElementById('submit');
+
+function enable_button(button){
+                button.disabled = false;
+            }
+
+function disable_button(button){
+                button.disabled = true;
+            }
+
+function verifier(regularExp,inputValue,class_name)
+            {
+                
+                if(regularExp.test(inputValue))
+                {
+                    $(class_name).css(
+                    {
+                        "border-color" : "#54BE4A"                           
+                    })
+                        enable_button(submit);
+                    return true;
+                }
+                
+                $(class_name).css(
+                {
+                    "border-color" : "red"
+                });
+
+                    disable_button(submit);
+                
+                return false;    
+            }
+
+
+            $("#form_updateProfile").on('focus keyup mousedown',function()
+            {
+                // body...
+                //var regEx_name = /^[A-Z][a-zA-Z]{1,20}( [A-Z][a-zA-Z]{0,20})*$/;
+                var regEx_month = /(0[1-9]|1[012])$/;
+                var regEx_day = /(0[1-9]|1[0-9]|2[0-9]|3[01])$/;
+                var regEx_year = /(19[0-9][0-9]|2[0-9][0-9][0-9])$/;
+                var regEx_cne = /(^[a-zA-Z][0-9]{9})$/;
+                //var regEx_cin = /(^[a-zA-Z][a-zA-Z][0-9]{5})$/;
+                var regEx_mail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+                var regEx_pass = /.{8,}$/;
+                var regEx_phone = /[^a-z][^A-Z]$/;
+                var regEx_nonNull = /.+$/;
+
+
+                var adresse = (document).getElementById('adresse_etu');
+                var ville = (document).getElementById('ville_etu');
+                var phone = (document).getElementById('numtel_etu');
+                var pass1 = (document).getElementById('password');
+                var pass2 = (document).getElementById('confirm_password');
+
+                
+
+                
+
+
+                verifier(regEx_phone,phone.value,phone);
+
+                verifier(regEx_nonNull,ville.value,ville);
+
+                verifier(regEx_nonNull,adresse.value,adresse);
+
+
+
+                    if(verifier(regEx_pass,pass1.value,pass1))
+                    {
+                      $('#pass1_msg').text('PASSWORD');
+                      $('#pass1_msg').css({
+                        "color" : "#54BE4A"
+                      });
+                    }
+                        
+                    else
+                    {
+                      $('#pass1_msg').text('more than 8 chars');
+                      $('#pass1_msg').css({
+                        "color" : "red"
+                      });
+                    }
+                        
+                    if((pass1.value == pass2.value) && verifier(regEx_pass,pass2.value,pass2))
+                    {
+                        $(pass2).css(
+                        {
+                            "border-color" : "#54BE4A"
+                            
+                        })
+                        enable_button(submit);
+                    }
+                    else
+                    {
+                        $(pass2).css(
+                        {
+                            "border-color" : "red"
+                        });
+                        disable_button(submit);
+                    }
+                
+                
+                
+ 
+            })
+
 
 </script>
 
