@@ -299,7 +299,7 @@
                         <div class="col-4">
                             <div>
                                 <label for="poste"><span>Ville :</span></label><br>
-                                <input class="inpstyy" type="text" id="inpp" value="<?php print($detail['VILLE']); ?>"  disabled>
+                                <input class="inpstyy" type="text" id="inpp" value="<?php print($detail['VILLE_ETU']); ?>"  disabled>
                             </div><br>
                             <div>
                                 <label for="poste"><span>Adresse :</span></label><br>

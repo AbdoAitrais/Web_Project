@@ -67,7 +67,7 @@ if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_PO
             }
 
             // Check file size
-            if ($_FILES[$name]["size"] > 10000000) {
+            if ($_FILES[$name]["size"] > 50000000) {
             echo "Sorry, your file is too large.";
             $uploadOk = 0;
             }
