@@ -155,10 +155,10 @@
                               {
                             ?>
                             <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detail<?php echo $row['ID_ETU']; ?>">Detail</a>
-                            <form action="back_end/Refuser_Account_Resp.php" method="post" style="display: inline-block;"  >
-                              <input type="hidden" name="id_etu_refus" value="<?php echo $row['ID_ETU']; ?>">
-                              <button type="submit" class="btn btn-outline-primary" id="verify" >Refuser</button>
-                            </form>
+                            
+                              <!-- <input type="hidden" name="id_etu_refus" value="</?php echo $row['ID_ETU']; ?>"> -->
+                              <a href="back_end/Refuser_Account_Resp.php?id_etu_refus=<?php echo $row['ID_ETU']; ?>"><button type="button" class="btn btn-outline-primary" id="verify" >Refuser</button></a>
+                            
                             <?php
                               }
                             ?>
