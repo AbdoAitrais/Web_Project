@@ -6,7 +6,12 @@
     $_SESSION['page'] = $_SERVER['REQUEST_URI'];
     header('location: login.php');
   }
-  
+  if($_SESSION['user_type'] == "Admin")
+  {
+    echo "<h1> ERROR 301:</h1> <p>Unauthorized Access !</p>";
+    echo "<a href='".$_SESSION['main_page']."' >return te the main page</a>";
+    exit(0);
+  }
     
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
@@ -279,14 +284,10 @@
       {
         switch (title) {
         case 'N':
-          switch (type_form) {
-            case '1' :
+if( type_form == 1 )
               $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>');
-              break;
-            case '2' :
+            else if( type_form == 2 )
               $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option></select>');
-              break;
-          }
           break;
         case 'Statu':
           $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de STATU</option><option value="Nouveau">Nouveau</option><option value="Closed">Closed</option><option value="Completée">Completée</option></select>');
