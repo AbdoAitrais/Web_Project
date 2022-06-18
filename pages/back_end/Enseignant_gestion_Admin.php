@@ -33,11 +33,11 @@
                 $dep_add =$_POST['dep_add'];
                 $email_add = $_POST['email_add'];
 
-                $Smt=$bdd->prepare("INSERT INTO enseignant(ID_DEPART,NOM_ENS,PRENOM_ENS,CIN_ENS) VALUES(?,?,?,?)");
-                $Smt->execute(array($dep_add,$nom_add,$prenom_add,$cin_add));
+                $Smt=$bdd->prepare("INSERT INTO enseignant(ID_DEPART,NOM_ENS,PRENOM_ENS,CIN_ENS,EMAIL_ENS) VALUES(?,?,?,?,?)");
+                $Smt->execute(array($dep_add,$nom_add,$prenom_add,$cin_add,$email_add));
                 
 
-               header('location:../Liste_Enseignats_Admin.php');
+               header('location:../Liste_Enseignants_Admin.php');
             }
         }
         else
