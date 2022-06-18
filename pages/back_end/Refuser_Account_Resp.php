@@ -11,9 +11,9 @@
 
         if( $_SESSION['user_type'] == "Responsable" )
         {
-            if(!empty($_POST['id_etu_refus']) )
+            if(!empty($_GET['id_etu_refus']) )
             {
-                $id_etu = htmlspecialchars($_POST['id_etu_refus']);
+                $id_etu = htmlspecialchars($_GET['id_etu_refus']);
                 $Smt = $bdd->prepare("SELECT ID_USER FROM etudiant WHERE ID_ETU=?");
                 $Smt -> execute(array($id_etu));
                 $id_user_etu = $Smt->fetch();
