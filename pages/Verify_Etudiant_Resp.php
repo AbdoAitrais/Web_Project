@@ -17,6 +17,7 @@
       $row = $Smt->fetch(PDO::FETCH_ASSOC);
       $type_form = $row['TYPE_FORM'];
       $Filiere = $row['FULL_NAME'];
+      $json_type_form = json_encode($type_form); 
       
       ///*** Liste des etudiants
       $Smt = $bdd->prepare("SELECT * FROM etudiant e,users u WHERE e.ID_USER=u.ID_USER AND e.ID_FORM=? ORDER BY VERIFIED");
@@ -339,7 +340,7 @@
 
 ?>
 <script>
-  
+  var type_form = <?php echo $json_type_form; ?>;
   $(document).ready( function () {
     var dataTable = $('#Table_Etu').DataTable({
       responsive: true
@@ -357,7 +358,20 @@
     var title = $('#Table_Etu thead tr th').eq($(this).index()).text();
     if(title != "")
     {
-      $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+      switch (title) {
+        case 'N':
+          if( type_form == 1 )
+                        $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>');
+                      else if( type_form == 2 )
+                        $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option></select>');
+                    break;
+        case 'Statu':
+          $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de STATU</option><option value="Nouveau">Nouveau</option><option value="Closed">Closed</option><option value="Completée">Completée</option></select>');
+          break;
+        default:
+        $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+          break;
+      }
     }
     
     });

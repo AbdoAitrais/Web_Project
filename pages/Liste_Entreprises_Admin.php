@@ -127,7 +127,14 @@
                         </tr>
                         <?php endforeach; ?>             
                     </tbody>
-                    
+                    <tfoot>
+                      <tr>
+                         <th scope="col">Entreprise</th>
+                         <th scope="col">Email</th>
+                        <th scope="col"></th>
+                        
+                      </tr>
+                    </tfoot>
                   </table>
               </div>
           </div>
@@ -223,7 +230,6 @@
       </script>
 
 <script>
-  
   $(document).ready( function () {
     var dataTable = $('#Table_Etu').DataTable({
       // remove label for search and add placeholder
@@ -233,26 +239,16 @@
     }
     });
 
-
+    console.log('hah');
 
     $('#Table_Etu tfoot tr th').each(function () {
     var title = $('#Table_Etu thead tr th').eq($(this).index()).text();
+    console.log('hah');
     if(title != "")
     {
-      switch (title) {
-        case 'Formation':
-          $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de FORMATION</option><option value="MQSE">MQSE</option><option value="IRM">IRM</option><option value="ILISI">ILISI</option></select>');
-          break;
-        case 'Type':
-          $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de TYPE</option><option value="LST">LST</option><option value="MST">MST</option><option value="Cycle">Cycle</option></select>');
-          break;
-        case 'Departement':
-          $(this).html('<select  id="table-filter1" class="form-select DEPARTEMENT" ><option value="">Choix de TYPE</option><option value="INFO">INFO</option><option value="ELECTRIQUE">ELECTRIQUE</option><option value="MATH">MATH</option></select>');
-          break;
-        default:
-        $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
-          break;
-      }
+      console.log('hah');
+      $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+
     }
     
     });

@@ -307,16 +307,11 @@ $(document).ready( function () {
     {
       switch (title) {
         case 'N':
-          console.log(type_form);
-          switch (type_form) {
-            case '1' :
-              $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>');
-              break;
-            case '2' :
-              $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option></select>');
-              break;
-          }
-          break;
+          if( type_form == 1 )
+                        $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>');
+                      else if( type_form == 2 )
+                        $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option></select>');
+                    break;
         case 'Statu':
           $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de STATU</option><option value="Nouveau">Nouveau</option><option value="Closed">Closed</option><option value="Completée">Completée</option></select>');
           break;
