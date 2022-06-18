@@ -174,13 +174,37 @@
                     <input  class="inpstyl" type="text" name="email_add" id="email_add" required><br>
 
                     <label for="dep_add"><span>Departement :</span></label><br>
-                    <select class="form-select" name="dep_add" id="dep_add" required>
+                    <select class="form-select" name="dep_add" id="dep_add" onchange="DEP_FRM(this.value);" required>
+                    <option >Please select</option>
                     <?php foreach($deps as $dep) : ?>
                       <option value="<?php print($dep['ID_DEPART']); ?>"><?php print($dep['NOM_DEPART']); ?></option>
                       <?php endforeach; ?>
                     </select>
-              </div>
-                
+                         <?php foreach($deps as $dep): 
+                            
+                            /// *** Departements
+                            $Smt = $bdd->prepare("SELECT * FROM formation f,enseignant e WHERE e.ID_ENS=f.ID_ENS AND e.ID_DEPART=?");
+                            $Smt -> execute(array($dep['ID_DEPART']));
+                            $Liste_Forms = $Smt->fetchAll(PDO::FETCH_ASSOC);
+                            $Smt->closeCursor();//vider le curseur (free) 
+                            
+                          ?>
+                          <div id="resps<?php print($dep['ID_DEPART'])?>" class="responsables" style="display:none;">
+                            <div class="flip" ><i><img src="icons/right-arrow.png" alt=""></i>Formations</div>
+                            <div class="panel">
+                                <table class="hovtr">
+                                    <?php  foreach($Liste_Forms as $Liste_Form): ?>
+                                    <tr style="height: 50px;">
+                                      <td><?php print($Liste_Form['FILIERE']); ?></td>
+                                      <td style="text-align: end;"><input class="form-check-input" type="checkbox" name="form_add[<?php print($Liste_Form['ID_FORM']); ?>]" id="flexCheckDefault"></td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                  </table>
+                            </div>
+                          </div>
+                          
+                          <?php endforeach; ?>
+                        </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
                   <button type="submit" class="btn btn-primary">Enregistrer</button>
@@ -216,6 +240,7 @@
                       
                       <label for="dep_modif"><span>Departement :</span></label><br>
                       <select class="form-select" name="dep_modif" id="dep_modif" >
+                      
                       <?php foreach($deps as $dep) : ?>
                         <option  value="<?php print($dep['ID_DEPART']); ?>" <?php if($dep['ID_DEPART'] == $Ens_Modif['ID_DEPART']){ ?> selected <?php } ?>><?php print($dep['NOM_DEPART']); ?></option>
                         <?php endforeach; ?>
@@ -306,11 +331,29 @@
     }
     )
 
-    $(document).ready(function(){
-  $("#flip").click(function(){
-    $("#panel").slideToggle("slow");
-  });
-});
+    let flips = document.querySelectorAll('.flip');
+    for(var i=0 ; i<flips.length ; i++){
+      flips[i].onclick=()=>{
+        $(".panel").slideToggle("slow");
+      }
+    }
+
+
+
+  function DEP_FRM(id)
+  {
+    //alert(resps);
+    document.getElementById('resps'+id).style.display="block";
+    
+    let resps = document.querySelectorAll('.responsables');
+    resps.forEach((resp)=>{
+      
+      if(resp.id != ('resps'+id) )
+          resp.style.display="none";
+    })
+
+    
+  }
 
 </script>
     
