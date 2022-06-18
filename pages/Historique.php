@@ -135,7 +135,7 @@
                   <?php if(!empty($row)){ if($row['Nbr_soums']){ ?><span class="icon-button__badge"><?php $Nb_rtn =$row['Nbr_soums'];if($Nb_rtn)print($Nb_rtn);}} ?></span>
                 </li>
                 <li class="nav-item underline">
-                  <a class="nav-link navlink" href="#">Mes Stages</a>
+                  <a class="nav-link navlink" href="MeStages_Etu.php">Mes Stages</a>
                 </li>    
               </ul>
             
@@ -174,7 +174,7 @@
             <div class="col-md-11 pub_col">
 
                   <div class="tableHead" >
-                        <h4>Liste des Mes Stages</h4>
+                        <h4>Liste des Stages</h4>
                   </div>                  
                 <?php 
                 if( !empty($rows) )

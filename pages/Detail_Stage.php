@@ -15,11 +15,12 @@
         $id_form = $_SESSION['user_id'];
         $id_stage=$_GET['id_stage'];
         /// *** formation de stage
-        $Smt=$bdd->prepare("SELECT ID_FORM from etudiant e,stage s WHERE s.ID_ETU=e.ID_ETU AND  s.ID_STAGE=?");
+        $Smt=$bdd->prepare("SELECT ID_FORM,STATUSTG from etudiant e,stage s WHERE s.ID_ETU=e.ID_ETU AND  s.ID_STAGE=?");
         $Smt->execute(array($id_stage));
         $row =$Smt->fetch(PDO::FETCH_ASSOC);
         $Smt->closeCursor();//vider le curseur (free)
         $form_stage=$row['ID_FORM'];
+        $stau_stage=$row['STATUSTG'];
         
         if($_SESSION['user_type'] == "Etudiant"){
           //*** formation de etudiant user
@@ -32,7 +33,8 @@
         /// *** Test d'acces
         if($id_form != $form_stage )
             exit("You're not allowed to access for this page");
-        
+        if($stau_stage != 2)
+          exit("Stage n'est pas encore fini ");
         /// *** Detail de stage
         /// *** Offre et entreprise
         $Smt=$bdd->prepare("SELECT POSTE,NOM_ENTREP,DUREE,DESCRIP from entreprise e,offre o,stage s WHERE e.ID_ENTREP=o.ID_ENTREP AND s.ID_OFFRE=o.ID_OFFRE AND s.ID_STAGE=? ");
@@ -163,7 +165,7 @@
                   <?php if(!empty($row)){ if($row['Nbr_soums']){ ?><span class="icon-button__badge"><?php $Nb_rtn =$row['Nbr_soums'];if($Nb_rtn)print($Nb_rtn);}} ?></span>
                 </li>
                 <li class="nav-item underline">
-                  <a class="nav-link navlink" href="#">Mes Stages</a>
+                  <a class="nav-link navlink" href="MeStages_Etu.php">Mes Stages</a>
                 </li>    
               </ul>
             

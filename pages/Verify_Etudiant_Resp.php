@@ -12,10 +12,11 @@
       require('back_end/connexion.php');
       $id_form = $_SESSION['user_id'];
       /// *** Type formation
-      $Smt = $bdd->prepare("SELECT TYPE_FORM FROM formation WHERE ID_FORM=?");
+      $Smt = $bdd->prepare("SELECT TYPE_FORM,FULL_NAME FROM formation WHERE ID_FORM=?");
       $Smt -> execute(array($id_form));
       $row = $Smt->fetch(PDO::FETCH_ASSOC);
       $type_form = $row['TYPE_FORM'];
+      $Filiere = $row['FULL_NAME'];
       
       ///*** Liste des etudiants
       $Smt = $bdd->prepare("SELECT * FROM etudiant e,users u WHERE e.ID_USER=u.ID_USER AND e.ID_FORM=? ORDER BY VERIFIED");
@@ -152,6 +153,7 @@
                               if( $row['VERIFIED'] == 0 )
                               {
                             ?>
+                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#detail<?php echo $row['ID_ETU']; ?>">Detail</a>
                             <form action="back_end/Refuser_Account_Resp.php" method="post" style="display: inline-block;"  >
                               <input type="hidden" name="id_etu_refus" value="<?php echo $row['ID_ETU']; ?>">
                               <button type="submit" class="btn btn-outline-primary" id="verify" >Refuser</button>
@@ -207,6 +209,119 @@
 
         </div>
         </div>
+
+        <!-- Detail etudiant -->
+        <?php foreach($rows as $detail): 
+          
+        if( $detail['VERIFIED'] == 0 ){
+        ?>
+        
+        <div class="modal fade"  id="detail<?php print($detail['ID_ETU']); ?>" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" style="max-width: 70% !important;">
+            <div class="modal-content" >
+              <div class="modal-header">
+                <h3 class="modal-title" id="staticBackdropLabel" style="color: #7096FF; font-weight: 600;">Informations de l'étudiant</h3>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body" >
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-2"></div>
+                            <div class="col-8" style="display: flex !important; justify-content: center !important;  flex-direction: column; ">
+                                <div class="avatar-upload">
+                                    <div class="avatar-preview">
+                                      <?php if(!empty($detail['PICTURE']) ){ ?>
+                                      <div id="imagePreview" style="background-image: url('<?php print(strchr($detail['PICTURE'],'uploads'));?>');">
+                                      <?php }else{?>
+                                      <div id="imagePreview" style="background-image: url('icons/avatar.png');"><?php } ?>
+                                      </div>
+                                    </div>
+                                </div>
+                                
+                                <div style="text-align: center;"><span class="nom"><?php echo $detail['NOM_ETU']; ?> <?php echo $detail['PRENOM_ETU']; ?></span></div>
+                                <?php
+                                  switch($detail['NIVEAU']){
+                                    case 1:
+                                      $niveau ="première année";
+                                      break;
+                                    case 2:
+                                      $niveau ="deuxième année";
+                                      break;
+                                    case 3:
+                                      $niveau ="troisième année";
+                                      break;
+                                  }
+                                 ?>
+                                 <?php
+                                  switch($type_form){
+                                    case 1:
+                                      $formation ="cycle d’ingénieur";
+                                      break;
+                                    case 0:
+                                      $niveau ="Licence";
+                                      break;
+                                    case 2:
+                                      $niveau ="Master";
+                                      break;
+                                  }
+                                 ?>
+
+                                <div class="desc" style="margin-top: 15px !important;">
+                                    <p>Etudiant en <span><?php if(!empty($niveau)) echo $niveau ;?> </span><?php if(!empty($formation)) echo $formation ;?> <br>
+                                    (<?php if(!empty($Filiere)) echo $Filiere ;?>)</p>
+                                  </div>
+                                
+                            </div>
+                            <div class="col-2"></div>
+                        </div>
+                    <div class="row">
+                        <div class="col-1"></div>
+                        <div class="col-4">
+                            <div>
+                                <label for="poste"><span>CIN :</span></label><br>
+                                <input class="inpstyy" type="text" id="inpp" value="<?php print($detail['CIN_ETU']); ?>" disabled>
+                            </div><br>
+                            <div>
+                                <label for="poste"><span>CNE :</span></label><br>
+                                <input class="inpstyy" type="text" id="inpp" value="<?php print($detail['CNE']); ?>"  disabled>
+                            </div><br>
+                            <div>
+                                <label for="poste"><span>Phone :</span></label><br>
+                                <input class="inpstyy" type="text" id="inpp" value="<?php print($detail['NUMTEL_ETU']); ?>"  disabled>
+                            </div><br>
+                            <div>
+                                <label for="poste"><span>Date de naissance :</span></label><br>
+                                <input class="inpstyy" type="text" id="inpp" value="<?php print($detail['DATENAISS_ETU']); ?>"  disabled>
+                            </div>
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-4">
+                            <div>
+                                <label for="poste"><span>Ville :</span></label><br>
+                                <input class="inpstyy" type="text" id="inpp" value="<?php print($detail['VILLE']); ?>"  disabled>
+                            </div><br>
+                            <div>
+                                <label for="poste"><span>Adresse :</span></label><br>
+                                <input class="inpstyy" type="text" id="inpp" value="<?php print($detail['ADRESSE_ETU']); ?>"  disabled>
+                            </div><br>
+                            <div>
+                                <label for="poste"><span>Email :</span></label><br>
+                                <input class="inpstyy" type="text" id="inpp" value="<?php print($detail['EMAIL_ETU']); ?>"  disabled>
+                            </div><br>
+                        </div>
+                        <div class="col-1"></div>
+                    </div>
+                </div>         
+            </div>
+              
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary">Enregistrer</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <?php } endforeach; ?>
         
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" 
         integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" 

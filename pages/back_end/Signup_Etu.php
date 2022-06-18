@@ -15,6 +15,7 @@ if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_PO
         $cin = htmlspecialchars($_POST['cin']);
         $cne = htmlspecialchars($_POST['cne']);
         $adress = htmlspecialchars($_POST['adress']);
+        $ville =$_POST['city'];
         $numtel = htmlspecialchars($_POST['number']);
         $promotion = htmlspecialchars($_POST['promo']);
         $day = htmlspecialchars($_POST['day']);
@@ -115,8 +116,8 @@ if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_PO
         $id_user = $row['ID_USER'];
         
         // /// ***Insert  eetudiant data in database
-        $Smt = $bdd->prepare("INSERT INTO etudiant(ID_FORM,NOM_ETU,PRENOM_ETU,CIN_ETU,CNE,NIVEAU,PROMOTION,DATENAISS_ETU,ADRESSE_ETU,NUMTEL_ETU,CV,ID_USER)  VALUES(?,?,?,?,?,?,?,?,?,?,?,?)");
-        $Smt -> execute(array($formation,$nom_etu,$prenom_etu,$cin,$cne,$niveau,$promotion,$date_naiss,$adress,$numtel,$cv,$id_user));
+        $Smt = $bdd->prepare("INSERT INTO etudiant(ID_FORM,NOM_ETU,PRENOM_ETU,CIN_ETU,CNE,NIVEAU,PROMOTION,DATENAISS_ETU,VILLE,ADRESSE_ETU,EMAIL_ETU,NUMTEL_ETU,CV,ID_USER)  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $Smt -> execute(array($formation,$nom_etu,$prenom_etu,$cin,$cne,$niveau,$promotion,$date_naiss,$ville,$adress,$user_mail,$numtel,$cv,$id_user));
         $Smt->closeCursor();//vider le curseur (free)
 
         header('location:../login.php');

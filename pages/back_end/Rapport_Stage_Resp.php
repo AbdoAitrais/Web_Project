@@ -115,8 +115,26 @@
                     {
                         if(!empty($MotCle))
                         {
-                            $Smt = $bdd->prepare("INSERT INTO motcle(MOT,ID_RAPP) values(?,?)");
-                            $Smt -> execute(array($MotCle , $ID_RAPPORT));
+                            /// *** test si mot cle existe
+                            $Smt = $bdd->prepare("SELECT ID_MOTCLE FROM motcle WHERE MOT=?");
+                            $Smt -> execute(array($MotCle));
+                            $row = $Smt->fetch(PDO::FETCH_ASSOC);
+                            $ID_MOT = $row['ID_MOTCLE'];
+
+                            if($ID_MOT == NULL){
+                                /// *** mot cle
+                                $Smt = $bdd->prepare("INSERT INTO motcle(MOT) values(?)");
+                                $Smt -> execute(array($MotCle));
+                                
+                                /// *** 
+                                $Smt = $bdd->prepare("SELECT max(ID_MOTCLE) as ID_MOTCLE FROM motcle");
+                                $Smt -> execute();
+                                $row = $Smt->fetch(PDO::FETCH_ASSOC);
+                                $ID_MOT = $row['ID_MOTCLE'];
+                            }
+                            /// *** 
+                            $Smt = $bdd->prepare("INSERT INTO referencer(ID_RAPP,ID_MOTCLE) values(?,?)");
+                            $Smt -> execute(array($ID_RAPPORT,$ID_MOT));
                         }
                         
 
