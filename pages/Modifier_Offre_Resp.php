@@ -221,7 +221,7 @@
                         <label for="datedebut" style="margin-top: 55px;"><span>Date Debut</span></label><br>   
                       </div>
                       <div class="col-8 col-md-4 elm" >
-                        <input class="inpstyl" type="number" step="1" min="0" id="duree" name="duree" value="<?php echo $Data['DUREE'] ?>"><br>
+                        <input class="inpstyl" type="number" step="1" min="0" id="duree" name="duree" value="<?php echo $Data['DUREE']/30 ?>"><br>
                         <input class="inpstyl" type="number" step="1" min="1" style="margin-top: 45px;" id="nbrcandidat" name="nbrcandidat" value="<?php echo $Data['NBRCANDIDAT'] ?>"><br>
                         <?php 
                           if($type_form == 1)

@@ -105,7 +105,7 @@
             <div class="col-12 col-md-8 pub_col">
 
                   <div class="tableHead" style="margin-bottom: 10px;">
-                        <h4>Liste des Entreprises</h4> 
+                        <h4>Liste des Enseignants</h4> 
                         <i><img src="icons/plus.png" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i>
                   </div>
                   
@@ -162,10 +162,10 @@
                 <div class="modal-body" style="max-height: 4500px; padding: 30px;">
                   
                     <label for="nom_add"><span>Nom :</span></label><br>
-                    <input  class="inpstyl" type="text" name="nom_add" id="nom_add" required><br><br><br>
+                    <input  class="inpstyl" type="text" name="nom_add" id="nom_add" required><br>
 
                     <label for="prenom_add"><span>Prenom :</span></label><br>
-                    <input  class="inpstyl" type="text" name="prenom_add" id="prenom_add" required><br><br><br>
+                    <input  class="inpstyl" type="text" name="prenom_add" id="prenom_add" required><br>
 
                     <label for="cin_add"><span>CIN :</span></label><br>
                     <input  class="inpstyl" type="text" name="cin_add" id="cin_add" required><br>  
@@ -203,13 +203,13 @@
                   <div class="modal-body" style="max-height: 4500px; padding: 30px;">
                     
                       <label for="nom_modif"><span>Nom :</span></label><br>
-                      <input  class="inpstyl" type="text" name="nom_modif" id="nom_modif" value="<?php print($Ens_Modif['NOM_ENS']); ?>" ><br><br><br>
+                      <input  class="inpstyl" type="text" name="nom_modif" id="nom_modif" value="<?php print($Ens_Modif['NOM_ENS']); ?>" ><br>
 
                       <label for="prenom_modif"><span>Prenom :</span></label><br>
-                      <input  class="inpstyl" type="text" name="prenom_modif" id="prenom_modif" value="<?php print($Ens_Modif['PRENOM_ENS']); ?>" ><br><br><br>
+                      <input  class="inpstyl" type="text" name="prenom_modif" id="prenom_modif" value="<?php print($Ens_Modif['PRENOM_ENS']); ?>" ><br><br>
 
                       <label for="cin_modif"><span>CIN :</span></label><br>
-                      <input  class="inpstyl" type="text" name="cin_modif" id="cin_modif" value="<?php print($Ens_Modif['CIN_ENS']); ?>" ><br><br>  
+                      <input  class="inpstyl" type="text" name="cin_modif" id="cin_modif" value="<?php print($Ens_Modif['CIN_ENS']); ?>" ><br>  
                       
                       <label for="email_modif"><span>EMAIL :</span></label><br>
                       <input  class="inpstyl" type="text" name="email_modif" id="email_modif" value="<?php print($Ens_Modif['EMAIL_ENS']); ?>" ><br>

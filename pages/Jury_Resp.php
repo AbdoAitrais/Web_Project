@@ -449,7 +449,7 @@
                         <span class="duree" >(Durée <?php print($result1['DUREE']/30);?> months)</span> <br><br>
 
                         <div class="desc" >
-                          <p><?php print($result1['DESCRIP']);?></p>
+                          <p style="white-space: pre-line"><?php print($result1['DESCRIP']);?></p>
                         </div>
 
                         <div>
