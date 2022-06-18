@@ -147,10 +147,10 @@
                                 case 1:
                                   echo '<p class = "status status-paid">Cycle</p>';
                                   break;
-                                case 0:
+                                case 2:
                                   echo '<p class = "status status-pending">MST</p>';
                                   break;
-                                case 2:
+                                case 0:
                                   echo '<p class = "status status-unpaid">LST</p>';
                                   break;
                                 

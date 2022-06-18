@@ -7,7 +7,6 @@
         header('location:../login.php');
 
     else{
-
         if( $_SESSION['user_type'] == "Admin" )
         {
             if(!empty($_POST['resp_modif']) && !empty($_POST['form_modif']) ) 
@@ -21,7 +20,7 @@
 
                 header('location:../Liste_Formations_Admin.php');
                
-            }else if( !empty($_POST['nom_add']) && !empty($_POST['abv_add']) && !empty($_POST['type_add']) && !empty($_POST['resp_add']) ){
+            }else if( !empty($_POST['nom_add']) && !empty($_POST['abv_add']) && isset($_POST['type_add']) && !empty($_POST['resp_add']) ){
                 
                 $nom_add = $_POST['nom_add'];
                 $abv_add=$_POST['abv_add'];
@@ -51,8 +50,8 @@
                 $Smt=$bdd->prepare("INSERT INTO formation(ID_ENS,FULL_NAME,FILIERE,TYPE_FORM,ID_USER) VALUES(?,?,?,?,?)");
                 $Smt->execute(array($resp_add,$nom_add , $abv_add ,$type_add,$id_user));
                 
-
-               header('location:../Liste_Enseignants_Admin.php');
+                
+               header('location:../Liste_Formations_Admin.php');
             }
         }
         else

@@ -67,7 +67,7 @@ if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_PO
             }
 
             // Check file size
-            if ($_FILES[$name]["size"] > 10000000) {
+            if ($_FILES[$name]["size"] > 50000000) {
             echo "Sorry, your file is too large.";
             $uploadOk = 0;
             }
@@ -116,7 +116,7 @@ if(( (isset($_POST['prenom_etu']))  && (isset($_POST['nom_etu'])) && (isset($_PO
         $id_user = $row['ID_USER'];
         
         // /// ***Insert  eetudiant data in database
-        $Smt = $bdd->prepare("INSERT INTO etudiant(ID_FORM,NOM_ETU,PRENOM_ETU,CIN_ETU,CNE,NIVEAU,PROMOTION,DATENAISS_ETU,VILLE,ADRESSE_ETU,EMAIL_ETU,NUMTEL_ETU,CV,ID_USER)  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        $Smt = $bdd->prepare("INSERT INTO etudiant(ID_FORM,NOM_ETU,PRENOM_ETU,CIN_ETU,CNE,NIVEAU,PROMOTION,DATENAISS_ETU,VILLE_ETU,ADRESSE_ETU,EMAIL_ETU,NUMTEL_ETU,CV,ID_USER)  VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         $Smt -> execute(array($formation,$nom_etu,$prenom_etu,$cin,$cne,$niveau,$promotion,$date_naiss,$ville,$adress,$user_mail,$numtel,$cv,$id_user));
         $Smt->closeCursor();//vider le curseur (free)
 

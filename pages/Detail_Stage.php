@@ -206,7 +206,7 @@
          
 
 
-          <div class="row" style="display: flex !important; justify-content: center !important; ">
+          <div class="row row1" style="display: flex !important; justify-content: center !important; ">
 
            
 
@@ -283,14 +283,12 @@
                       >
 
                   <div class="tableHead" style="margin-bottom: 10px;">
-                        <h4>Déscription</h4> 
-
-                       
-                        
+                        <h4>Déscription</h4>    
                   </div>
-
                   <div style="font-weight: 500; font-size: 18px;">
-                    <?php print($row1['DESCRIP']); ?>
+                    <p style="white-space: pre-line">
+                      <?php print($row1['DESCRIP']); ?>
+                    </p>
                   </div>
 
                 

@@ -237,8 +237,8 @@
 
                           <span class="duree" >(Durée <?php print($Offre['DUREE']/30);?> months)</span> <br><br>
 
-                          <div class="desc" >
-                            <p><?php print($Offre['DESCRIP']);?></p>
+                          <div  >
+                            <p style="white-space: pre-line"><?php print($Offre['DESCRIP']);?></p>
                           </div>
 
                           <div>
