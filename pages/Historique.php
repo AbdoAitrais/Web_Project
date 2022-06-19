@@ -40,7 +40,7 @@
       $json_type_form = json_encode($type_form);   
       
       /// *** Stage Infos
-      $req = "SELECT s.ID_STAGE,NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,POSTE,NOM_ENTREP,r.FICHIER FROM entreprise ent,offre o,stage s,etudiant etu,rapport r  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND r.ID_STAGE=s.ID_STAGE AND o.ID_FORM='$id_form' ";    
+      $req = "SELECT s.ID_STAGE,NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,POSTE,NOM_ENTREP,r.FICHIER,s.DATEDEBUT_STAGE FROM entreprise ent,offre o,stage s,etudiant etu,rapport r  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND r.ID_STAGE=s.ID_STAGE AND o.ID_FORM='$id_form' ";    
       $Smt = $bdd->query($req);
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -199,6 +199,7 @@
                         <th scope="col">Prénom</th>
                         <th scope="col">Poste</th>
                         <th scope="col">Entreprise</th>
+                        <th scope="col">Année</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
                       </tr>
@@ -217,7 +218,10 @@
                           <td><?php echo $row['NOM_ETU']; ?></td>
                           <td><?php echo $row['PRENOM_ETU']; ?></td>
                           <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
-                          <td colspan="2" style="color: #7096FF;"><?php echo $row['NOM_ENTREP']; ?></td>
+                          <td style="color: #7096FF;"><?php echo $row['NOM_ENTREP']; ?></td>
+                          <td colspan="2">
+                            <?php echo date('Y', strtotime($row['DATEDEBUT_STAGE'])); ?>
+                          </td>
                           <td style="display:none;">
                             <?php
                               $Smt = $bdd->prepare("SELECT * from motcle m,referencer r WHERE r.ID_MOTCLE=m.ID_MOTCLE AND 
@@ -250,6 +254,7 @@
                         <th scope="col">Prénom</th>
                         <th scope="col">Poste</th>
                         <th scope="col">Entreprise</th>
+                        <th scope="col">Année</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
                     </tfoot>
@@ -313,7 +318,7 @@
           $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de STATU</option><option value="Nouveau">Nouveau</option><option value="Closed">Closed</option><option value="Completée">Completée</option></select>');
           break;
         default:
-        $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+        $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="' + title + '" />');
           break;
       }
       }

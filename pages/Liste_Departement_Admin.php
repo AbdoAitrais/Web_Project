@@ -241,7 +241,7 @@
           $(this).html('<select  id="table-filter1" class="form-select DEPARTEMENT" ><option value="">Choix de TYPE</option><option value="INFO">INFO</option><option value="ELECTRIQUE">ELECTRIQUE</option><option value="MATH">MATH</option></select>');
           break;
         default:
-        $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="Search ' + title + '" />');
+        $(this).html('<input type="text" class="form-control" aria-label="Username" aria-describedby="basic-addon1" placeholder="' + title + '" />');
           break;
       }
     }
