@@ -185,7 +185,7 @@
                         break;
 
                       default:
-                      echo "</span> liscence<br>";
+                      echo "</span> licence<br>";
                         break;
                     }
                   ?>
