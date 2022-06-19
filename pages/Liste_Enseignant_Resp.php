@@ -128,7 +128,6 @@
                           <td><?php echo $row['PRENOM_ENS']; ?></td>
                           <td style="color: #7096FF;"><?php echo $row['CIN_ENS']; ?></td>
                           <td style="text-align: end;">
-                            <a href="Modifier_Enseignant_Resp.php?id_etu=<?php echo $row['ID_ENS']; ?>" ><button type="button" class="btn btn-outline-primary">Modifier</button></a>
                             <?php if($row['ACTIVE_ENS']){ ?> 
                               <form action="back_end/Desactiver.php" method="post" style="display: inline-block;">
                                 <input type="hidden" name="id_ens_disac" value="<?php echo $row['ID_ENS']; ?>">
