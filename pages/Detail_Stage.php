@@ -237,7 +237,7 @@
                   <div class="links">
                         <form action="back_end/PDFDownLoad.php" method="post" style="display: inline-block;">
                             <input type="hidden" name="rapport" value="<?php print($row2['FICHIER']);?>">
-                            <button type="submit" style="border:none;background:none;"><a><img src="icons/download.png" alt="">Télécharger</a></button>
+                            <button type="submit" style="border:none;background:none;"><a style="color:white !important;"><img src="icons/download.png" alt="">Télécharger</a></button>
                             
                         </form>
                    

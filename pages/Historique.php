@@ -26,20 +26,25 @@
       else
         $type_form = NULL;
        
-      $json_type_form = json_encode($type_form);              
+                 
 
       if($_SESSION['user_type'] == "Etudiant"){
          
-        $sql = "SELECT ID_FORM,NIVEAU FROM etudiant WHERE ID_ETU='$id_form' ";
+        $sql = "SELECT f.ID_FORM,f.TYPE_FORM FROM etudiant e,formation f WHERE e.ID_FORM =f.ID_FORM AND ID_ETU='$id_form' ";
         $req = $bdd->query($sql); 
         $result = $req->fetch(PDO::FETCH_ASSOC);
         $id_form = $result['ID_FORM'];
-        $type_form = $result['NIVEAU'];
+        $type_form = $result['TYPE_FORM'];
       }
 
+      $json_type_form = json_encode($type_form);   
+      
+      /// *** Stage Infos
       $req = "SELECT s.ID_STAGE,NIVEAU_STAGE,NOM_ETU,PRENOM_ETU,POSTE,NOM_ENTREP,r.FICHIER FROM entreprise ent,offre o,stage s,etudiant etu,rapport r  WHERE ent.ID_ENTREP =o.ID_ENTREP AND o.ID_OFFRE=s.ID_OFFRE AND s.ID_ETU = etu.ID_ETU AND r.ID_STAGE=s.ID_STAGE AND o.ID_FORM='$id_form' ";    
       $Smt = $bdd->query($req);
       $rows = $Smt->fetchAll(PDO::FETCH_ASSOC);
+
+
 
       
     
@@ -193,11 +198,12 @@
                 <table class="table" id="Table_Histo">
                     <thead>
                       <tr>
-                      <?php if( $type_form){ ?><th scope="col">N</th><?php } ?>
+                      <?php if($type_form){ ?><th scope="col">N</th><?php } ?>
                         <th scope="col">Nom</th>
                         <th scope="col">Prénom</th>
                         <th scope="col">Poste</th>
                         <th scope="col">Entreprise</th>
+                        <th scope="col"></th>
                         <th scope="col"></th>
                       </tr>
                     </thead>
@@ -215,7 +221,19 @@
                           <td><?php echo $row['NOM_ETU']; ?></td>
                           <td><?php echo $row['PRENOM_ETU']; ?></td>
                           <td style="color: #7096FF;"><?php echo $row['POSTE']; ?></td>
-                          <td style="color: #7096FF;"><?php echo $row['NOM_ENTREP']; ?></td>
+                          <td colspan="2" style="color: #7096FF;"><?php echo $row['NOM_ENTREP']; ?></td>
+                          <td style="display:none;">
+                            <?php
+                              $Smt = $bdd->prepare("SELECT * from motcle m,referencer r WHERE r.ID_MOTCLE=m.ID_MOTCLE AND 
+                                                    ID_RAPP = ( SELECT ID_RAPP FROM rapport WHERE ID_STAGE=?)");
+                              $Smt -> execute(array($row['ID_STAGE']));
+                              $motcles = $Smt->fetchAll(PDO::FETCH_ASSOC);
+
+                              foreach($motcles as $motcle){
+                                echo $motcle['MOT']." ";
+                              }
+                            ?>
+                          </td>
                           <td style="text-align: end;">
                           <form action="back_end/PDFDownLoad.php" method="post" style="display: inline-block;">
                             <input type="hidden" name="rapport" value="<?php print($row['FICHIER']);?>">
@@ -236,6 +254,7 @@
                         <th scope="col">Prénom</th>
                         <th scope="col">Poste</th>
                         <th scope="col">Entreprise</th>
+                        <th scope="col"></th>
                         <th scope="col"></th>
                     </tfoot>
                   </table>
@@ -277,7 +296,7 @@
         // remove label for search and add placeholder
       language: {
         search: "_INPUT_",
-        searchPlaceholder: "Search..."
+        searchPlaceholder: "Mots clés..."
     }
       });
 
@@ -289,7 +308,7 @@
       {
         switch (title) {
         case 'N':
-if( type_form == 1 )
+      if( type_form == 1 )
               $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option><option value="3">3</option></select>');
             else if( type_form == 2 )
               $(this).html('<select  id="table-filter1" class="form-select select" ><option value="">Choix de N</option><option value="1">1</option><option value="2">2</option></select>');
