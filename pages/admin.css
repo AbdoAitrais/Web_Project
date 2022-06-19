@@ -797,9 +797,9 @@ border-top: none;
 }
 .dataTables_info { display: none; }
 
-.dataTables_filter{
-  /* display: none; */
-}
+/* .dataTables_filter{
+   display: none; 
+} */
 
 /** data table all search css **/
 .search_custom{
