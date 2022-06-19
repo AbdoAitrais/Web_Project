@@ -141,7 +141,7 @@
             
                     }
                   }              
-                  header('location:'.$_SESSION['Last_visite']);
+                  header('location:../Liste_Etudiant_Resp.php');
             }
         }
         else

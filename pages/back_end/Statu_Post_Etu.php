@@ -215,8 +215,8 @@
                     }
 
                     /// *** Nombre condidat
-                    $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE  AND p.ID_OFFRE=? AND o.STATUOFFRE=? AND (STATU=? OR STATU=?)");
-                    $Smt1->execute(array($Offre_ID,'Completée','Retenue','Acceptée'));
+                    $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE  AND p.ID_OFFRE=? AND o.STATUOFFRE=? AND (STATU=? OR STATU=? OR STATU=?)");
+                    $Smt1->execute(array($Offre_ID,'Completée','Retenue','Acceptée','Fini'));
                     $row1 = $Smt1->fetch(PDO::FETCH_ASSOC);
                     
                     if(!empty($row1))
@@ -291,8 +291,8 @@
                                 $Smt->closeCursor();//vider le curseur (free)
                             }
                             /// *** Nombre condidat
-                            $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE  AND p.ID_OFFRE=? AND o.STATUOFFRE=? AND (STATU=? OR STATU=?)");
-                            $Smt1->execute(array($No_Accept['ID_OFFRE'],'Completée','Retenue','Acceptée'));
+                            $Smt1 =$bdd->prepare("SELECT o.NBRCANDIDAT-count(*) AS NbrReste FROM postuler p,offre O WHERE o.ID_OFFRE=p.ID_OFFRE  AND p.ID_OFFRE=? AND o.STATUOFFRE=? AND (STATU=? OR STATU=? OR STATU=?)");
+                            $Smt1->execute(array($No_Accept['ID_OFFRE'],'Completée','Retenue','Acceptée','Fini'));
                             $row1 = $Smt1->fetch(PDO::FETCH_ASSOC);
                             $Smt1->closeCursor();//vider le curseur (free)
                             

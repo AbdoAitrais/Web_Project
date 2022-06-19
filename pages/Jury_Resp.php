@@ -98,6 +98,7 @@
     rel="stylesheet" 
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
     crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <title>Encours</title>
 </head>
 <body>
@@ -370,8 +371,7 @@
                         <div style="display: flex;">
                           <h5 style="border-bottom: 1px solid #717171; color: #717171; font-weight: 600; margin-top: 25px; border-bottom: none; text-decoration: underline;">Mots clés :</h5>
                           <div id="inp" style="margin-top: 20px; margin-left: 20px;">
-                              <input type="text" name='motscle[]' class="inp"><br>
-                              <input type="text" name='motscle[]' class="inp"><button id="bt" class="todo-app-btn" onclick="add()"><i class="bi bi-plus-lg"></i> Add </button><br>
+                              <input type="text" name='motscle[]' class="inp" style="border-radius:10px !important"><button id="bt" class="todo-app-btn" onclick="add()"><i class="bi bi-plus-lg"></i> Add </button><br>
                           </div>
                       </div>
                 </div>
@@ -502,6 +502,7 @@
             inpt.classList.add("inp");
             icn.classList.add("bi");
             icn.classList.add("bi-plus-lg");
+            inpt.style.borderRadius = "10px";
             butt.appendChild(icn);
             butt.appendChild(textnode);
             butt.onclick = ()=>{
