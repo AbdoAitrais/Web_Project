@@ -186,7 +186,7 @@
                                 <li><img src="icons/application.png" alt=""><a href="" data-bs-toggle="modal" data-bs-target="#staticBackdrop3">Rapport</a> </li>
                                 <form action="back_end/CancelStage_Resp.php" method="post">
                                   <input type="hidden" name="id_stage" value="<?php print($result1['ID_STAGE']);?>">
-                                  <li><img src="" alt=""><a href=""><button type="submit">Cancel</button></a> </li>
+                                  <li><img src="icons/cancel.png" alt=""><button type="submit" style="background:none; border:none;">Cancel</button></li>
                                 </form>
                               </ul>
                             </div>

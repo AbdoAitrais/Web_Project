@@ -115,10 +115,10 @@
                     </div>
                     <div class="avatar-preview">
                         <?php if(!empty($Data['PICTURE']) ){ ?>
-                        <div id="imagePreview" style="background-image: url('<?php print(strchr($Data['PICTURE'],'uploads'));?>');">
+                        <div id="imagePreview" style="background-image: url('<?php print(strchr($Data['PICTURE'],'uploads'));?>');"></div>
                         <?php }else{?>
-                        <div id="imagePreview" style="background-image: url('icons/avatar.png');"><?php } ?>
-                        </div>
+                        <div id="imagePreview" style="background-image: url('icons/avatar.png');"></div><?php } ?>
+                        
                     </div>
                 </div>
 
@@ -141,7 +141,7 @@
                   
                   <form action="back_end/PDFDownLoad.php" method="post" style="display:inline;" >
                     <button type = "submit" class = "btn-warnin" <?php if(!$Data['CV']){ ?> disabled <?php }?> >
-                      <i class = "fa fa-upload"></i> Mon Cv
+                      <img src="icons/download2.png" title="Download CV"><span> Mon Cv</span>
                     </button>
                     <input type="hidden" name="cv" value="<?php print($Data['CV']); ?>">
                   </form>
