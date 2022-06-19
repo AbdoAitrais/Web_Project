@@ -86,9 +86,7 @@
                   <h3><?php if( isset($_SESSION['user_name']) ) echo $_SESSION['user_name']['user_firstname'].'<br>'.$_SESSION['user_name']['user_lastname']; else echo "undefined user"; ?></h3>
               
                   <ul>
-                      <li><a href="Profile.php"><img src="popup/user.png" alt="">My profile</a> </li>
-                      <li><a href=""><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
-                      <li><a href=""><img src="popup/question.png" alt="">Help</a> </li>
+                      <li><a href=""><img src="popup/edit.png" alt="">Password</a> </li>
                       <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
                   </ul>
               
@@ -107,7 +105,7 @@
         <div class="row" >
             <div class="col-md-11 pub_col">
 
-                  <div class="tableHead" >
+                  <div class="tableHead" style="margin-bottom: 30px;">
                         <h4>Liste des etudiants</h4>   
                   </div>
                   

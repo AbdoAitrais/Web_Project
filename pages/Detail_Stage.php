@@ -136,8 +136,6 @@
               
                   <ul>
                       <li><a href="Profile.php"><img src="popup/user.png" alt="">My profile</a></li>
-                      <li><a href=""><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
-                      <li><a href=""><img src="popup/question.png" alt="">Help</a> </li>
                       <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
                   </ul>
               
@@ -184,8 +182,6 @@
               
                   <ul>
                       <li><a href="Profile.php"><img src="popup/user.png" alt="">My profile</a></li>
-                      <li><a href=""><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
-                      <li><a href=""><img src="popup/question.png" alt="">Help</a> </li>
                       <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
                   </ul>
               
@@ -214,7 +210,7 @@
             <div class="col-12 col-md-7 fircol " 
                       >
 
-                  <div class="tableHead" style="margin-bottom: 10px;">
+                  <div class="tableHead" style="margin-bottom: 30px;">
                         <h4>Informations de Stage</h4> 
                        
                         
@@ -245,7 +241,7 @@
                   </div><br><br>
                   
                   
-                  <div class="tableHead" style="margin-bottom: 10px;">
+                  <div class="tableHead" style="margin-bottom: 30px;">
                     <h4>Notes</h4> 
                     
               </div><br>
@@ -282,7 +278,7 @@
               <div class="col-12 col-md-5 secol" 
                       >
 
-                  <div class="tableHead" style="margin-bottom: 10px;">
+                  <div class="tableHead" style="margin-bottom: 30px;">
                         <h4>Déscription</h4>    
                   </div>
                   <div style="font-weight: 500; font-size: 18px;">

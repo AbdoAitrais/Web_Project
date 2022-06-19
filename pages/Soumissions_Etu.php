@@ -77,8 +77,6 @@
               
                   <ul>
                       <li><a href="Profile.php"><img src="popup/user.png" alt="">My profile</a> </li>
-                      <li><a href=""><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
-                      <li><a href=""><img src="popup/question.png" alt="">Help</a> </li>
                       <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
                   </ul>
               

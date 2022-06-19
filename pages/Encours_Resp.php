@@ -9,7 +9,7 @@
   
   if( $_SESSION['user_type'] == "Responsable")
   {
-
+    
     require("back_end/connexion.php");
     $id_form = $_SESSION['user_id'];
     /// *** Type formation
@@ -37,18 +37,21 @@
       $req1 =$bdd->query($sql1);
       $result1 = $req1->fetch(PDO::FETCH_ASSOC);
       
-
-      $id_stage = $result1['ID_STAGE'];
+      if( !empty($result1['ID_STAGE']) )
+      {
+        $id_stage = $result1['ID_STAGE'];
       
-      ///L'Encadrant
-      $sql2 = "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS,s.NOTENCAD FROM enseignant e,stage s WHERE s.ID_ENS = e.ID_ENS AND s.ID_STAGE = '$id_stage' ";
-      $req2 =$bdd->query($sql2);
-      $result2 = $req2->fetch(PDO::FETCH_ASSOC);
-
-      ///Jury
-      $sql3 = "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS,j.NOTE FROM enseignant e,juri j WHERE j.ID_ENS = e.ID_ENS AND j.ID_STAGE = '$id_stage' ";
-      $req3 =$bdd->query($sql3);
-      $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
+        ///L'Encadrant
+        $sql2 = "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS,s.NOTENCAD FROM enseignant e,stage s WHERE s.ID_ENS = e.ID_ENS AND s.ID_STAGE = '$id_stage' ";
+        $req2 =$bdd->query($sql2);
+        $result2 = $req2->fetch(PDO::FETCH_ASSOC);
+  
+        ///Jury
+        $sql3 = "SELECT e.ID_ENS,e.NOM_ENS,e.PRENOM_ENS,j.NOTE FROM enseignant e,juri j WHERE j.ID_ENS = e.ID_ENS AND j.ID_STAGE = '$id_stage' ";
+        $req3 =$bdd->query($sql3);
+        $result3 = $req3->fetchAll(PDO::FETCH_ASSOC);
+      }
+        
 
 
       /// Enseignants d'etre encadrants
@@ -78,7 +81,6 @@
     rel="stylesheet" 
     integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" 
     crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <title>Encours</title>
 </head>
@@ -126,9 +128,7 @@
                   <h3><?php if( isset($_SESSION['user_name']) ) echo $_SESSION['user_name']['user_firstname'].'<br>'.$_SESSION['user_name']['user_lastname']; else echo "undefined user"; ?></h3>
               
                   <ul>
-                      <li><a href="Profile.php"><img src="popup/user.png" alt="">My profile</a> </li>
-                      <li><a href=""><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
-                      <li><a href=""><img src="popup/question.png" alt="">Help</a> </li>
+                      <li><a href=""><img src="popup/edit.png" alt="">Password</a> </li>
                       <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
                   </ul>
               
@@ -148,7 +148,7 @@
             <div class="col-md-8 elm pub_col">
 
                 <form action="Liste_Etudiant_Resp.php" method="post" id="form" >
-                  <div class="tableHead" >
+                  <div class="tableHead" style="margin-bottom: 30px;">
                         <h4>Stage en cours</h4>
                   </div>
                 </form>
@@ -282,7 +282,8 @@
                         <div style="display: flex;">
                           <h5 style="border-bottom: 1px solid #717171; color: #717171; font-weight: 600; margin-top: 25px; border-bottom: none; text-decoration: underline;">Mots clés :</h5>
                           <div id="inp" style="margin-top: 20px; margin-left: 20px;">
-                              <input type="text" name='motscle[]' class="inp" style="border-radius:10px !important"><button id="bt" class="todo-app-btn" onclick="add()"><i class="bi bi-plus-lg"></i> Add </button><br>
+                              <input type="text" name='motscle[]' class="inp"><br>
+                              <input type="text" name='motscle[]' class="inp"><button id="bt" class="todo-app-btn" onclick="add()"><i class="bi bi-plus-lg"></i> Add </button><br>
                           </div>
                       </div>
                 </div>
@@ -424,7 +425,6 @@
             inpt.classList.add("inp");
             icn.classList.add("bi");
             icn.classList.add("bi-plus-lg");
-            inpt.style.borderRadius = "10px";
             butt.appendChild(icn);
             butt.appendChild(textnode);
             butt.onclick = ()=>{

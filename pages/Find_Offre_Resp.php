@@ -98,9 +98,7 @@
                   <h3><?php if( isset($_SESSION['user_name']) ) echo $_SESSION['user_name']['user_firstname'].'<br>'.$_SESSION['user_name']['user_lastname']; else echo "undefined user"; ?></h3>
               
                   <ul>
-                      <li><a href="Profile.php"><img src="popup/user.png" alt="">My profile</a> </li>
-                      <li><a href=""><img src="popup/envelope.png" alt=""><a href="">Inbox</a> </li>
-                      <li><a href=""><img src="popup/question.png" alt="">Help</a> </li>
+                      <li><a href=""><img src="popup/edit.png" alt="">Password</a> </li>
                       <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
                   </ul>
               
@@ -127,7 +125,7 @@
                   </div>
                 </div>
               </div> -->
-                  <div class="tableHead" style="margin-bottom: 10px; margin-top:10px;">
+                  <div class="tableHead" style="margin-bottom: 30px; margin-top:10px;">
                         <h4>Liste des offres</h4>
                         <a href="Publier_Offre_Resp.php"><i><img src="icons/plus.png" alt="" data-bs-toggle="modal" data-bs-target="#staticBackdrop"></i></a>   
                   </div>
