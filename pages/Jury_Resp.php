@@ -139,7 +139,7 @@
             </div>
             <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
               
-              <!-- <img class="profile" onclick="menuToggle()" src="<?php if( !empty($_SESSION['user_pdp']) ) echo $_SESSION['user_pdp']; else echo 'icons/avatar.png'; ?>" alt="">
+              <img class="profile" onclick="menuToggle()" src="<?php if( !empty($_SESSION['user_pdp']) ) echo $_SESSION['user_pdp']; else echo 'icons/avatar.png'; ?>" alt="">
               
               <div class="menu" style="margin:5px;">
                   <h3><?php if( isset($_SESSION['user_name']) ) echo $_SESSION['user_name']['user_firstname'].'<br>'.$_SESSION['user_name']['user_lastname']; else echo "undefined user"; ?></h3>
@@ -149,7 +149,7 @@
                       <li><a href="back_end/logout.php"><img src="popup/log-out.png" alt="">Log out</a> </li>
                   </ul>
               
-               </div> -->
+               </div>
 
               </div>
           </div>
