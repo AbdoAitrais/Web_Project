@@ -79,107 +79,107 @@
                     ///*** MAIL SENDING
 
                     /// *** Etudiant infos
-                    $Smt=$bdd->prepare("SELECT * from etudiant WHERE ID_ETU=?");
-                    $Smt->execute(array($Etu));
-                    $Etudiant=$Smt->fetch(PDO::FETCH_ASSOC);
-                    $Smt->closeCursor();//vider le curseur (free)
+                    // $Smt=$bdd->prepare("SELECT * from etudiant WHERE ID_ETU=?");
+                    // $Smt->execute(array($Etu));
+                    // $Etudiant=$Smt->fetch(PDO::FETCH_ASSOC);
+                    // $Smt->closeCursor();//vider le curseur (free)
 
-                    /// *** Entreprise et poste informations
-                    $Smt=$bdd->prepare("SELECT * from offre o,entreprise ent WHERE o.ID_ENTREP=ent.ID_ENTREP AND o.ID_OFFRE=?");
-                    $Smt->execute(array($Offre_ID));
-                    $Poste=$Smt->fetch(PDO::FETCH_ASSOC);
-                    $Smt->closeCursor();//vider le curseur (free)
-                    /// *** Formation informations
-                    $Smt=$bdd->prepare("SELECT * from formation f,enseignant e  WHERE e.ID_ENS=f.ID_ENS AND f.ID_FORM=?");
-                    $Smt->execute(array($Etudiant['ID_FORM']));
-                    $Formation=$Smt->fetch(PDO::FETCH_ASSOC);
-                    $Smt->closeCursor();//vider le curseur (free)
+                    // /// *** Entreprise et poste informations
+                    // $Smt=$bdd->prepare("SELECT * from offre o,entreprise ent WHERE o.ID_ENTREP=ent.ID_ENTREP AND o.ID_OFFRE=?");
+                    // $Smt->execute(array($Offre_ID));
+                    // $Poste=$Smt->fetch(PDO::FETCH_ASSOC);
+                    // $Smt->closeCursor();//vider le curseur (free)
+                    // /// *** Formation informations
+                    // $Smt=$bdd->prepare("SELECT * from formation f,enseignant e  WHERE e.ID_ENS=f.ID_ENS AND f.ID_FORM=?");
+                    // $Smt->execute(array($Etudiant['ID_FORM']));
+                    // $Formation=$Smt->fetch(PDO::FETCH_ASSOC);
+                    // $Smt->closeCursor();//vider le curseur (free)
                     
-                    /// *** Formation  type et niveau
-                        switch($Etudiant['NIVEAU']){
-                        case 1:
-                            $niveau ="première année";
-                            break;
-                        case 2:
-                            $niveau ="deuxième année";
-                            break;
-                        case 3:
-                            $niveau ="troisième année";
-                            break;
-                        default:$niveau="";
-                        }
+                    // /// *** Formation  type et niveau
+                    //     switch($Etudiant['NIVEAU']){
+                    //     case 1:
+                    //         $niveau ="première année";
+                    //         break;
+                    //     case 2:
+                    //         $niveau ="deuxième année";
+                    //         break;
+                    //     case 3:
+                    //         $niveau ="troisième année";
+                    //         break;
+                    //     default:$niveau="";
+                    //     }
                     
-                        switch($Formation['TYPE_FORM']){
-                        case 1:
-                            $type_form ="cycle d’ingénieur";
-                            break;
-                        case 0:
-                            $type_form ="Licence";
-                            break;
-                        case 2:
-                            $type_form ="Master";
-                            break;
-                        }
+                    //     switch($Formation['TYPE_FORM']){
+                    //     case 1:
+                    //         $type_form ="cycle d’ingénieur";
+                    //         break;
+                    //     case 0:
+                    //         $type_form ="Licence";
+                    //         break;
+                    //     case 2:
+                    //         $type_form ="Master";
+                    //         break;
+                    //     }
                 
-                    /// *** 
-                    $name = "FSTAGE";  // Name of your website or yours
-                    $to = $Poste['EMAIL_ENTREP'];  // mail of reciever
-                    $subject = "FSTAGE-".$Poste['POSTE']."-".$Poste['VILLE'];
-                    $body = "Candidature pour le stage qui concerne ".$Poste['POSTE']." à ".$Poste['VILLE'].".<br>
-                            Informations sur le candidat :<br>
-                            Nom : ".$Etudiant['NOM_ETU']."<br>
-                            Prénom : ".$Etudiant['PRENOM_ETU']."<br>
-                            Etudiant en ".$niveau." ".$type_form." (".$Formation['FULL_NAME'].")<br>
-                            Email de l'étudiant : ".$Etudiant['EMAIL_ETU']."<br>
-                            Email de résponsable : ".$Formation['EMAIL_ENS']."<br><br>Cordialement";
+                    // /// *** 
+                    // $name = "FSTAGE";  // Name of your website or yours
+                    // $to = $Poste['EMAIL_ENTREP'];  // mail of reciever
+                    // $subject = "FSTAGE-".$Poste['POSTE']."-".$Poste['VILLE'];
+                    // $body = "Candidature pour le stage qui concerne ".$Poste['POSTE']." à ".$Poste['VILLE'].".<br>
+                    //         Informations sur le candidat :<br>
+                    //         Nom : ".$Etudiant['NOM_ETU']."<br>
+                    //         Prénom : ".$Etudiant['PRENOM_ETU']."<br>
+                    //         Etudiant en ".$niveau." ".$type_form." (".$Formation['FULL_NAME'].")<br>
+                    //         Email de l'étudiant : ".$Etudiant['EMAIL_ETU']."<br>
+                    //         Email de résponsable : ".$Formation['EMAIL_ENS']."<br><br>Cordialement";
                     
                     
-                    $from = "fstage.media@gmail.com";  // you mail
-                    $password = "rmjqxniouziiythp";  // your mail password
-                    //$cv = "path";
+                    // $from = "fstage.media@gmail.com";  // you mail
+                    // $password = "rmjqxniouziiythp";  // your mail password
+                    // //$cv = "path";
 
-                    // Ignore from here
+                    // // Ignore from here
 
-                    require_once "PHPMailer/src/PHPMailer.php";
-                    require_once "PHPMailer/src/SMTP.php";
-                    require_once "PHPMailer/src/Exception.php";
-                    $mail = new PHPMailer();
+                    // require_once "PHPMailer/src/PHPMailer.php";
+                    // require_once "PHPMailer/src/SMTP.php";
+                    // require_once "PHPMailer/src/Exception.php";
+                    // $mail = new PHPMailer();
 
-                    // To Here
+                    // // To Here
 
-                    //SMTP Settings
-                    $mail->isSMTP();
-                    $mail->oauthUserEmail = "[Redacted]@gmail.com";
-                    $mail->oauthClientId = "[Redacted]";
-                    $mail->oauthClientSecret = "[Redacted]";
-                    $mail->oauthRefreshToken = "[Redacted]";
-                    // $mail->SMTPDebug = 3;  Keep It commented this is used for debugging                          
-                    $mail->Host = "smtp.gmail.com"; // smtp address of your email
-                    $mail->SMTPAuth = true;
-                    $mail->Username = $from;
-                    $mail->Password = $password;
-                    $mail->Port = 587;  // port
-                    $mail->SMTPSecure = "tls";  // tls or ssl
-                    $mail->smtpConnect([
-                    'ssl' => [
-                        'verify_peer' => false,
-                        'verify_peer_name' => false,
-                        'allow_self_signed' => true
-                        ]
-                    ]);
+                    // //SMTP Settings
+                    // $mail->isSMTP();
+                    // $mail->oauthUserEmail = "[Redacted]@gmail.com";
+                    // $mail->oauthClientId = "[Redacted]";
+                    // $mail->oauthClientSecret = "[Redacted]";
+                    // $mail->oauthRefreshToken = "[Redacted]";
+                    // // $mail->SMTPDebug = 3;  Keep It commented this is used for debugging                          
+                    // $mail->Host = "smtp.gmail.com"; // smtp address of your email
+                    // $mail->SMTPAuth = true;
+                    // $mail->Username = $from;
+                    // $mail->Password = $password;
+                    // $mail->Port = 587;  // port
+                    // $mail->SMTPSecure = "tls";  // tls or ssl
+                    // $mail->smtpConnect([
+                    // 'ssl' => [
+                    //     'verify_peer' => false,
+                    //     'verify_peer_name' => false,
+                    //     'allow_self_signed' => true
+                    //     ]
+                    // ]);
 
-                    //Email Settings
-                    $mail->isHTML(true);
-                    $mail->setFrom($from, $name);
-                    $mail->addAddress($to); // enter email address whom you want to send
-                    $mail->Subject = ("$subject");
-                    $mail->Body = $body;
-                    $mail->addAttachment($Etudiant['CV']);
-                    if ($mail->send()) {
-                        echo "Email is sent!";
-                    } else {
-                        echo "Something is wrong: <br><br>" . $mail->ErrorInfo;
-                    }
+                    // //Email Settings
+                    // $mail->isHTML(true);
+                    // $mail->setFrom($from, $name);
+                    // $mail->addAddress($to); // enter email address whom you want to send
+                    // $mail->Subject = ("$subject");
+                    // $mail->Body = $body;
+                    // $mail->addAttachment($Etudiant['CV']);
+                    // if ($mail->send()) {
+                    //     echo "Email is sent!";
+                    // } else {
+                    //     echo "Something is wrong: <br><br>" . $mail->ErrorInfo;
+                    // }
                     /// ***
                    
                     header('location:../Find_Offre_Etu.php');
