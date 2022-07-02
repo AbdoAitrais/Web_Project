@@ -126,6 +126,7 @@
             </div>
               <div class="navbar-nav ms-auto margin action" style="margin-right:2.5%;">
               
+              
               <?php
               if(isset($_SESSION['pdp']) && !empty($_SESSION['pdp'])){  ?>
                 <img class="profile" onclick="menuToggle()" src="<?php print($_SESSION['pdp']);?>" alt="">

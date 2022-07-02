@@ -18,6 +18,7 @@
     $row = $Smt->fetch(PDO::FETCH_ASSOC);
     $type_form = $row['TYPE_FORM'];
     
+    
     if(isset($_GET['id_etu']))
     {
 
